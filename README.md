@@ -1,7 +1,7 @@
 # MobColors
-Manage colors of mobs, per world 
+Manage mob colors and variants, on a per world basis 
 
-**MobColors** manages the colors of mobs that present in different colors or variants. The following mob-types may be managed:
+**MobColors** manages mob colors and variants. The following mob-types may be managed:
 - axolotl
 - cat
 - fox
