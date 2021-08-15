@@ -13,4 +13,4 @@ Manage mob colors and variants, on a per world basis
 - shulker
 - tropical_fish
 
-🚩 The SlimeDog resource **SheepSpawnColors** has been merged into MobColors.
+🚩 The SlimeDog resource **SheepSpawnColors** has been merged into **MobColors**.
