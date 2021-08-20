@@ -169,7 +169,7 @@ mobs:
 # other biomes:
 #     red: 1.00
 #
-# A different default color-scheme may be added.
+# A non-vanilla default color-scheme may be added.
 #
   fox:
     enabled: false
@@ -188,46 +188,46 @@ mobs:
 
 # ========== HORSE =================================================================================
 # Minecraft vanilla color variants when spawned, per https://minecraft.fandom.com/wiki/Horse.
-# The vanilla variants are subject to change upstream, and are listed here for reference only.
-#  variant    color/marking
-#  -------    ----------------------
-#  0          white
-#  1          creamy
-#  2          chestnut
-#  3          brown
-#  4          black
-#  5          gray
-#  6          dark-brown
-#  256        white/white
-#  257        creamy/white
-#  258        chestnut/white
-#  259        brown/white
-#  260        black/white
-#  261        gray/white
-#  262        dark-brown/white
-#  512        white/white-field
-#  513        creamy/white-field
-#  514        chestnut/white-field
-#  515        brown/white-field
-#  516        black/white-field
-#  517        gray/white-field
-#  518        dark-brown/white-field
-#  768        white/white-dots
-#  769        creamy/white-dots
-#  770        chestnut/white-dots
-#  771        brown/white-dots
-#  772        black/white-dots
-#  773        gray/white-dots
-#  774        dark-brown/white-dots
-#  1024       white/black-dots
-#  1025       creamy/black-dots
-#  1026       chestnut/black-dots
-#  1027       brown/black-dots
-#  1028       black/black-dots
-#  1029       gray/black-dots
-#  1030       dark-brown/black-dots
+# The vanilla variants are subject to change upstream; the following are recognized as of MC 1.17.
+# variant = baseColor/markingColor
+# --------------------------------
+#   white/none
+#   creamy/none
+#   chestnut/none
+#   brown/none
+#   black/none
+#   gray/none
+#   darkbrown/none
+#   white/white
+#   creamy/white
+#   chestnut/white
+#   brown/white
+#   black/white
+#   gray/white
+#   darkbrown/white
+#   white/whitefield
+#   creamy/whitefield
+#   chestnut/whitefield
+#   brown/whitefield
+#   black/whitefield
+#   gray/whitefield
+#   darkbrown/whitefield
+#   white/whitedots
+#   creamy/whitedots
+#   chestnut/whitedots
+#   brown/whitedots
+#   black/whitedots
+#   gray/whitedots
+#   darkbrown/whitedots
+#   white/blackdots
+#   creamy/blackdots
+#   chestnut/blackdots
+#   brown/blackdots
+#   black/blackdots
+#   gray/blackdots
+#   darkbrown/blackdots
 #
-# A different default color-scheme may be added.
+# A non-vanilla default color-scheme may be specified, if desired.
 #
   horse:
     enabled: false
@@ -235,48 +235,48 @@ mobs:
     include-pets: false
     brown:
       probabilities:
-        3: 0.10
-        6: 0.10
-        259: 0.10
-        262: 0.10
-        515: 0.10
-        518: 0.10
-        771: 0.10
-        774: 0.10
-        1027: 0.10
-        1030: 0.10
+        brown/none: 0.10
+        darkbrown/none: 0.10
+        brown/white: 0.10
+        darkbrown/white: 0.10
+        brown/whitefield: 0.10
+        darkbrown/whitefield: 0.10
+        brown/whitedots: 0.10
+        darkbrown/whitedots: 0.10
+        brown/blackdots: 0.10
+        darkbrown/blackdots: 0.10
       enabled-worlds:
         - example_world_with_mostly_brown_horses
     black:
       probabilities:
-        4: 0.20
-        260: 0.20
-        516: 0.20
-        772: 0.20
-        1028: 0.20
+        black/none: 0.20
+        black/white: 0.20
+        black/whitefield: 0.20
+        black/whitedots: 0.20
+        black/blackdots: 0.20
       enabled-worlds:
         - example_world_with_mostly_black_horses
     monochrome:
       probabilities:
-        0: 0.0910
-        4: 0.0909
-        5: 0.0909
-        260: 0.0909
-        261: 0.0909
-        516: 0.0909
-        517: 0.0909
-        772: 0.0909
-        773: 0.0909
-        1024: 0.0909
-        1029: 0.0909
+        white/none: 0.0910
+        black/none: 0.0909
+        gray/none: 0.0909
+        black/white: 0.0909
+        gray/white: 0.0909
+        black/whitefield: 0.0909
+        gray/whitefield: 0.0909
+        black/whitedots: 0.0909
+        gray/whitedots: 0.0909
+        white/blackdots: 0.0909
+        gray/blackdots: 0.0909
       enabled-worlds:
         - example_world_with_only_monochrome_horses
     white:
       probabilities:
-        256: 0.25
-        512: 0.25
-        768: 0.25
-        1024: 0.25
+        white/white: 0.25
+        white/whitefield: 0.25
+        white/whitedots: 0.25
+        white/blackdots: 0.25
       enabled-worlds:
         - example_world_with_mostly_white_horses
 
@@ -396,7 +396,7 @@ mobs:
 #     killer
 #     toast
 #
-# A different default color-scheme may be added.
+# A different default color-scheme may be specified, if desired.
 #
   rabbit:
     enabled: false
@@ -431,8 +431,8 @@ mobs:
 #   brown: 0.03
 #   pink: 0.00164
 # Any of the 16 standard dye colors may be used:
-#    black, red, green, brown, blue, purple, cyan, light_gray
-#    gray, pink, lime, yellow, light_blue, magenta, orange, white
+#   black, red, green, brown, blue, purple, cyan, light_gray
+#   gray, pink, lime, yellow, light_blue, magenta, orange, white
 #
   sheep:
     enabled: false
@@ -511,53 +511,119 @@ mobs:
 
 # ========== TROPICAL_FISH =========================================================================
 # Minecraft vanilla color/shape variants when spawned, per https://minecraft.fandom.com/wiki/Tropical_Fish.
-# The vanilla variants are subject to change upstream, and are listed here for reference only.
-#  variant    common name
-#  -------    ----------------------
-#  65536      orange-white kob
-#  917504     red-white kob
-#  918273     red-white blockfish
-#  918529     red-white betty
-#  16778497   white-orange clayfish
-#  50660352   lime-sky brinely
-#  50726144   rose-sky spotty
-#  67108865   white-yellow flopper
-#  67110144   white-yellow spotty
-#  67371265   yellow stripey
-#  67764993   plum-yellow blockfish
-#  101253888  teal-rose dasher
-#  117441025  white-gray glitter
-#  117441280  white-gray dasher
-#  117441536  white-gray brinely
-#  117506305  orange-gray stripey
-#  117899265  gray flopper
-#  118161664  blue-gray sunstreak
-#  134217984  white-silver sunstreak
-#  185008129  gray-blue flopper
-#  234882305  white-red clayfish
-#  235340288  gray-red snooper
+# The vanilla variants are subject to change upstream; the following are recognized as of MC 1.17.
 #
-# A different default color-scheme may be added.
+# Large fish patterns:
+#   betty
+#   blockfish
+#   clayfish
+#   flopper
+#   glitter
+#   stripey
+# Small fish patterns:
+#   brinely
+#   dasher
+#   kob
+#   snooper
+#   spotty
+#   sunstreak
+#
+# Any of the 16 standard dye colors may be used:
+#   black, red, green, brown, blue, purple, cyan, light_gray
+#   gray, pink, lime, yellow, light_blue, magenta, orange, white
+# Black is not recommended, as it makes the eyes difficult to see.
+#
+# There are 22 common variants. 90% of spawned fish are of the common variants; the remaining 10%
+# are completely random. The common variants are used here, but you can be as creative as you like.
+#
+# variant = pattern/bodyColor/patternColor = common name
+# -----------------------------------------------------------
+# stripey/orange/gray                        Anemone
+# flopper/gray/gray                          Black Tang
+# flopper/gray/blue                          Blue Tang
+# clayfish/white/gray                        Butterflyfish
+# sunstreak/blue/gray                        Cichlid
+# kob/orange/white                           Clownfish
+# spotty/pink/light_blue                     Cotton Candy Betta
+# blockfish/purple/yellow                    Dottyback
+# clayfish/white/red                         Emperor Red Snapper
+# spotty/white/yellow                        Goatfish
+# glitter/white/gray                         Moorish Idol
+# clayfish/white/orange                      Ornate Butterflyfish
+# dasher/cyan/pink                           Parrotfish
+# brinely/lime/light_blue                    Queen Angelfish
+# betty/red/white                            Red Cichlid
+# snooper/gray/red                           Red-lipped Blenny
+# blockfish/red/white                        Red Snapper
+# flopper/white/yellow                       Threadfin
+# kob/red/white                              Tomato Clownfish
+# sunstreak/white/light_gray                 Triggerfish
+# dasher/cyan/yellow                         Yellow Parrotfish
+# flopper/yellow/yellow                      Yellow Tang
+#
+# ========== SHULKER ===============================================================================
+# The special "random" key supports random spawning; see the example in the multicolor color-scheme.
+# The "random" key is valid only for tropical_fish.
+#
+# A non-vanilla default color-scheme may be specified, if desired.
 #
   tropical_fish:
-    enabled: false
-    include-leashed: false
-    include-pets: false
-    red-white:
+    blue:
+      enabled: false
+      include-leashed: false
+      include-pets: false
       probabilities:
-        917504: 0.20
-        918273: 0.20
-        918529: 0.20
-        234882305: 0.20
-        235340288: 0.20
+        flopper/gray/blue: 0.25             # Blue Tang
+        brinely/lime/light_blue: 0.25       # Queen Angelfish
+        spotty/pink/light_blue: 0.25        # Cotton Candy Betta
+        sunstreak/blue/gray: 0.25           # Cichlid
+      enabled-worlds:
+        - example_world_with_only_blue_fish
+    red:
+      enabled: false
+      include-leashed: false
+      include-pets: false
+      probabilities:
+        betty/red/white: 0.20               # Red Cichlid
+        blockfish/red/white: 0.20           # Red Snapper
+        clayfish/white/red: 0.20            # Emperor Red Snapper
+        kob/red/white: 0.20                 # Tomato Clownfish
+        snooper/gray/red: 0.20              # Red-lipped Blenny
       enabled-worlds:
         - example_world_with_only_red_fish
-    monochrome:
+    yellow:
+      enabled: false
+      include-leashed: false
+      include-pets: false
       probabilities:
-        117441025: 0.20
-        117441280: 0.20
-        117441536: 0.20
-        117899265: 0.20
-        134217984: 0.20
+        blockfish/purple/yellow: 0.20       # Dottyback
+        flopper/white/yellow: 0.20          # Threadfin
+        flopper/yellow/yellow: 0.20         # Yellow Tang
+        dasher/cyan/yellow: 0.20            # Yellow Parrotfish
+        spotty/white/yellow: 0.20           # Goatfish
+      enabled-worlds:
+        - example_world_with_only_yellow_fish
+    multicolor:
+      enabled: false
+      include-leashed: false
+      include-pets: false
+      probabilities:
+        spotty/pink/light_blue: 0.18        # Cotton Candy Betta
+        blockfish/purple/yellow: 0.18       # Dottyback
+        dasher/cyan/pink: 0.18              # Parrotfish
+        brinely/lime/light_blue: 0.18       # Queen Angelfish
+        dasher/cyan/yellow: 0.18            # Yellow Parrotfish
+        random: 0.10
+      enabled-worlds:
+        - example_world_with_only_multicolor_fish
+    monochrome:
+      enabled: false
+      include-leashed: false
+      include-pets: false
+      probabilities:
+        flopper/gray/gray: 0.25             # Black Tang
+        glitter/white/gray: 0.25            # Moorish Idol
+        clayfish/white/gray: 0.25           # Butterflyfish
+        sunstreak/white/light_gray: 0.25    # Triggerfish
       enabled-worlds:
         - example_world_with_only_monochrome_fish
