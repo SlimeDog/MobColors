@@ -89,6 +89,10 @@ public class MobSettingsParser {
         return (hasParsed && !enabled) || (type != null && colorMaps != null);
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
+
     /**
      * Gets the MobSettings instance or null if not enabled.
      *

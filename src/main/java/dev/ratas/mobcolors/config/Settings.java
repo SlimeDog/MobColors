@@ -56,7 +56,17 @@ public class Settings implements Reloadable {
             logger.warning("Problem with mob settings for " + mobName + ": " + e.getMessage());
             return;
         }
+        if (!parser.isEnabled()) {
+            return; // not enabled - not care
+        }
+        if (!parser.isValid()) {
+            logger.warning("Problem with mob settings for " + mobName + ": invalid config");
+            return;
+        }
         MobSettings settings = parser.get();
+        if (settings == null) {
+
+        }
         if (mobSettings.putIfAbsent(settings.getEntityType(), settings) != null) {
             logger.warning("Multiple mob settings found for " + mobName + ". Only using first defined one.");
         } else { // on success
