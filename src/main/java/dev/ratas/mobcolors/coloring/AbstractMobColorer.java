@@ -10,7 +10,7 @@ import dev.ratas.mobcolors.coloring.settings.ColorReason;
 import dev.ratas.mobcolors.config.mob.MobSettings;
 import dev.ratas.mobcolors.utils.PetUtils;
 
-public abstract class AbstractMobColorer<E, T extends Enum<T>> implements MobColorer<E, T> {
+public abstract class AbstractMobColorer<E, T> implements MobColorer<E, T> {
     private final MobSettings settings;
     private final ColorMap<T> colorMap;
 

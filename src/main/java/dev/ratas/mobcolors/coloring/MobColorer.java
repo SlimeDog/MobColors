@@ -4,7 +4,7 @@ import dev.ratas.mobcolors.coloring.settings.ColorMap;
 import dev.ratas.mobcolors.coloring.settings.ColorDecision;
 import dev.ratas.mobcolors.coloring.settings.ColorReason;
 
-public interface MobColorer<E, T extends Enum<T>> {
+public interface MobColorer<E, T> {
 
     ColorMap<T> getColorMap();
 

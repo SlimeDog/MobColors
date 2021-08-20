@@ -6,7 +6,7 @@ import dev.ratas.mobcolors.coloring.settings.ColorMap;
 import dev.ratas.mobcolors.config.mob.MobSettings;
 import dev.ratas.mobcolors.scheduling.abstraction.Scheduler;
 
-public class DelegatingMobColorer<E, T extends Enum<T>> extends AbstractMobColorer<E, T> {
+public class DelegatingMobColorer<E, T> extends AbstractMobColorer<E, T> {
     private final Scheduler scheduler;
     private final BiConsumer<E, T> function;
 
