@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 
 import org.bukkit.configuration.ConfigurationSection;
 
-public class ColorSchemeParser<T extends Enum<?>> extends AbstractColorSchemeParser {
+public class ColorSchemeParser<T> extends AbstractColorSchemeParser {
     private static final double TOLERANCE = 0.0000001D;
     private final Map<T, Double> colorMap;
 

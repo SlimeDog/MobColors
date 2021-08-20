@@ -37,7 +37,7 @@ public class AbstractColorSchemeParser {
         private final Map<Class<?>, Method> methodsPerEnum = new HashMap<>();
 
         @SuppressWarnings("unchecked")
-        public <V extends Enum<?>> V getValueOf(Class<V> clazz, String name) {
+        public <V> V getValueOf(Class<V> clazz, String name) {
             Method method = getOrCreateValueOfMethod(clazz);
             try {
                 return (V) method.invoke(clazz, name); // unchecked, but for Enum should be fine
