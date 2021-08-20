@@ -7,12 +7,14 @@ import java.util.Map;
 
 import org.bukkit.entity.EntityType;
 
-public class AbstractColorMap<T extends Enum<?>> implements ColorMap<T> {
+public class AbstractColorMap<T> implements ColorMap<T> {
+    private final EntityType type;
     private final String name;
     private final Map<T, Double> colorMap;
     private final Collection<String> worlds;
 
-    public AbstractColorMap(String name, Map<T, Double> map, Collection<String> worlds) {
+    public AbstractColorMap(EntityType type, String name, Map<T, Double> map, Collection<String> worlds) {
+        this.type = type;
         this.name = name;
         this.colorMap = map;
         this.worlds = new HashSet<>(worlds);
@@ -35,8 +37,7 @@ public class AbstractColorMap<T extends Enum<?>> implements ColorMap<T> {
 
     @Override
     public EntityType getApplicableEntityType() {
-        // TODO Auto-generated method stub
-        return null;
+        return type;
     }
 
     @Override
