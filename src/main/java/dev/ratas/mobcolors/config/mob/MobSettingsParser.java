@@ -47,10 +47,7 @@ public class MobSettingsParser {
         if (provider == null) {
             throw new IllegalMobSettingsException("Entity of " + type + " type does not have any changes configured");
         }
-        if (provider.hasTwoEnums()) {
-            throw new IllegalStateException("HAVE NOT YET FOUND A SOLUTION FOR TWO ENUM TYPE OF THING");
-        }
-        Class<? extends Enum<?>> clazz = provider.getEnumClass();
+        Class<?> clazz = provider.getEnumClass();
         for (String name : section.getKeys(false)) {
             if (!section.isConfigurationSection(name)) {
                 continue; // ignore non-sections such as 'enabled', 'include-leashed' and 'include-pets'
@@ -62,7 +59,7 @@ public class MobSettingsParser {
                 logger.warning("Unable to parse color map " + name + " for " + type + ": " + e.getMessage());
                 continue;
             }
-            ColorMap<?> colorMap = new AbstractColorMap<>(parser.getName(), parser.getDyeColors(),
+            ColorMap<?> colorMap = new AbstractColorMap<>(type, parser.getName(), parser.getDyeColors(),
                     parser.getEnabledWorlds());
             map.put(name, colorMap);
         }
