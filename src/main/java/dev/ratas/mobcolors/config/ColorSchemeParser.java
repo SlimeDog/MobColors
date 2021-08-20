@@ -1,29 +1,19 @@
 package dev.ratas.mobcolors.config;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import org.bukkit.configuration.ConfigurationSection;
 
-public class ColorSchemeParser<T extends Enum<?>> {
-    private static final EnumValueOfProvider ENUM_VALUE_OF_PROVIDER = new EnumValueOfProvider();
+public class ColorSchemeParser<T extends Enum<?>> extends AbstractColorSchemeParser {
     private static final double TOLERANCE = 0.0000001D;
-    private final String name;
     private final Map<T, Double> colorMap;
-    private final List<String> enabledWorlds = new ArrayList<>();
 
     public ColorSchemeParser(Class<T> clazz, ConfigurationSection section, Logger logger) {
+        super(section, logger);
         colorMap = new HashMap<>();
-        if (section == null) {
-            throw new IllegalStateException("Color scheme settings cannot have an empty section");
-        }
-        this.name = section.getName();
         ConfigurationSection probabilitiesSection = section.getConfigurationSection("probabilities");
         if (probabilitiesSection == null) {
             throw new IllegalStateException("No probabilities provided");
@@ -54,53 +44,10 @@ public class ColorSchemeParser<T extends Enum<?>> {
         if (colorMap.isEmpty()) {
             throw new IllegalArgumentException("No entries found");
         }
-        for (String worldName : section.getStringList("enabled-worlds")) {
-            enabledWorlds.add(worldName.toLowerCase());
-        }
-    }
-
-    public String getName() {
-        return name;
     }
 
     public Map<T, Double> getDyeColors() {
         return colorMap;
-    }
-
-    public List<String> getEnabledWorlds() {
-        return enabledWorlds;
-    }
-
-    private static final class EnumValueOfProvider {
-        private final Map<Class<?>, Method> methodsPerEnum = new HashMap<>();
-
-        @SuppressWarnings("unchecked")
-        public <V extends Enum<?>> V getValueOf(Class<V> clazz, String name) {
-            Method method = getOrCreateValueOfMethod(clazz);
-            try {
-                return (V) method.invoke(clazz, name); // unchecked, but for Enum should be fine
-            } catch (IllegalArgumentException e) {
-                throw e; // cought above
-            } catch (IllegalAccessException | InvocationTargetException e) {
-                throw new IllegalStateException(e);
-            }
-        }
-
-        private Method getOrCreateValueOfMethod(Class<?> clazz) {
-            methodsPerEnum.computeIfAbsent(clazz, (key) -> computeValueOfMethod(key));
-            return methodsPerEnum.get(clazz);
-        }
-
-        private Method computeValueOfMethod(Class<?> clazz) {
-            Method method;
-            try {
-                method = clazz.getMethod("valueOf", String.class);
-            } catch (NoSuchMethodException e) {
-                throw new IllegalStateException(e);
-            }
-            return method;
-        }
-
     }
 
 }
