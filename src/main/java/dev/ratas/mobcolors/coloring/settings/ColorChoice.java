@@ -3,7 +3,7 @@ package dev.ratas.mobcolors.coloring.settings;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class ColorChoice<T extends Enum<?>> {
+public class ColorChoice<T> {
     private final T choice;
     private final double chance;
 
@@ -20,8 +20,7 @@ public class ColorChoice<T extends Enum<?>> {
         return chance;
     }
 
-    public static <V extends Enum<?>> ColorChoice<V> of(ColorMap<V> map) {
-
+    public static <V> ColorChoice<V> of(ColorMap<V> map) {
         ThreadLocalRandom random = ThreadLocalRandom.current();
         double nr = random.nextDouble();
         double cur = 0;
