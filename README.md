@@ -9,6 +9,7 @@
 &mdash; horse<br>
 &mdash; llama<br>
 &mdash; mooshroom<br>
+&mdash; parrot<br>
 &mdash; rabbit<br>
 &mdash; sheep<br>
 &mdash; shulker<br>
