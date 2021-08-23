@@ -35,12 +35,8 @@ enable-metrics: true
 # - The default color-scheme for any mob-type may be modified to reflect your server design.
 # - Multiple worlds may be assigned to any color-scheme.
 # - Worlds not assigned to a color-scheme will use the default.
-# - Mobs in a specified radius from the player may be modified by commands. See the wiki for details.
+# - Mobs in a specified distance from the player may be modified by commands. See the wiki for details.
 # - Mobs in a specified Minecraft region may be modified by commands. See the wiki for details.
-#
-# REMOVE THE COMMAND DESCRIPTIONS AFTER THEY ARE DOCUMENTED IN THE WIKI ============================
-#     mobcolors color < all | mob-type > < radius r | region [ [world-name] x z ] > [ --all ] [ --leashed ] [ --pets ]
-#     mobcolors scan < all | mob-type > < radius r | region [ [world-name] x z ] > [ --all ] [ --leashed ] [ --pets ]
 #
 # ========== OVERVIEW ==============================================================================
 # Color/variant specifications are defined in the following sections.
