@@ -3,4 +3,32 @@ version: ${project.version}
 api-version: 1.13
 main: ${project.groupId}.${project.artifactId}.${project.name}
 description: ${project.description}
-authors: [drives_a_ford]
+authors: [drives_a_ford, SlimeDog]
+load: STARTUP
+
+commands:
+  mobcolors:
+    description: The main command
+    usage: /<command> <args>
+    aliases: [mc]
+    permission: mobcolors.command
+ 
+permissions:
+  mobcolors.command:
+    description: Allows using the main command
+    default: op
+  mobcolors.reload:
+    description: Allows using the reload subcommand
+    default: op
+    children:
+      mobcolors.command: true
+  mobcolors.scan:
+    description: Allows using the scan subcommand
+    default: op
+    children:
+      mobcolors.command: true
+  mobcolors.color:
+    description: Allows using the color subcommand
+    default: op
+    children:
+      mobcolors.command: true
