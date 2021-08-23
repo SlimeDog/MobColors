@@ -27,7 +27,7 @@ public class MobColors extends JavaPlugin {
                 versionProvider, getLogger());
 
         // commands
-        getCommand("sheepspawncolors")
+        getCommand("mobcolors")
                 .setExecutor(new ParentCommand(platform, platform.getMessages(), platform.getSettings()));
 
         // metrics
