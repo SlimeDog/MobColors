@@ -28,7 +28,7 @@ public class PluginPlatform {
     private final Settings settings;
     private final Messages messages;
     private final SpawnListener spawnListener;
-    private final TaskScheduler scheduler;
+    private final TaskScheduler taskScheduler;
     private final RegionMapper mapper;
     private final RegionScanner scanner;
     private final Logger logger;
@@ -61,10 +61,10 @@ public class PluginPlatform {
         reloadManager.register(messages);
         spawnListener = new SpawnListener(settings);
         // scheduling, scanning, mapping
-        this.scheduler = new SimpleTaskScheduler(settings.maxMsPerTickInScheduler());
-        scheduler.scheduleRepeating((Runnable) scheduler, 1L, 1L);
-        mapper = new RegionMapper(this.scheduler, spawnListener);
-        scanner = new RegionScanner(this.scheduler);
+        this.taskScheduler = new SimpleTaskScheduler(settings.maxMsPerTickInScheduler());
+        scheduler.scheduleRepeating((Runnable) this.taskScheduler, 1L, 1L);
+        mapper = new RegionMapper(this.taskScheduler, spawnListener);
+        scanner = new RegionScanner(this.taskScheduler);
 
         lisenerRegistrator.register(spawnListener);
 
@@ -96,7 +96,7 @@ public class PluginPlatform {
     }
 
     public TaskScheduler getScheduler() {
-        return scheduler;
+        return taskScheduler;
     }
 
     public RegionMapper getMapper() {
