@@ -18,19 +18,32 @@ import dev.ratas.mobcolors.region.RegionScanner;
 
 public class ScanSubCommand extends AbstractRegionSubCommand {
     private static final String NAME = "scan";
-    private static final String USAGE = "/mobcolors scan region [ world-name x z ] [ --all ] [ --leashed ] [ --pets ]";
+    private static final String USAGE_REGION = "/mobcolors scan region [ <world> <x> <z> ] [ --all | --leashed | --pets ] [ --mob <mob-type> ]";
+    private static final String USAGE_DISTANCE = "/mobcolors scan distance <d> [ --all | --leashed | --pets ] [ --mob <mob-type> ]";
     private static final String PERMS = "mobcolors.scan";
-    private static final List<String> FIRST_OPTIONS = Arrays.asList("region");
+    private static final List<String> FIRST_OPTIONS = Arrays.asList("region", "distance");
     private static final List<String> OPTIONS = Arrays.asList("--all", "--leashed", "--pets");
     private final RegionScanner scanner;
     private final Messages messages;
     private final Settings settings;
 
     public ScanSubCommand(RegionScanner scanner, Settings settings, Messages messages) {
-        super(messages, NAME, USAGE, PERMS, false);
+        super(messages, NAME, USAGE_REGION + "\n" + USAGE_DISTANCE, PERMS, false);
         this.scanner = scanner;
         this.settings = settings;
         this.messages = messages;
+    }
+
+    @Override
+    public String getUsage(CommandSender sender, String[] args) {
+        if (args.length == 0) {
+            return super.getUsage(sender, args);
+        } else if (args[0].equalsIgnoreCase("region")) {
+            return USAGE_REGION;
+        } else if (args[0].equalsIgnoreCase("distance")) {
+            return USAGE_DISTANCE;
+        }
+        return super.getUsage(sender, args);
     }
 
     @Override
