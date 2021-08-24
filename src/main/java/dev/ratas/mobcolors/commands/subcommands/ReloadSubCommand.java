@@ -11,8 +11,8 @@ import dev.ratas.mobcolors.platform.PluginPlatform;
 
 public class ReloadSubCommand extends SimpleSubCommand {
     private static final String NAME = "reload";
-    private static final String USAGE = "/sheepspawncolors reload";
-    private static final String PERMS = "sheepspawncolors.reload";
+    private static final String USAGE = "/mobcolors reload";
+    private static final String PERMS = "mobcolors.reload";
     private final PluginPlatform platform;
     private final Messages messages;
 

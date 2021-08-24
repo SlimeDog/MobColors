@@ -11,8 +11,8 @@ import dev.ratas.mobcolors.scheduling.TaskScheduler;
 
 public class SchedulerInfoSubCommand extends SimpleSubCommand {
     private static final String name = "schedulerinfo";
-    private static final String usage = "/sheepspawncolors schedulerinfo";
-    private static final String perms = "sheepspawncolors.schedulerinfo";
+    private static final String usage = "/mobcolors schedulerinfo";
+    private static final String perms = "mobcolors.schedulerinfo";
     private final SimpleTaskScheduler scheduler;
 
     public SchedulerInfoSubCommand(TaskScheduler scheduler, boolean onDebug) {

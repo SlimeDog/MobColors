@@ -18,8 +18,8 @@ import dev.ratas.mobcolors.region.RegionMapper;
 
 public class ColorSubCommand extends AbstractRegionSubCommand {
     private static final String NAME = "color";
-    private static final String USAGE = "/sheepspawncolors color region [ world-name x z ] [ --all ] [ --leashed ] [ --pets ]";
-    private static final String PERMS = "sheepspawncolors.region";
+    private static final String USAGE = "/mobcolors color region [ world-name x z ] [ --all ] [ --leashed ] [ --pets ]";
+    private static final String PERMS = "mobcolors.region";
     private static final List<String> FIRST_OPTIONS = Arrays.asList("region");
     private static final List<String> OPTIONS = Arrays.asList("--all", "--leashed", "--pets", "--scan");
     private final RegionMapper mapper;

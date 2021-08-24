@@ -18,8 +18,8 @@ import dev.ratas.mobcolors.region.RegionScanner;
 
 public class ScanSubCommand extends AbstractRegionSubCommand {
     private static final String NAME = "scan";
-    private static final String USAGE = "/sheepspawncolors scan region [ world-name x z ] [ --all ] [ --leashed ] [ --pets ]";
-    private static final String PERMS = "sheepspawncolors.scan";
+    private static final String USAGE = "/mobcolors scan region [ world-name x z ] [ --all ] [ --leashed ] [ --pets ]";
+    private static final String PERMS = "mobcolors.scan";
     private static final List<String> FIRST_OPTIONS = Arrays.asList("region");
     private static final List<String> OPTIONS = Arrays.asList("--all", "--leashed", "--pets");
     private final RegionScanner scanner;
