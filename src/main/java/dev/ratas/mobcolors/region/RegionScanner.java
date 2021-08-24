@@ -6,6 +6,8 @@ import java.util.function.BiConsumer;
 import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Sheep;
 
 import dev.ratas.mobcolors.scheduling.SimpleRegionTaskDelegator;
@@ -20,24 +22,27 @@ public class RegionScanner {
     }
 
     public CompletableFuture<ScanReport> scanRegion(World world, int regionX, int regionZ, boolean doLeashed,
-            boolean doPets, long updateTicks, BiConsumer<Long, Long> updaterConsumer, boolean ignoreUngenerated) {
+            boolean doPets, long updateTicks, BiConsumer<Long, Long> updaterConsumer, boolean ignoreUngenerated,
+            EntityType targetType) {
         CompletableFuture<ScanReport> future = new CompletableFuture<>();
         ScanReport report = new ScanReport();
         scheduler.scheduleTask(new SimpleRegionTaskDelegator(world, regionX, regionZ,
-                (chunk) -> checkChunk(chunk, report, !doLeashed, !doPets), () -> future.complete(report), updateTicks,
-                updaterConsumer, ignoreUngenerated));
+                (chunk) -> checkChunk(chunk, report, !doLeashed, !doPets, targetType), () -> future.complete(report),
+                updateTicks, updaterConsumer, ignoreUngenerated));
         return future;
     }
 
-    private void checkChunk(Chunk chunk, ScanReport report, boolean skipLeashed, boolean skipPets) {
+    private void checkChunk(Chunk chunk, ScanReport report, boolean skipLeashed, boolean skipPets,
+            EntityType targetType) {
         report.countAChunk();
         for (Entity entity : chunk.getEntities()) {
-            if (entity instanceof Sheep) {
-                Sheep sheep = (Sheep) entity;
-                if (skipLeashed && sheep.isLeashed()) {
-                    continue; // skip
+            if (targetType == null || entity.getType().equals(targetType)) {
+                if (entity instanceof LivingEntity) {
+                    if (skipLeashed && ((LivingEntity) entity).isLeashed()) {
+                        continue; // skip
+                    }
                 }
-                if (skipPets && PetUtils.isPet(sheep)) {
+                if (skipPets && PetUtils.isPet(entity)) {
                     continue;
                 }
                 report.count((Sheep) entity);
