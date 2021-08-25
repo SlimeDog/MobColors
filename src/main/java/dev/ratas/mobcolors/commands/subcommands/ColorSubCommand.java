@@ -61,7 +61,7 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
                 return list; // no tab-completion for distance
             }
         }
-        if (args.length > 4) {
+        if (args.length > 4 || (args[0].equalsIgnoreCase("distance") && args.length > 2)) {
             List<String> curOptions = new ArrayList<>(OPTIONS);
             for (String prevOption : getOptions(args)) {
                 curOptions.remove(prevOption);

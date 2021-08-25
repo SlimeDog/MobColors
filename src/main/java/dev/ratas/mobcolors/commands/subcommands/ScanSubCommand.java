@@ -64,7 +64,7 @@ public class ScanSubCommand extends AbstractRegionSubCommand {
                 return list; // no tab-completion for distance
             }
         }
-        if (args.length > 4) {
+        if (args.length > 4 || (args[0].equalsIgnoreCase("distance") && args.length > 2)) {
             if (args[args.length - 2].equalsIgnoreCase("--mob")) { // after --mob, need entity type
                 return StringUtil.copyPartialMatches(args[args.length - 1], ENTITY_TYPE_NAMES, list);
             }
