@@ -8,6 +8,9 @@ import org.bukkit.entity.Player;
 
 import dev.ratas.mobcolors.commands.SimpleSubCommand;
 import dev.ratas.mobcolors.config.Messages;
+import dev.ratas.mobcolors.region.DistanceRegionInfo;
+import dev.ratas.mobcolors.region.RectangularRegionInfo;
+import dev.ratas.mobcolors.region.RegionInfo;
 
 public abstract class AbstractRegionSubCommand extends SimpleSubCommand {
     private final Messages messages;
@@ -22,14 +25,22 @@ public abstract class AbstractRegionSubCommand extends SimpleSubCommand {
         this.messages = messages;
     }
 
-    protected RegionInfo getRegionInfo(CommandSender sender, String[] args) {
+    protected RegionInfo getRegionInfo(CommandSender sender, String[] args, boolean isRegion,
+            boolean ignoredUngenerated) {
+        if (!isRegion) { // distance
+            if (!(sender instanceof Player)) {
+                throw new IllegalArgumentException("Cannot use distance with console");
+            }
+            return getDistanceRegionInfo((Player) sender, args, ignoredUngenerated);
+        }
         if (args.length < 4 && sender instanceof Player) {
             if (args.length > 1) {
                 throw new IllegalArgumentException();
             }
             Player player = (Player) sender;
             Location loc = player.getLocation();
-            return new RegionInfo(player.getWorld(), loc.getBlockX() >> 9, loc.getBlockZ() >> 9);
+            return new RectangularRegionInfo(player.getWorld(), loc.getBlockX() >> 9, loc.getBlockZ() >> 9,
+                    ignoredUngenerated);
         } else if (!(sender instanceof Player) && args.length < 4) {
             throw new IllegalArgumentException();
         }
@@ -47,19 +58,21 @@ public abstract class AbstractRegionSubCommand extends SimpleSubCommand {
             sender.sendMessage(messages.getNeedANumber(args[2], args[3]));
             return null;
         }
-        return new RegionInfo(world, regionX, regionZ);
+        return new RectangularRegionInfo(world, regionX, regionZ, ignoredUngenerated);
     }
 
-    protected class RegionInfo {
-        protected final World world;
-        protected final int x;
-        protected final int z;
-
-        private RegionInfo(World world, int x, int z) {
-            this.world = world;
-            this.x = x;
-            this.z = z;
+    protected RegionInfo getDistanceRegionInfo(Player player, String[] args, boolean ignoreUngenerated) {
+        if (args.length < 5) {
+            throw new IllegalArgumentException("Too few argumens. Expected at least 5. Got " + args.length);
         }
+        String arg4 = args[4];
+        double dist;
+        try {
+            dist = Double.parseDouble(arg4);
+        } catch (IllegalArgumentException e) {
+            throw e;
+        }
+        return new DistanceRegionInfo(player.getLocation(), dist, ignoreUngenerated);
     }
 
 }

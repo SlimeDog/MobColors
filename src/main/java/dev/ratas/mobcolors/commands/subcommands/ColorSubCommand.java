@@ -14,6 +14,7 @@ import org.bukkit.util.StringUtil;
 
 import dev.ratas.mobcolors.config.Messages;
 import dev.ratas.mobcolors.config.Settings;
+import dev.ratas.mobcolors.region.RegionInfo;
 import dev.ratas.mobcolors.region.RegionMapper;
 
 public class ColorSubCommand extends AbstractRegionSubCommand {
@@ -65,13 +66,14 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
             return false;
         }
         Set<String> options = getOptions(args);
+        boolean isRegion = args[0].equalsIgnoreCase("region"); // otherwise distance
         boolean doLeashed = options.contains("--all") || options.contains("--leashed");
         boolean doPets = options.contains("--all") || options.contains("--pets");
         boolean ignoredUngenerated = !options.contains("--ungenerated");
         boolean showScan = options.contains("--scan");
         RegionInfo info;
         try {
-            info = getRegionInfo(sender, args);
+            info = getRegionInfo(sender, args, isRegion, ignoredUngenerated);
         } catch (IllegalArgumentException e) {
             return false;
         }
@@ -79,9 +81,10 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
             return true;
         }
         long updateTicks = settings.ticksBetweenLongTaskUpdates();
-        sender.sendMessage(messages.getStartingToColorMessage(info.world, info.x, info.z, updateTicks));
-        mapper.dyeSheepInRegion(info.world, info.x, info.z, doLeashed, doPets, updateTicks,
-                (done, total) -> sender.sendMessage(messages.getUpdateOnColorMessage(done, total)), ignoredUngenerated)
+        sender.sendMessage(messages.getStartingToColorMessage(info.getWorld(), info.getStartChunkX() >> 5,
+                info.getStartChunkZ() >> 5, updateTicks));
+        mapper.dyeEntitiesInRegion(info, doLeashed, doPets, updateTicks,
+                (done, total) -> sender.sendMessage(messages.getUpdateOnColorMessage(done, total)))
                 .whenComplete((report, e) -> {
                     int sheepCounted = report.getColors().values().stream().mapToInt((i) -> i).sum();
                     sender.sendMessage(messages.getDoneColoringMessage(sheepCounted, report.getChunksCounted()));

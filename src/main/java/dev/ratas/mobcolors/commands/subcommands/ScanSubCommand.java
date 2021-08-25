@@ -15,6 +15,7 @@ import org.bukkit.util.StringUtil;
 
 import dev.ratas.mobcolors.config.Messages;
 import dev.ratas.mobcolors.config.Settings;
+import dev.ratas.mobcolors.region.RegionInfo;
 import dev.ratas.mobcolors.region.RegionScanner;
 
 public class ScanSubCommand extends AbstractRegionSubCommand {
@@ -80,8 +81,12 @@ public class ScanSubCommand extends AbstractRegionSubCommand {
     @Override
     public boolean executeCommand(CommandSender sender, String[] args) {
         if ((args.length < 4 && !(sender instanceof Player)) || args.length < 1
-                || !args[0].equalsIgnoreCase("region")) {
+                || (!args[0].equalsIgnoreCase("region") && !args[0].equalsIgnoreCase("distance"))) {
             return false;
+        }
+        boolean isRegion = args[0].equalsIgnoreCase("region"); // otherwise distance
+        if (args.length < 5 && !isRegion) {
+            return false; // no distance specified
         }
         Set<String> options = getOptions(args);
         boolean doLeashed = options.contains("--all") || options.contains("--leashed");
@@ -92,15 +97,14 @@ public class ScanSubCommand extends AbstractRegionSubCommand {
         if (specifyMob) {
             targetType = getTargetType(args);
             if (targetType == null) {
-                sender.sendMessage(getUsage(sender, args));
-                return true;
+                return false;
             }
         } else {
             targetType = null; // all
         }
         RegionInfo info;
         try {
-            info = getRegionInfo(sender, args);
+            info = getRegionInfo(sender, args, isRegion, ignoredUngenerated);
         } catch (IllegalArgumentException e) {
             return false;
         }
@@ -108,10 +112,11 @@ public class ScanSubCommand extends AbstractRegionSubCommand {
             return true;
         }
         long updateTicks = settings.ticksBetweenLongTaskUpdates();
-        sender.sendMessage(messages.getStartingToScanMessage(info.world, info.x, info.z, updateTicks));
-        scanner.scanRegion(info.world, info.x, info.z, doLeashed, doPets, updateTicks,
-                (done, total) -> sender.sendMessage(messages.getUpdateOnScanMessage(done, total)), ignoredUngenerated,
-                targetType).whenComplete((report, e) -> {
+        sender.sendMessage(messages.getStartingToScanMessage(info.getWorld(), info.getStartChunkX() >> 5,
+                info.getStartChunkZ() >> 5, updateTicks));
+        scanner.scanRegion(info, doLeashed, doPets, updateTicks,
+                (done, total) -> sender.sendMessage(messages.getUpdateOnScanMessage(done, total)), targetType)
+                .whenComplete((report, e) -> {
                     int sheepCounted = report.getColors().values().stream().mapToInt((i) -> i).sum();
                     sender.sendMessage(messages.getDoneScanningHeaderMessage(sheepCounted, report.getChunksCounted()));
                     report.getColors().entrySet().forEach((entry) -> sender

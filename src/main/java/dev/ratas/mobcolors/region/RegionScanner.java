@@ -4,7 +4,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 
 import org.bukkit.Chunk;
-import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -21,14 +20,13 @@ public class RegionScanner {
         this.scheduler = scheduler;
     }
 
-    public CompletableFuture<ScanReport> scanRegion(World world, int regionX, int regionZ, boolean doLeashed,
-            boolean doPets, long updateTicks, BiConsumer<Long, Long> updaterConsumer, boolean ignoreUngenerated,
-            EntityType targetType) {
+    public CompletableFuture<ScanReport> scanRegion(RegionInfo info, boolean doLeashed, boolean doPets,
+            long updateTicks, BiConsumer<Long, Long> updaterConsumer, EntityType targetType) {
         CompletableFuture<ScanReport> future = new CompletableFuture<>();
         ScanReport report = new ScanReport();
-        scheduler.scheduleTask(new SimpleRegionTaskDelegator(world, regionX, regionZ,
+        scheduler.scheduleTask(new SimpleRegionTaskDelegator(info,
                 (chunk) -> checkChunk(chunk, report, !doLeashed, !doPets, targetType), () -> future.complete(report),
-                updateTicks, updaterConsumer, ignoreUngenerated));
+                updateTicks, updaterConsumer));
         return future;
     }
 

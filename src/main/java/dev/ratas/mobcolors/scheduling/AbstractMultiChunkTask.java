@@ -1,87 +1,65 @@
 package dev.ratas.mobcolors.scheduling;
 
 import org.bukkit.Chunk;
-import org.bukkit.World;
+import dev.ratas.mobcolors.region.RegionInfo;
 
 public abstract class AbstractMultiChunkTask implements LongTask {
-    private final World world;
-    private final int minChunkX;
-    private final int minChunkZ;
-    private final int maxChunkX;
-    private final int maxChunkZ;
-    private final long totalChunks;
+    private final RegionInfo regionInfo;
     private long chunksDone = 0;
     private int curX;
     private int curZ;
-    private final boolean ignoreUngenerated;
     private long ticks = 0;
 
-    public AbstractMultiChunkTask(World world, int minChunkX, int minChunkZ, int maxChunkX, int maxChunkZ,
-            boolean ignoreUngenerated) {
-        this.world = world;
-        this.minChunkX = minChunkX;
-        this.minChunkZ = minChunkZ;
-        this.maxChunkX = maxChunkX;
-        this.maxChunkZ = maxChunkZ;
-        this.curX = minChunkX;
-        this.curZ = minChunkZ;
-        this.totalChunks = (maxChunkX + 1 - minChunkX) * (maxChunkZ + 1 - minChunkZ);
-        this.ignoreUngenerated = ignoreUngenerated;
+    public AbstractMultiChunkTask(RegionInfo regionInfo) {
+        this.regionInfo = regionInfo;
+        // this.world = world;
+        // this.minChunkX = minChunkX;
+        // this.minChunkZ = minChunkZ;
+        // this.maxChunkX = maxChunkX;
+        // this.maxChunkZ = maxChunkZ;
+        this.curX = regionInfo.getStartChunkX();
+        this.curZ = regionInfo.getStartChunkZ();
+        // this.totalChunks = (maxChunkX + 1 - minChunkX) * (maxChunkZ + 1 - minChunkZ);
+        // this.ignoreUngenerated = ignoreUngenerated;
     }
 
-    public int getMinChunkX() {
-        return minChunkX;
-    }
+    // public int getMinChunkX() {
+    // return minChunkX;
+    // }
 
-    public int getMaxChunkX() {
-        return maxChunkX;
-    }
+    // public int getMaxChunkX() {
+    // return maxChunkX;
+    // }
 
-    public int getMinChunkZ() {
-        return minChunkZ;
-    }
+    // public int getMinChunkZ() {
+    // return minChunkZ;
+    // }
 
-    public int getMaxChunkZ() {
-        return maxChunkZ;
-    }
+    // public int getMaxChunkZ() {
+    // return maxChunkZ;
+    // }
 
     public Chunk getCurrentChunk() {
-        return world.getChunkAt(curX, curZ);
+        return regionInfo.getWorld().getChunkAt(curX, curZ);
     }
 
     public boolean isCurrentChunkGenerated() {
-        return world.isChunkGenerated(curX, curZ);
+        return regionInfo.getWorld().isChunkGenerated(curX, curZ);
     }
 
     private void advance() {
         chunksDone++;
-        if (ignoreUngenerated) {
-            advanceOnce();
-            while (!isCurrentChunkGenerated() && !isDone()) {
-                advanceOnce();
-            }
-        } else {
-            advanceOnce();
-        }
+        advanceOnce(); // ungenerated ignoring will be handled in region info
     }
 
     private void advanceOnce() {
-        if (curX >= maxChunkX) {
-            curX = minChunkX;
-            curZ++;
-        } else {
-            curX++;
-        }
+        curX = regionInfo.getChunkXFor(chunksDone);
+        curZ = regionInfo.getChunkZFor(chunksDone);
     }
 
     @Override
     public void performAtomicPart() {
-        if (ignoreUngenerated && !isCurrentChunkGenerated()) {
-            advance();
-        }
-        if (ignoreUngenerated && !isCurrentChunkGenerated()) {
-            return;
-        }
+        // ungenerated ignoring will be handled in region info
         Chunk chunk = getCurrentChunk();
         processChunk(chunk);
         advance();
@@ -89,7 +67,7 @@ public abstract class AbstractMultiChunkTask implements LongTask {
 
     @Override
     public long getNumberOfParts() {
-        return totalChunks;
+        return regionInfo.getNumberOfTotalChunks();
     }
 
     @Override
@@ -99,7 +77,7 @@ public abstract class AbstractMultiChunkTask implements LongTask {
 
     @Override
     public boolean isDone() {
-        return curZ > maxChunkZ;
+        return chunksDone >= regionInfo.getNumberOfTotalChunks();
     }
 
     @Override
