@@ -19,7 +19,8 @@ import dev.ratas.mobcolors.region.RegionMapper;
 
 public class ColorSubCommand extends AbstractRegionSubCommand {
     private static final String NAME = "color";
-    private static final String USAGE = "/mobcolors color region [ world-name x z ] [ --all ] [ --leashed ] [ --pets ]";
+    private static final String USAGE_REGION = "/mobcolors color region [ world-name x z ] [ --all ] [ --leashed ] [ --pets ]";
+    private static final String USAGE_DISTANCE = "/mobcolors color distance <d> [ --all | --leashed | --pets ] [ --mob <mob-type> ]";
     private static final String PERMS = "mobcolors.region";
     private static final List<String> FIRST_OPTIONS = Arrays.asList("region");
     private static final List<String> OPTIONS = Arrays.asList("--all", "--leashed", "--pets", "--scan");
@@ -28,10 +29,22 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
     private final Messages messages;
 
     public ColorSubCommand(RegionMapper mapper, Settings settings, Messages messages) {
-        super(messages, NAME, USAGE, PERMS, false);
+        super(messages, NAME, USAGE_REGION + "\n" + USAGE_DISTANCE, PERMS, false);
         this.mapper = mapper;
         this.settings = settings;
         this.messages = messages;
+    }
+
+    @Override
+    public String getUsage(CommandSender sender, String[] args) {
+        if (args.length == 0) {
+            return super.getUsage(sender, args);
+        } else if (args[0].equalsIgnoreCase("region")) {
+            return USAGE_REGION;
+        } else if (args[0].equalsIgnoreCase("distance")) {
+            return USAGE_DISTANCE;
+        }
+        return super.getUsage(sender, args);
     }
 
     @Override
