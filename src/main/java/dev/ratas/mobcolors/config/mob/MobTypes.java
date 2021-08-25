@@ -3,6 +3,7 @@ package dev.ratas.mobcolors.config.mob;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.function.Function;
 
 import org.bukkit.DyeColor;
 import org.bukkit.entity.Axolotl;
@@ -66,6 +67,58 @@ public final class MobTypes {
             return TropicalFish.class;
         } else {
             return null;
+        }
+    }
+
+    public static Function<Entity, ?> getFunctionFor(Entity ent) {
+        if (ent instanceof Colorable) {
+            return e -> ((Colorable) e).getColor();
+        } else if (ent instanceof Axolotl) {
+            return e -> ((Axolotl) e).getVariant();
+        } else if (ent instanceof Cat) {
+            return e -> ((Cat) e).getCatType();
+        } else if (ent instanceof Fox) {
+            return e -> ((Fox) e).getFoxType();
+        } else if (ent instanceof Llama) {
+            return e -> ((Llama) e).getColor();
+        } else if (ent instanceof MushroomCow) {
+            return e -> ((MushroomCow) e).getVariant();
+        } else if (ent instanceof Parrot) {
+            return e -> ((Parrot) e).getVariant();
+        } else if (ent instanceof Rabbit) {
+            return e -> ((Rabbit) e).getRabbitType();
+        } else if (ent instanceof Horse) {
+            return e -> HorseVariant.getVariant((Horse) e);
+        } else if (ent instanceof TropicalFish) {
+            return e -> TropicalFishVariant.getVariant((TropicalFish) e);
+        } else {
+            throw new IllegalArgumentException("Not a type of interest: " + ent.getType());
+        }
+    }
+
+    public static Function<Entity, ?> getFunctionForType(EntityType type) {
+        if (type == EntityType.SHEEP || type == EntityType.SHULKER) {
+            return e -> ((Colorable) e).getColor();
+        } else if (type == EntityType.AXOLOTL) {
+            return e -> ((Axolotl) e).getVariant();
+        } else if (type == EntityType.CAT) {
+            return e -> ((Cat) e).getCatType();
+        } else if (type == EntityType.FOX) {
+            return e -> ((Fox) e).getFoxType();
+        } else if (type == EntityType.LLAMA) {
+            return e -> ((Llama) e).getColor();
+        } else if (type == EntityType.MUSHROOM_COW) {
+            return e -> ((MushroomCow) e).getVariant();
+        } else if (type == EntityType.PARROT) {
+            return e -> ((Parrot) e).getVariant();
+        } else if (type == EntityType.RABBIT) {
+            return e -> ((Rabbit) e).getRabbitType();
+        } else if (type == EntityType.HORSE) {
+            return e -> HorseVariant.getVariant((Horse) e);
+        } else if (type == EntityType.TROPICAL_FISH) {
+            return e -> TropicalFishVariant.getVariant((TropicalFish) e);
+        } else {
+            throw new IllegalArgumentException("Not a type of interest: " + type);
         }
     }
 

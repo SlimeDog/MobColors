@@ -103,11 +103,10 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
         mapper.dyeEntitiesInRegion(info, doLeashed, doPets, updateTicks,
                 (done, total) -> sender.sendMessage(messages.getUpdateOnColorMessage(done, total)))
                 .whenComplete((report, e) -> {
-                    int sheepCounted = report.getColors().values().stream().mapToInt((i) -> i).sum();
-                    sender.sendMessage(messages.getDoneColoringMessage(sheepCounted, report.getChunksCounted()));
+                    int mobsCounted = countAllMobs(report);
+                    sender.sendMessage(messages.getDoneColoringMessage(mobsCounted, report.getChunksCounted()));
                     if (showScan) {
-                        report.getColors().entrySet().forEach((entry) -> sender
-                                .sendMessage(messages.getDoneScanningItemMessage(entry.getKey(), entry.getValue())));
+                        showReport(sender, report);
                     }
                 });
         return true;

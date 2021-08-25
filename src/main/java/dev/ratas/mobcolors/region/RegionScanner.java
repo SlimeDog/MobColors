@@ -7,8 +7,8 @@ import org.bukkit.Chunk;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Sheep;
 
+import dev.ratas.mobcolors.config.mob.MobTypes;
 import dev.ratas.mobcolors.scheduling.SimpleRegionTaskDelegator;
 import dev.ratas.mobcolors.scheduling.TaskScheduler;
 import dev.ratas.mobcolors.utils.PetUtils;
@@ -20,21 +20,30 @@ public class RegionScanner {
         this.scheduler = scheduler;
     }
 
-    public CompletableFuture<ScanReport> scanRegion(RegionInfo info, boolean doLeashed, boolean doPets,
+    public CompletableFuture<ScanReport<?>> scanRegion(RegionInfo info, boolean doLeashed, boolean doPets,
             long updateTicks, BiConsumer<Long, Long> updaterConsumer, EntityType targetType) {
-        CompletableFuture<ScanReport> future = new CompletableFuture<>();
-        ScanReport report = new ScanReport();
+        CompletableFuture<ScanReport<?>> future = new CompletableFuture<>();
+        ScanReport<?> report;
+        if (targetType == null) {
+            report = new MultiReport();
+        } else {
+            report = new ScanReport<>(targetType, MobTypes.getFunctionForType(targetType));
+        }
         scheduler.scheduleTask(new SimpleRegionTaskDelegator(info,
                 (chunk) -> checkChunk(chunk, report, !doLeashed, !doPets, targetType), () -> future.complete(report),
                 updateTicks, updaterConsumer));
         return future;
     }
 
-    private void checkChunk(Chunk chunk, ScanReport report, boolean skipLeashed, boolean skipPets,
+    private void checkChunk(Chunk chunk, ScanReport<?> report, boolean skipLeashed, boolean skipPets,
             EntityType targetType) {
         report.countAChunk();
         for (Entity entity : chunk.getEntities()) {
             if (targetType == null || entity.getType().equals(targetType)) {
+                Class<?> clazz = MobTypes.getInterestingClass(entity);
+                if (clazz == null) {
+                    continue; // ignore - not of correct type
+                }
                 if (entity instanceof LivingEntity) {
                     if (skipLeashed && ((LivingEntity) entity).isLeashed()) {
                         continue; // skip
@@ -43,7 +52,7 @@ public class RegionScanner {
                 if (skipPets && PetUtils.isPet(entity)) {
                     continue;
                 }
-                report.count((Sheep) entity);
+                report.count(entity);
             }
         }
     }

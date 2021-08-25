@@ -9,8 +9,10 @@ import org.bukkit.entity.Player;
 import dev.ratas.mobcolors.commands.SimpleSubCommand;
 import dev.ratas.mobcolors.config.Messages;
 import dev.ratas.mobcolors.region.DistanceRegionInfo;
+import dev.ratas.mobcolors.region.MultiReport;
 import dev.ratas.mobcolors.region.RectangularRegionInfo;
 import dev.ratas.mobcolors.region.RegionInfo;
+import dev.ratas.mobcolors.region.ScanReport;
 
 public abstract class AbstractRegionSubCommand extends SimpleSubCommand {
     private final Messages messages;
@@ -73,6 +75,31 @@ public abstract class AbstractRegionSubCommand extends SimpleSubCommand {
             throw e;
         }
         return new DistanceRegionInfo(player.getLocation(), dist, ignoreUngenerated);
+    }
+
+    protected int countAllMobs(ScanReport<?> report) {
+        if (report instanceof MultiReport) {
+            int count = 0;
+            for (ScanReport<?> part : ((MultiReport) report).getAllReports().values()) {
+                count += countAllMobs(part);
+            }
+            return count;
+        }
+        return report.getColors().values().stream().mapToInt((i) -> i).sum();
+    }
+
+    protected void showReport(CommandSender sender, ScanReport<?> report) {
+        if (report instanceof MultiReport) {
+            for (ScanReport<?> part : ((MultiReport) report).getAllReports().values()) {
+                showReport(sender, part);
+            }
+            return;
+        }
+        long mobsCounted = countAllMobs(report);
+        long chunks = report.getChunksCounted();
+        sender.sendMessage(messages.getDoneScanningHeaderMessage(mobsCounted, chunks, report.getType()));
+        report.getColors().entrySet().forEach(
+                (entry) -> sender.sendMessage(messages.getDoneScanningItemMessage(entry.getKey(), entry.getValue())));
     }
 
 }

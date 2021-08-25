@@ -11,6 +11,10 @@ public final class HorseVariant extends Pair<Horse.Color, Horse.Style> {
         super(color, style);
     }
 
+    public String getName() {
+        return getOne().name() + "/" + getTwo().name();
+    }
+
     public static HorseVariant valueOf(String name) {
         String[] keys = name.split(DELIMITER);
         int nr = keys.length;
@@ -19,6 +23,10 @@ public final class HorseVariant extends Pair<Horse.Color, Horse.Style> {
                     "Wrong number of different types in key '" + name + "'. Expected " + 2 + " but got " + nr);
         }
         return new HorseVariant(Horse.Color.valueOf(keys[0]), Horse.Style.valueOf(keys[1]));
+    }
+
+    public static HorseVariant getVariant(Horse horse) {
+        return new HorseVariant(horse.getColor(), horse.getStyle());
     }
 
 }

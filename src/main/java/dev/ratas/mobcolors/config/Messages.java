@@ -1,9 +1,9 @@
 package dev.ratas.mobcolors.config;
 
 import org.bukkit.ChatColor;
-import org.bukkit.DyeColor;
 import org.bukkit.World;
 import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.entity.EntityType;
 
 import dev.ratas.mobcolors.config.abstraction.CustomConfigHandler;
 import dev.ratas.mobcolors.config.abstraction.ResourceProvider;
@@ -68,14 +68,25 @@ public class Messages extends CustomConfigHandler {
                 .replace("{sheep}", String.valueOf(sheep)).replace("{chunks}", String.valueOf(chunks));
     }
 
-    public String getDoneScanningHeaderMessage(long sheep, long chunks) {
-        return getMessage("done-scanning-header", "The scanning was done. Scanned {sheep} sheep in {chunks} chunks")
-                .replace("{sheep}", String.valueOf(sheep)).replace("{chunks}", String.valueOf(chunks));
+    public String getDoneScanningHeaderMessage(long sheep, long chunks, EntityType type) {
+        return getMessage("done-scanning-header", "The scanning was done. Scanned {sheep} {type} in {chunks} chunks")
+                .replace("{sheep}", String.valueOf(sheep)).replace("{chunks}", String.valueOf(chunks))
+                .replace("{type}", type == null ? "ALL" : type.name().toLowerCase());
     }
 
-    public String getDoneScanningItemMessage(DyeColor color, int amount) {
-        return getMessage("done-scanning-item", "{color}: {amount}").replace("{color}", color.name())
-                .replace("{amount}", String.valueOf(amount));
+    public String getDoneScanningItemMessage(Object color, int amount) {
+        String msg = getMessage("done-scanning-item", "{color}: {amount}").replace("{amount}", String.valueOf(amount));
+        if (color instanceof Enum) {
+            return msg.replace("{color}", ((Enum<?>) color).name());
+        } else {
+            if (color instanceof HorseVariant) {
+                return msg.replace("{color}", ((HorseVariant) color).getName());
+            } else if (color instanceof TropicalFishVariant) {
+                return msg.replace("{color}", ((TropicalFishVariant) color).getName());
+            } else {
+                throw new IllegalArgumentException("Unknown color type: " + color);
+            }
+        }
     }
 
     public String updateCurrentVersion() {

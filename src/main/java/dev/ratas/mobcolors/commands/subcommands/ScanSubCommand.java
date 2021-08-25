@@ -121,10 +121,9 @@ public class ScanSubCommand extends AbstractRegionSubCommand {
         scanner.scanRegion(info, doLeashed, doPets, updateTicks,
                 (done, total) -> sender.sendMessage(messages.getUpdateOnScanMessage(done, total)), targetType)
                 .whenComplete((report, e) -> {
-                    int sheepCounted = report.getColors().values().stream().mapToInt((i) -> i).sum();
-                    sender.sendMessage(messages.getDoneScanningHeaderMessage(sheepCounted, report.getChunksCounted()));
-                    report.getColors().entrySet().forEach((entry) -> sender
-                            .sendMessage(messages.getDoneScanningItemMessage(entry.getKey(), entry.getValue())));
+                    int mobsCounted = countAllMobs(report);
+                    sender.sendMessage(messages.getDoneScanningHeaderMessage(mobsCounted, report.getChunksCounted(), targetType));
+                    showReport(sender, report);
                 });
         return true;
     }

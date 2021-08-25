@@ -12,6 +12,10 @@ public class TropicalFishVariant extends Triple<TropicalFish.Pattern, DyeColor, 
         super(pattern, color1, color2);
     }
 
+    public String getName() {
+        return getOne().name() + "/" + getTwo().name() + "/" + getThree().name();
+    }
+
     public static TropicalFishVariant valueOf(String name) {
         String[] keys = name.split(DELIMITER);
         int nr = keys.length;
@@ -21,6 +25,10 @@ public class TropicalFishVariant extends Triple<TropicalFish.Pattern, DyeColor, 
         }
         return new TropicalFishVariant(TropicalFish.Pattern.valueOf(keys[0]), DyeColor.valueOf(keys[1]),
                 DyeColor.valueOf(keys[2]));
+    }
+
+    public static TropicalFishVariant getVariant(TropicalFish fish) {
+        return new TropicalFishVariant(fish.getPattern(), fish.getBodyColor(), fish.getPatternColor());
     }
 
 }
