@@ -48,7 +48,6 @@ public abstract class AbstractMultiChunkTask implements LongTask {
     }
 
     private void advance() {
-        chunksDone++;
         advanceOnce(); // ungenerated ignoring will be handled in region info
     }
 
@@ -62,7 +61,10 @@ public abstract class AbstractMultiChunkTask implements LongTask {
         // ungenerated ignoring will be handled in region info
         Chunk chunk = getCurrentChunk();
         processChunk(chunk);
-        advance();
+        chunksDone++;
+        if (!isDone()) {
+            advance();
+        }
     }
 
     @Override
