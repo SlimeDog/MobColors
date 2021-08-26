@@ -15,6 +15,7 @@ import org.bukkit.util.StringUtil;
 
 import dev.ratas.mobcolors.config.Messages;
 import dev.ratas.mobcolors.config.Settings;
+import dev.ratas.mobcolors.config.mob.MobTypes;
 import dev.ratas.mobcolors.region.DistanceRegionInfo;
 import dev.ratas.mobcolors.region.RegionInfo;
 import dev.ratas.mobcolors.region.RegionScanner;
@@ -26,8 +27,8 @@ public class ScanSubCommand extends AbstractRegionSubCommand {
     private static final String PERMS = "mobcolors.scan";
     private static final List<String> FIRST_OPTIONS = Arrays.asList("region", "distance");
     private static final List<String> OPTIONS = Arrays.asList("--all", "--leashed", "--pets", "--mob");
-    private static final List<String> ENTITY_TYPE_NAMES = Arrays.stream(EntityType.values())
-            .map((et) -> et.name().toLowerCase()).collect(Collectors.toList());
+    private static final List<String> ENTITY_TYPE_NAMES = MobTypes.ENTITY_COLOR_ENUMS.keySet().stream()
+            .map(type -> type.name().toLowerCase()).collect(Collectors.toList());
     private final RegionScanner scanner;
     private final Messages messages;
     private final Settings settings;

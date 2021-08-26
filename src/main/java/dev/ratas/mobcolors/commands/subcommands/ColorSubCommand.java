@@ -15,6 +15,7 @@ import org.bukkit.util.StringUtil;
 
 import dev.ratas.mobcolors.config.Messages;
 import dev.ratas.mobcolors.config.Settings;
+import dev.ratas.mobcolors.config.mob.MobTypes;
 import dev.ratas.mobcolors.region.DistanceRegionInfo;
 import dev.ratas.mobcolors.region.RegionInfo;
 import dev.ratas.mobcolors.region.RegionMapper;
@@ -26,6 +27,8 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
     private static final String PERMS = "mobcolors.region";
     private static final List<String> FIRST_OPTIONS = Arrays.asList("region");
     private static final List<String> OPTIONS = Arrays.asList("--all", "--leashed", "--pets", "--scan");
+    private static final List<String> ENTITY_TYPE_NAMES = MobTypes.ENTITY_COLOR_ENUMS.keySet().stream()
+            .map(type -> type.name().toLowerCase()).collect(Collectors.toList());
     private final RegionMapper mapper;
     private final Settings settings;
     private final Messages messages;
@@ -59,11 +62,16 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
             if (args[0].equalsIgnoreCase("region")) {
                 return StringUtil.copyPartialMatches(args[1],
                         Bukkit.getWorlds().stream().map(World::getName).collect(Collectors.toList()), list);
+            } else if (args[0].equalsIgnoreCase("distance")) {
+                return StringUtil.copyPartialMatches(args[1], OPTIONS, list);
             } else {
                 return list; // no tab-completion for distance
             }
         }
         if (args.length > 4 || (args[0].equalsIgnoreCase("distance") && args.length > 2)) {
+            if (args[args.length - 2].equalsIgnoreCase("--mob")) { // after --mob, need entity type
+                return StringUtil.copyPartialMatches(args[args.length - 1], ENTITY_TYPE_NAMES, list);
+            }
             List<String> curOptions = new ArrayList<>(OPTIONS);
             for (String prevOption : getOptions(args)) {
                 curOptions.remove(prevOption);
