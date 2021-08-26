@@ -127,10 +127,13 @@ public final class MobTypes {
             name = fixCatTypeNames(name);
         } else if (Fox.Type.class.isAssignableFrom(clazz)) {
             name = fixFoxTypeNames(name);
-        } else if (Horse.Color.class.isAssignableFrom(clazz)) {
-            name = fixHorseColorNames(name);
-        } else if (Horse.Style.class.isAssignableFrom(clazz)) {
-            name = fixHorseStyleNames(name);
+        } else if (HorseVariant.class.isAssignableFrom(clazz)) {
+            String parts[] = name.split(HorseVariant.DELIMITER);
+            parts[0] = fixHorseColorNames(parts[0]);
+            if (parts.length > 1) {
+                parts[1] = fixHorseStyleNames(parts[1]);
+            }
+            name = String.join(HorseVariant.DELIMITER, parts);
         } else if (Llama.Color.class.isAssignableFrom(clazz)) {
             name = fixLlamaColorNames(name);
         } else if (Rabbit.Type.class.isAssignableFrom(clazz)) {
@@ -180,11 +183,11 @@ public final class MobTypes {
         }
         return name;
     }
-    
+
     private static String fixRabbitTypeNames(String name) {
-        switch(name.toLowerCase()) {
+        switch (name.toLowerCase()) {
             case "killer":
-            return "the_killer_bunny";
+                return "the_killer_bunny";
         }
         return name;
     }

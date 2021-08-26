@@ -5,7 +5,7 @@ import org.bukkit.entity.Horse;
 import dev.ratas.mobcolors.utils.Pair;
 
 public final class HorseVariant extends Pair<Horse.Color, Horse.Style> {
-    private static final String DELIMITER = "/";
+    public static final String DELIMITER = "/";
 
     private HorseVariant(Horse.Color color, Horse.Style style) {
         super(color, style);
