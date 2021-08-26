@@ -144,21 +144,4 @@ public class ScanSubCommand extends AbstractRegionSubCommand {
         return true;
     }
 
-    private EntityType getTargetType(String[] args) {
-        boolean optionFound = false;
-        for (String arg : args) {
-            if (optionFound) {
-                try {
-                    return EntityType.valueOf(arg.toUpperCase());
-                } catch (IllegalArgumentException e) {
-                    return null;
-                }
-            }
-            if (arg.equalsIgnoreCase("--mob")) {
-                optionFound = true;
-            }
-        }
-        return null; // not enough arguments
-    }
-
 }

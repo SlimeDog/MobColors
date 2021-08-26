@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 import dev.ratas.mobcolors.commands.SimpleSubCommand;
@@ -100,6 +101,23 @@ public abstract class AbstractRegionSubCommand extends SimpleSubCommand {
         sender.sendMessage(messages.getDoneScanningHeaderMessage(mobsCounted, chunks, report.getType()));
         report.getColors().entrySet().forEach(
                 (entry) -> sender.sendMessage(messages.getDoneScanningItemMessage(entry.getKey(), entry.getValue())));
+    }
+
+    protected EntityType getTargetType(String[] args) {
+        boolean optionFound = false;
+        for (String arg : args) {
+            if (optionFound) {
+                try {
+                    return EntityType.valueOf(arg.toUpperCase());
+                } catch (IllegalArgumentException e) {
+                    return null;
+                }
+            }
+            if (arg.equalsIgnoreCase("--mob")) {
+                optionFound = true;
+            }
+        }
+        return null; // not enough arguments
     }
 
 }
