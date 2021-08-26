@@ -3,6 +3,7 @@ package dev.ratas.mobcolors.config.mob;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Function;
 
 import org.bukkit.DyeColor;
@@ -138,6 +139,8 @@ public final class MobTypes {
             name = fixLlamaColorNames(name);
         } else if (Rabbit.Type.class.isAssignableFrom(clazz)) {
             name = fixRabbitTypeNames(name);
+        } else if (TropicalFishVariant.class.isAssignableFrom(clazz)) {
+            name = fixTropicalFishNames(name);
         }
         return name.toUpperCase().replace("-", "_").replace(" ", "_");
 
@@ -188,6 +191,23 @@ public final class MobTypes {
         switch (name.toLowerCase()) {
             case "killer":
                 return "the_killer_bunny";
+        }
+        return name;
+    }
+
+    private static String fixTropicalFishNames(String name) {
+        if (name.equalsIgnoreCase("random")) {
+            ThreadLocalRandom random = ThreadLocalRandom.current();
+            TropicalFish.Pattern[] patterns = TropicalFish.Pattern.values();
+            int nr = random.nextInt(patterns.length);
+            TropicalFish.Pattern pattern = patterns[nr];
+            DyeColor[] colors = DyeColor.values();
+            nr = random.nextInt(colors.length);
+            DyeColor color1 = colors[nr];
+            nr = random.nextInt(colors.length);
+            DyeColor color2 = colors[nr];
+            return pattern.name() + TropicalFishVariant.DELIMITER + color1.name() + TropicalFishVariant.DELIMITER
+                    + color2.name();
         }
         return name;
     }

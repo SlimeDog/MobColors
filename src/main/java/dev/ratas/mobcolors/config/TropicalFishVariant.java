@@ -6,7 +6,7 @@ import org.bukkit.entity.TropicalFish;
 import dev.ratas.mobcolors.utils.Triple;
 
 public class TropicalFishVariant extends Triple<TropicalFish.Pattern, DyeColor, DyeColor> {
-    private static final String DELIMITER = "/";
+    public static final String DELIMITER = "/";
 
     private TropicalFishVariant(TropicalFish.Pattern pattern, DyeColor color1, DyeColor color2) {
         super(pattern, color1, color2);
