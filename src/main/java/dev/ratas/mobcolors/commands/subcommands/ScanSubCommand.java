@@ -82,16 +82,31 @@ public class ScanSubCommand extends AbstractRegionSubCommand {
         return list;
     }
 
-    @Override
-    public boolean executeCommand(CommandSender sender, String[] args) {
-        if ((args.length < 4 && !(sender instanceof Player)) || args.length < 1
-                || (!args[0].equalsIgnoreCase("region") && !args[0].equalsIgnoreCase("distance"))) {
+    private boolean hasValidArguments(CommandSender sender, String[] args) {
+        if (args.length < 1) {
             return false;
         }
-        boolean isRegion = args[0].equalsIgnoreCase("region"); // otherwise distance
-        if (args.length < 5 && !isRegion) {
-            return false; // no distance specified
+        if (args[0].equalsIgnoreCase("region")) {
+            if (args.length < 4 && !(sender instanceof Player)) {
+                return false;
+            }
+            return true;
+        } else if (args[0].equalsIgnoreCase("distance")) {
+            if (args.length < 2) {
+                return false;
+            }
+            return true;
+        } else {
+            return false;
         }
+    }
+
+    @Override
+    public boolean executeCommand(CommandSender sender, String[] args) {
+        if (!hasValidArguments(sender, args)) {
+            return false;
+        }
+        boolean isRegion = args[0].equalsIgnoreCase("region");
         Set<String> options = getOptions(args);
         boolean doLeashed = options.contains("--all") || options.contains("--leashed");
         boolean doPets = options.contains("--all") || options.contains("--pets");
@@ -122,7 +137,8 @@ public class ScanSubCommand extends AbstractRegionSubCommand {
                 (done, total) -> sender.sendMessage(messages.getUpdateOnScanMessage(done, total)), targetType)
                 .whenComplete((report, e) -> {
                     int mobsCounted = countAllMobs(report);
-                    sender.sendMessage(messages.getDoneScanningHeaderMessage(mobsCounted, report.getChunksCounted(), targetType));
+                    sender.sendMessage(
+                            messages.getDoneScanningHeaderMessage(mobsCounted, report.getChunksCounted(), targetType));
                     showReport(sender, report);
                 });
         return true;
