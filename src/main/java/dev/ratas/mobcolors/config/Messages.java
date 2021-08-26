@@ -33,25 +33,42 @@ public class Messages extends CustomConfigHandler {
         return getMessage("need-a-number", "A number is required, got: {val}").replace("{val}", val);
     }
 
-    public String getStartingToColorMessage(World world, int x, int z, long updateTicks) {
-        return getMessage("start-coloring",
-                "Starting to color sheep in {world} for region {x}, {z} (updates every {update-ticks} ticks)")
+    public String getStartingToColorRegionMessage(World world, int x, int z, long updateTicks, EntityType type) {
+        return getMessage("start-coloring-region",
+                "Starting to color {mob} in {world} for region {x}, {z} (updates every {update-ticks} ticks)")
                         .replace("{world}", world.getName()).replace("{x}", String.valueOf(x))
                         .replace("{z}", String.valueOf(z)).replace("{update-ticks}", String.valueOf(updateTicks))
-                        .replace("{update}", String.valueOf(updateTicks / 20L));
+                        .replace("{update}", String.valueOf(updateTicks / 20L))
+                        .replace("{mob}", type == null ? "ALL" : type.name().toLowerCase());
+    }
+
+    public String getStartingToColorRadiusMessage(World world, double distance, long updateTicks, EntityType type) {
+        return getMessage("start-coloring-radius",
+                "Starting to color {mob} for radius {r} (updates every {update-ticks} ticks)")
+                        .replace("{world}", world.getName()).replace("{r}", String.format("%2.f", distance))
+                        .replace("{update-ticks}", String.valueOf(updateTicks))
+                        .replace("{update}", String.valueOf(updateTicks / 20L))
+                        .replace("{mob}", type == null ? "ALL" : type.name().toLowerCase());
     }
 
     public String getStartingToScanMessage(World world, int x, int z, long updateTicks) {
         return getMessage("start-scanning",
-                "Starting to scan sheep in {world} for region {x}, {z} (updates every {update-ticks} ticks)")
+                "Starting to scan mobs in {world} for region {x}, {z} (updates every {update-ticks} ticks)")
                         .replace("{world}", world.getName()).replace("{x}", String.valueOf(x))
                         .replace("{z}", String.valueOf(z)).replace("{update-ticks}", String.valueOf(updateTicks))
                         .replace("{update}", String.valueOf(updateTicks / 20L));
     }
 
-    public String getUpdateOnColorMessage(long done, long total) {
+    public String getUpdateOnColorRegionMessage(long done, long total) {
         String percent = String.valueOf((done * 100) / total);
-        return getMessage("update-coloring", "{done}/{total} chunks colored ({percent}%)")
+        return getMessage("update-coloring-region", "{done}/{total} chunks colored ({percent}%)")
+                .replace("{done}", String.valueOf(done)).replace("{total}", String.valueOf(total))
+                .replace("{percent}", String.valueOf(percent));
+    }
+
+    public String getUpdateOnColorRadiusMessage(long done, long total) {
+        String percent = String.valueOf((done * 100) / total);
+        return getMessage("update-coloring-radius", "{done}/{total} chunks colored ({percent}%)")
                 .replace("{done}", String.valueOf(done)).replace("{total}", String.valueOf(total))
                 .replace("{percent}", String.valueOf(percent));
     }
@@ -63,14 +80,20 @@ public class Messages extends CustomConfigHandler {
                 .replace("{percent}", String.valueOf(percent));
     }
 
-    public String getDoneColoringMessage(long sheep, long chunks) {
-        return getMessage("done-coloring", "The coloring was done. Colored {sheep} sheep in {chunks} chunks")
-                .replace("{sheep}", String.valueOf(sheep)).replace("{chunks}", String.valueOf(chunks));
+    public String getDoneColoringRegionMessage(long count, long chunks) {
+        return getMessage("done-coloring-region", "Coloring completed. Colored {count} mobs in {chunks} loaded chunks")
+                .replace("{count}", String.valueOf(count)).replace("{chunks}", String.valueOf(chunks));
     }
 
-    public String getDoneScanningHeaderMessage(long sheep, long chunks, EntityType type) {
-        return getMessage("done-scanning-header", "The scanning was done. Scanned {sheep} {type} in {chunks} chunks")
-                .replace("{sheep}", String.valueOf(sheep)).replace("{chunks}", String.valueOf(chunks))
+    public String getDoneColoringRadiusMessage(long count, long chunks, double distance) {
+        return getMessage("done-coloring-radius", "Coloring completed. Colored {count} mobs in radius {r}")
+                .replace("{count}", String.valueOf(count)).replace("{chunks}", String.valueOf(chunks))
+                .replace("{r}", String.format("%2.f", distance));
+    }
+
+    public String getDoneScanningHeaderMessage(long count, long chunks, EntityType type) {
+        return getMessage("done-scanning-header", "The scanning was done. Scanned {count} {type} in {chunks} chunks")
+                .replace("{count}", String.valueOf(count)).replace("{chunks}", String.valueOf(chunks))
                 .replace("{type}", type == null ? "ALL" : type.name().toLowerCase());
     }
 
