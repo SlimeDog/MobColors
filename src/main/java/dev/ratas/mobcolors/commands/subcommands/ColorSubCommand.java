@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
@@ -88,6 +89,16 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
         boolean doPets = options.contains("--all") || options.contains("--pets");
         boolean ignoredUngenerated = !options.contains("--ungenerated");
         boolean showScan = options.contains("--scan");
+        boolean specifyMob = options.contains("--mob");
+        EntityType targetType;
+        if (specifyMob) {
+            targetType = getTargetType(args);
+            if (targetType == null) {
+                return false;
+            }
+        } else {
+            targetType = null; // all
+        }
         RegionInfo info;
         try {
             info = getRegionInfo(sender, args, isRegion, ignoredUngenerated);
@@ -98,13 +109,13 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
             return true;
         }
         long updateTicks = settings.ticksBetweenLongTaskUpdates();
-        sender.sendMessage(messages.getStartingToColorMessage(info.getWorld(), info.getStartChunkX() >> 5,
-                info.getStartChunkZ() >> 5, updateTicks));
+        sender.sendMessage(messages.getStartingToColorRegionMessage(info.getWorld(), info.getStartChunkX() >> 5,
+                info.getStartChunkZ() >> 5, updateTicks, targetType));
         mapper.dyeEntitiesInRegion(info, doLeashed, doPets, updateTicks,
-                (done, total) -> sender.sendMessage(messages.getUpdateOnColorMessage(done, total)))
+                (done, total) -> sender.sendMessage(messages.getUpdateOnColorRegionMessage(done, total)), targetType)
                 .whenComplete((report, e) -> {
                     int mobsCounted = countAllMobs(report);
-                    sender.sendMessage(messages.getDoneColoringMessage(mobsCounted, report.getChunksCounted()));
+                    sender.sendMessage(messages.getDoneColoringRegionMessage(mobsCounted, report.getChunksCounted()));
                     if (showScan) {
                         showReport(sender, report);
                     }

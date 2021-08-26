@@ -5,6 +5,7 @@ import java.util.function.BiConsumer;
 
 import org.bukkit.Chunk;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 
@@ -23,19 +24,22 @@ public class RegionMapper {
     }
 
     public CompletableFuture<ScanReport<?>> dyeEntitiesInRegion(RegionInfo info, boolean doLeashed, boolean doPets,
-            long updateTicks, BiConsumer<Long, Long> updaterConsumer) {
+            long updateTicks, BiConsumer<Long, Long> updaterConsumer, EntityType targetType) {
         CompletableFuture<ScanReport<?>> future = new CompletableFuture<>();
         ScanReport<?> report = new MultiReport();
         scheduler.scheduleTask(new SimpleRegionTaskDelegator(info,
-                (chunk) -> dyeSheepInChunk(info, chunk, report, !doLeashed, !doPets), () -> future.complete(report),
-                updateTicks, updaterConsumer));
+                (chunk) -> dyeSheepInChunk(info, chunk, report, !doLeashed, !doPets, targetType),
+                () -> future.complete(report), updateTicks, updaterConsumer));
         return future;
     }
 
     private void dyeSheepInChunk(RegionInfo info, Chunk chunk, ScanReport<?> report, boolean skipLeashed,
-            boolean skipPets) {
+            boolean skipPets, EntityType targetType) {
         report.countAChunk();
         for (Entity entity : chunk.getEntities()) {
+            if (targetType != null && !entity.getType().equals(targetType)) {
+                continue;
+            }
             Class<?> clazz = MobTypes.getInterestingClass(entity);
             if (clazz == null) {
                 continue; // ignore - not of correct type
