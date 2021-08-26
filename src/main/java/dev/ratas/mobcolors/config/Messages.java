@@ -51,12 +51,21 @@ public class Messages extends CustomConfigHandler {
                         .replace("{mob}", type == null ? "ALL" : type.name().toLowerCase());
     }
 
-    public String getStartingToScanMessage(World world, int x, int z, long updateTicks) {
-        return getMessage("start-scanning",
+    public String getStartingToScanRegionMessage(World world, int x, int z, long updateTicks) {
+        return getMessage("start-scanning-region",
                 "Starting to scan mobs in {world} for region {x}, {z} (updates every {update-ticks} ticks)")
                         .replace("{world}", world.getName()).replace("{x}", String.valueOf(x))
                         .replace("{z}", String.valueOf(z)).replace("{update-ticks}", String.valueOf(updateTicks))
                         .replace("{update}", String.valueOf(updateTicks / 20L));
+    }
+
+    public String getStartingToScanRadiusMessage(World world, double distance, long updateTicks, EntityType type) {
+        return getMessage("start-scanning-radius",
+                "Starting to scan {mob} for radius {r} (updates every {update-ticks} ticks)")
+                        .replace("{world}", world.getName()).replace("{r}", String.format("%2.f", distance))
+                        .replace("{update-ticks}", String.valueOf(updateTicks))
+                        .replace("{update}", String.valueOf(updateTicks / 20L))
+                        .replace("{mob}", type == null ? "ALL" : type.name().toLowerCase());
     }
 
     public String getUpdateOnColorRegionMessage(long done, long total) {
@@ -73,9 +82,16 @@ public class Messages extends CustomConfigHandler {
                 .replace("{percent}", String.valueOf(percent));
     }
 
-    public String getUpdateOnScanMessage(long done, long total) {
+    public String getUpdateOnScanRegionMessage(long done, long total) {
         String percent = String.valueOf((done * 100) / total);
-        return getMessage("update-scanning", "{done}/{total} chunks scanned ({percent}%)")
+        return getMessage("update-scanning-region", "{done}/{total} chunks scanned ({percent}%)")
+                .replace("{done}", String.valueOf(done)).replace("{total}", String.valueOf(total))
+                .replace("{percent}", String.valueOf(percent));
+    }
+
+    public String getUpdateOnScanRadiusMessage(long done, long total) {
+        String percent = String.valueOf((done * 100) / total);
+        return getMessage("update-scanning-radius", "{done}/{total} chunks scanned ({percent}%)")
                 .replace("{done}", String.valueOf(done)).replace("{total}", String.valueOf(total))
                 .replace("{percent}", String.valueOf(percent));
     }

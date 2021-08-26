@@ -15,6 +15,7 @@ import org.bukkit.util.StringUtil;
 
 import dev.ratas.mobcolors.config.Messages;
 import dev.ratas.mobcolors.config.Settings;
+import dev.ratas.mobcolors.region.DistanceRegionInfo;
 import dev.ratas.mobcolors.region.RegionInfo;
 import dev.ratas.mobcolors.region.RegionScanner;
 
@@ -131,11 +132,17 @@ public class ScanSubCommand extends AbstractRegionSubCommand {
             return true;
         }
         long updateTicks = settings.ticksBetweenLongTaskUpdates();
-        sender.sendMessage(messages.getStartingToScanMessage(info.getWorld(), info.getStartChunkX() >> 5,
-                info.getStartChunkZ() >> 5, updateTicks));
-        scanner.scanRegion(info, doLeashed, doPets, updateTicks,
-                (done, total) -> sender.sendMessage(messages.getUpdateOnScanMessage(done, total)), targetType)
-                .whenComplete((report, e) -> {
+        String msg = isRegion
+                ? messages.getStartingToScanRegionMessage(info.getWorld(), info.getStartChunkX() >> 5,
+                        info.getStartChunkZ() >> 5, updateTicks)
+                : messages.getStartingToScanRadiusMessage(info.getWorld(), ((DistanceRegionInfo) info).getMaxDistance(),
+                        updateTicks, targetType);
+        sender.sendMessage(msg);
+        scanner.scanRegion(
+                info, doLeashed, doPets, updateTicks, (done,
+                        total) -> sender.sendMessage(isRegion ? messages.getUpdateOnScanRegionMessage(done, total)
+                                : messages.getUpdateOnScanRadiusMessage(done, total)),
+                targetType).whenComplete((report, e) -> {
                     int mobsCounted = countAllMobs(report);
                     sender.sendMessage(
                             messages.getDoneScanningHeaderMessage(mobsCounted, report.getChunksCounted(), targetType));

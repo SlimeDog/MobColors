@@ -8,8 +8,10 @@ done-coloring-region: "Coloring completed. Colored {count} mobs in {chunks} load
 start-coloring-radius: "Starting to color {mob} for radius {r} (updates every {update-ticks} ticks)"
 update-coloring-radius: "{done}/{total} {mob} colored ({percent}%)"
 done-coloring-radius: "Coloring completed. Colored {count} mobs in radius {r}"
-start-scanning: "Starting to scan mobs in {world} for region {x}, {z} (updates every {update-ticks} ticks)"
-update-scanning: "{done}/{total} chunks scanned ({percent}%)"
+start-scanning-region: "Starting to scan mobs in {world} for region {x}, {z} (updates every {update-ticks} ticks)"
+update-scanning-region: "{done}/{total} chunks scanned ({percent}%)"
+start-scanning-radius: "Starting to scan {mob} for radius {r} (updates every {update-ticks} ticks)"
+update-scanning-radius: "{done}/{total} chunks scanned ({percent}%)"
 done-scanning-header: "Scanning completed. Scanned {count} mobs in {chunks} loaded chunks"
 done-scanning-item: "{color}: {amount}"
 
