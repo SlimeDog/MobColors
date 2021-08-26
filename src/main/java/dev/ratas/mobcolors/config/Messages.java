@@ -45,7 +45,7 @@ public class Messages extends CustomConfigHandler {
     public String getStartingToColorRadiusMessage(World world, double distance, long updateTicks, EntityType type) {
         return getMessage("start-coloring-radius",
                 "Starting to color {mob} for radius {r} (updates every {update-ticks} ticks)")
-                        .replace("{world}", world.getName()).replace("{r}", String.format("%2.f", distance))
+                        .replace("{world}", world.getName()).replace("{r}", String.format("%.2f", distance))
                         .replace("{update-ticks}", String.valueOf(updateTicks))
                         .replace("{update}", String.valueOf(updateTicks / 20L))
                         .replace("{mob}", type == null ? "ALL" : type.name().toLowerCase());
@@ -62,7 +62,7 @@ public class Messages extends CustomConfigHandler {
     public String getStartingToScanRadiusMessage(World world, double distance, long updateTicks, EntityType type) {
         return getMessage("start-scanning-radius",
                 "Starting to scan {mob} for radius {r} (updates every {update-ticks} ticks)")
-                        .replace("{world}", world.getName()).replace("{r}", String.format("%2.f", distance))
+                        .replace("{world}", world.getName()).replace("{r}", String.format("%.2f", distance))
                         .replace("{update-ticks}", String.valueOf(updateTicks))
                         .replace("{update}", String.valueOf(updateTicks / 20L))
                         .replace("{mob}", type == null ? "ALL" : type.name().toLowerCase());
@@ -104,7 +104,7 @@ public class Messages extends CustomConfigHandler {
     public String getDoneColoringRadiusMessage(long count, long chunks, double distance) {
         return getMessage("done-coloring-radius", "Coloring completed. Colored {count} mobs in radius {r}")
                 .replace("{count}", String.valueOf(count)).replace("{chunks}", String.valueOf(chunks))
-                .replace("{r}", String.format("%2.f", distance));
+                .replace("{r}", String.format("%.2f", distance));
     }
 
     public String getDoneScanningHeaderMessage(long count, long chunks, EntityType type) {
