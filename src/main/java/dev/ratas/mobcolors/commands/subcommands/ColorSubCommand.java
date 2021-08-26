@@ -15,6 +15,7 @@ import org.bukkit.util.StringUtil;
 
 import dev.ratas.mobcolors.config.Messages;
 import dev.ratas.mobcolors.config.Settings;
+import dev.ratas.mobcolors.region.DistanceRegionInfo;
 import dev.ratas.mobcolors.region.RegionInfo;
 import dev.ratas.mobcolors.region.RegionMapper;
 
@@ -109,11 +110,16 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
             return true;
         }
         long updateTicks = settings.ticksBetweenLongTaskUpdates();
-        sender.sendMessage(messages.getStartingToColorRegionMessage(info.getWorld(), info.getStartChunkX() >> 5,
-                info.getStartChunkZ() >> 5, updateTicks, targetType));
+        String msg = isRegion
+                ? messages.getStartingToColorRegionMessage(info.getWorld(), info.getStartChunkX() >> 5,
+                        info.getStartChunkZ() >> 5, updateTicks, targetType)
+                : messages.getStartingToColorRadiusMessage(info.getWorld(),
+                        ((DistanceRegionInfo) info).getMaxDistance(), updateTicks, targetType);
+        sender.sendMessage(msg);
         mapper.dyeEntitiesInRegion(info, doLeashed, doPets, updateTicks,
-                (done, total) -> sender.sendMessage(messages.getUpdateOnColorRegionMessage(done, total)), targetType)
-                .whenComplete((report, e) -> {
+                (done, total) -> sender.sendMessage(isRegion ? messages.getUpdateOnColorRegionMessage(done, total)
+                        : messages.getUpdateOnColorRadiusMessage(done, total)),
+                targetType).whenComplete((report, e) -> {
                     int mobsCounted = countAllMobs(report);
                     sender.sendMessage(messages.getDoneColoringRegionMessage(mobsCounted, report.getChunksCounted()));
                     if (showScan) {
