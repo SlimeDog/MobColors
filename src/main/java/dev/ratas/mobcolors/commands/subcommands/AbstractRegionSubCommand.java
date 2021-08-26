@@ -64,13 +64,13 @@ public abstract class AbstractRegionSubCommand extends SimpleSubCommand {
     }
 
     protected RegionInfo getDistanceRegionInfo(Player player, String[] args, boolean ignoreUngenerated) {
-        if (args.length < 5) {
-            throw new IllegalArgumentException("Too few argumens. Expected at least 5. Got " + args.length);
+        if (args.length < 2) {
+            throw new IllegalArgumentException("Too few argumens. Expected at least 2. Got " + args.length);
         }
-        String arg4 = args[4];
+        String arg = args[1];
         double dist;
         try {
-            dist = Double.parseDouble(arg4);
+            dist = Double.parseDouble(arg);
         } catch (IllegalArgumentException e) {
             throw e;
         }
