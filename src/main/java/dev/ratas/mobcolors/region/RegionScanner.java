@@ -30,12 +30,12 @@ public class RegionScanner {
             report = new ScanReport<>(targetType, MobTypes.getFunctionForType(targetType));
         }
         scheduler.scheduleTask(new SimpleRegionTaskDelegator(info,
-                (chunk) -> checkChunk(chunk, report, !doLeashed, !doPets, targetType), () -> future.complete(report),
-                updateTicks, updaterConsumer));
+                (chunk) -> checkChunk(info, chunk, report, !doLeashed, !doPets, targetType),
+                () -> future.complete(report), updateTicks, updaterConsumer));
         return future;
     }
 
-    private void checkChunk(Chunk chunk, ScanReport<?> report, boolean skipLeashed, boolean skipPets,
+    private void checkChunk(RegionInfo info, Chunk chunk, ScanReport<?> report, boolean skipLeashed, boolean skipPets,
             EntityType targetType) {
         report.countAChunk();
         for (Entity entity : chunk.getEntities()) {
@@ -50,6 +50,9 @@ public class RegionScanner {
                     }
                 }
                 if (skipPets && PetUtils.isPet(entity)) {
+                    continue;
+                }
+                if (!info.isInRange(entity)) {
                     continue;
                 }
                 report.count(entity);
