@@ -122,6 +122,73 @@ public final class MobTypes {
         }
     }
 
+    public static String fixTypeNames(String name, Class<?> clazz) {
+        if (Cat.Type.class.isAssignableFrom(clazz)) {
+            name = fixCatTypeNames(name);
+        } else if (Fox.Type.class.isAssignableFrom(clazz)) {
+            name = fixFoxTypeNames(name);
+        } else if (Horse.Color.class.isAssignableFrom(clazz)) {
+            name = fixHorseColorNames(name);
+        } else if (Horse.Style.class.isAssignableFrom(clazz)) {
+            name = fixHorseStyleNames(name);
+        } else if (Llama.Color.class.isAssignableFrom(clazz)) {
+            name = fixLlamaColorNames(name);
+        } else if (Rabbit.Type.class.isAssignableFrom(clazz)) {
+            name = fixRabbitTypeNames(name);
+        }
+        return name.toUpperCase().replace("-", "_").replace(" ", "_");
+
+    }
+
+    private static String fixCatTypeNames(String name) {
+        switch (name.toLowerCase()) {
+            case "britishshorthair":
+                return "british_shorthair";
+            case "tuxedo":
+                return "all_black";
+        }
+        return name;
+    }
+
+    private static String fixFoxTypeNames(String name) {
+        if (name.equalsIgnoreCase("white")) {
+            return "snow";
+        }
+        return name;
+    }
+
+    private static String fixHorseColorNames(String name) {
+        if (name.equalsIgnoreCase("darkbrown")) {
+            return "dark_brown";
+        }
+        return name;
+    }
+
+    private static String fixHorseStyleNames(String name) {
+        switch (name.toLowerCase()) {
+            case "whitedots":
+                return "white_dots";
+            case "blackdots":
+                return "black_dots";
+        }
+        return name;
+    }
+
+    private static String fixLlamaColorNames(String name) {
+        if (name.equalsIgnoreCase("cream")) {
+            return "creamy";
+        }
+        return name;
+    }
+    
+    private static String fixRabbitTypeNames(String name) {
+        switch(name.toLowerCase()) {
+            case "killer":
+            return "the_killer_bunny";
+        }
+        return name;
+    }
+
     public static final class MobColorEnumProvider {
         private final Class<?> clazz;
 
