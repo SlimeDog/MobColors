@@ -25,7 +25,7 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
     private static final String USAGE_REGION = "/mobcolors color region [ world-name x z ] [ --all ] [ --leashed ] [ --pets ]";
     private static final String USAGE_DISTANCE = "/mobcolors color distance <d> [ --all | --leashed | --pets ] [ --mob <mob-type> ]";
     private static final String PERMS = "mobcolors.region";
-    private static final List<String> FIRST_OPTIONS = Arrays.asList("region");
+    private static final List<String> FIRST_OPTIONS = Arrays.asList("region", "distance");
     private static final List<String> OPTIONS = Arrays.asList("--all", "--leashed", "--pets", "--scan");
     private static final List<String> ENTITY_TYPE_NAMES = MobTypes.ENTITY_COLOR_ENUMS.keySet().stream()
             .map(type -> type.name().toLowerCase()).collect(Collectors.toList());
