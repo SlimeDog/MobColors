@@ -83,7 +83,8 @@ public class DistanceRegionInfo extends AbstractRegionInfo {
             List<Integer> coordsZ = new ArrayList<>();
             for (int chunkX = centerChunkX - chunkDistance; chunkX <= centerChunkX + chunkDistance; chunkX++) {
                 for (int chunkZ = centerChunkZ - chunkDistance; chunkZ <= centerChunkZ + chunkDistance; chunkZ++) {
-                    if (isWithinRange(centerX, centerZ, chunkX, chunkZ, distance2)) {
+                    if (isWithinRange(centerX, centerZ, chunkX, chunkZ, distance2)
+                            || (chunkX == centerChunkX && chunkZ == centerChunkZ)) {
                         coordsX.add(chunkX);
                         coordsZ.add(chunkZ);
                     }
