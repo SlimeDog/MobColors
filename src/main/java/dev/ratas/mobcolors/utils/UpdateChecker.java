@@ -44,7 +44,6 @@ public class UpdateChecker {
 						latestVersion ? VersionResponse.LATEST : VersionResponse.FOUND_NEW,
 						latestVersion ? this.currentVersion : fetchedVersion));
 			} catch (IOException exception) {
-				exception.printStackTrace();
 				scheduler.schedule(() -> this.versionResponse.accept(VersionResponse.UNAVAILABLE, null));
 			}
 		});
