@@ -32,10 +32,13 @@ public class PluginPlatform {
     private final RegionMapper mapper;
     private final RegionScanner scanner;
     private final Logger logger;
+    private final Runnable pluginReloader;
 
     public PluginPlatform(Scheduler scheduler, ResourceProvider resourceProvider,
             SettingsConfigProvider settingsProvider, ListenerRegistrator lisenerRegistrator,
-            VersionProvider versionProvider, Logger logger) throws PlatformInitializationException {
+            VersionProvider versionProvider, Runnable pluginReloader, Logger logger)
+            throws PlatformInitializationException {
+        this.pluginReloader = pluginReloader;
         this.logger = logger;
         // initialize and register reloadables
         try {
@@ -115,6 +118,12 @@ public class PluginPlatform {
     }
 
     public boolean reload() {
+        try {
+            pluginReloader.run();
+        } catch (RuntimeException e) {
+            logger.severe("Problem reloading plugin:");
+            e.printStackTrace();
+        }
         boolean successful = reloadManager.reload(this);
         if (config.getConfig().isSet("debug")) {
             boolean debug = settings.isOnDebug();

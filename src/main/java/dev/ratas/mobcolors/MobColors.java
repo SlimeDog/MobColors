@@ -24,7 +24,7 @@ public class MobColors extends JavaPlugin {
 
         // platform
         PluginPlatform platform = new PluginPlatform(scheduler, resourceProvider, settingsProvider, listenerRegistrator,
-                versionProvider, getLogger());
+                versionProvider, () -> reloadConfig(), getLogger());
 
         // commands
         getCommand("mobcolors")
