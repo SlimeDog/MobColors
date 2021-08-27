@@ -118,12 +118,12 @@ public class Messages extends CustomConfigHandler {
     public String getDoneScanningItemMessage(Object color, int amount) {
         String msg = getMessage("done-scanning-item", "{color}: {amount}").replace("{amount}", String.valueOf(amount));
         if (color instanceof Enum) {
-            return msg.replace("{color}", ((Enum<?>) color).name());
+            return msg.replace("{color}", ((Enum<?>) color).name().toLowerCase());
         } else {
             if (color instanceof HorseVariant) {
-                return msg.replace("{color}", ((HorseVariant) color).getName());
+                return msg.replace("{color}", ((HorseVariant) color).getName().toLowerCase());
             } else if (color instanceof TropicalFishVariant) {
-                return msg.replace("{color}", ((TropicalFishVariant) color).getName());
+                return msg.replace("{color}", ((TropicalFishVariant) color).getName().toLowerCase());
             } else {
                 throw new IllegalArgumentException("Unknown color type: " + color);
             }
