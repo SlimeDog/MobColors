@@ -28,12 +28,12 @@ public class RegionMapper {
         CompletableFuture<ScanReport<?>> future = new CompletableFuture<>();
         ScanReport<?> report = new MultiReport();
         scheduler.scheduleTask(new SimpleRegionTaskDelegator(info,
-                (chunk) -> dyeSheepInChunk(info, chunk, report, !doLeashed, !doPets, targetType),
+                (chunk) -> dyeMobInChunk(info, chunk, report, !doLeashed, !doPets, targetType),
                 () -> future.complete(report), updateTicks, updaterConsumer));
         return future;
     }
 
-    private void dyeSheepInChunk(RegionInfo info, Chunk chunk, ScanReport<?> report, boolean skipLeashed,
+    private void dyeMobInChunk(RegionInfo info, Chunk chunk, ScanReport<?> report, boolean skipLeashed,
             boolean skipPets, EntityType targetType) {
         report.countAChunk();
         for (Entity entity : chunk.getEntities()) {
@@ -50,8 +50,9 @@ public class RegionMapper {
             if (!info.isInRange(entity)) {
                 continue;
             }
-            spawnListener.handleEntity((LivingEntity) entity, SpawnReason.CUSTOM);
-            report.count(entity);
+            if (spawnListener.handleEntity((LivingEntity) entity, SpawnReason.CUSTOM)) {
+                report.count(entity);
+            }
         }
     }
 

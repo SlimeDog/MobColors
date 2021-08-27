@@ -27,32 +27,33 @@ public class SpawnListener implements Listener {
         handleEntity(event.getEntity(), event.getSpawnReason());
     }
 
-    public void handleEntity(LivingEntity ent, SpawnReason spawnReason) {
+    public boolean handleEntity(LivingEntity ent, SpawnReason spawnReason) {
         Class<?> clazz = MobTypes.getInterestingClass(ent);
         if (clazz == null) {
-            return;
+            return false;
         }
-        handleEntity(ent, spawnReason, clazz);
+        return handleEntity(ent, spawnReason, clazz);
     }
 
-    private <T> void handleEntity(LivingEntity ent, SpawnReason spawnReason, Class<T> entityClass) {
+    private <T> boolean handleEntity(LivingEntity ent, SpawnReason spawnReason, Class<T> entityClass) {
         WorldSettings ws = settings.getWorldManager().getWorldSettings(ent.getWorld());
         if (ws == null) {
-            return;
+            return false;
         }
         @SuppressWarnings("unchecked")
         MobColorer<T, ?> colorer = (MobColorer<T, ?>) ws.getColorer(ent.getType());
         if (colorer == null) {
-            return;
+            return false;
         }
         @SuppressWarnings("unchecked")
         T t = (T) ent;
         ColorReason reason = ColorReason.fromSpawnReason(spawnReason);
         ColorDecision decision = colorer.shouldColor(t, reason);
         if (decision == ColorDecision.IGNORE) {
-            return;
+            return false;
         }
         colorer.color(t, decision == ColorDecision.RESCHEDULE);
+        return true;
     }
 
     @EventHandler
