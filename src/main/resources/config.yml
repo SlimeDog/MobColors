@@ -25,19 +25,6 @@ check-for-updates: true
 #
 enable-metrics: true
 
-# REMOVE THE OVERVIEW AFTER THE WIKI IS COMPLETE ===================================================
-# ========== OVERVIEW ==============================================================================
-# REMOVE HOW IT WORKS DESCRIPTIONS AFTER THEY ARE DOCUMENTED IN THE WIKI ===========================
-# How it works:
-# - Multiple color-schemes may be specified for each mob-type.
-# - Probabilities must be specified for each color-schemes; probabilities must sum to 1.0.
-# - If a default color-scheme is not specified for an mob-type, the MC vanilla scheme will be used.
-# - The default color-scheme for any mob-type may be modified to reflect your server design.
-# - Multiple worlds may be assigned to any color-scheme.
-# - Worlds not assigned to a color-scheme will use the default.
-# - Mobs in a specified distance from the player may be modified by commands. See the wiki for details.
-# - Mobs in a specified Minecraft region may be modified by commands. See the wiki for details.
-#
 # ========== OVERVIEW ==============================================================================
 # Color/variant specifications are defined in the following sections.
 #
@@ -104,7 +91,7 @@ mobs:
 # Minecraft vanilla color probabilities when spawned, per https://minecraft.fandom.com/wiki/Cat.
 # The vanilla probabilities are subject to change upstream, and are listed here for reference only.
 #   black: 0.0910
-#   britishShorthair: 0.0909
+#   british-shorthair: 0.0909
 #   calico: 0.0909
 #   jellie: 0.0909
 #   persian: 0.0909
@@ -122,7 +109,7 @@ mobs:
     default:
       probabilities:
         black: 0.0910
-        britishShorthair: 0.0909
+        british-shorthair: 0.0909
         calico: 0.0909
         jellie: 0.0909
         persian: 0.0909
@@ -141,7 +128,7 @@ mobs:
     monochrome:
       probabilities:
         black: 0.17
-        britishShorthair: 0.16
+        british-shorthair: 0.16
         ragdoll: 0.16
         siamese: 0.17
         tuxedo: 0.17
@@ -150,7 +137,7 @@ mobs:
         - example_world_with_only_monochrome_cats
     white:
       probabilities:
-        britishShorthair: 0.25
+        british-shorthair: 0.25
         ragdoll: 0.25
         siamese: 0.25
         white: 0.25
