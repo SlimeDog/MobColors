@@ -86,10 +86,28 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
         return list;
     }
 
+    private boolean hasValidArguments(CommandSender sender, String[] args) {
+        if (args.length < 1) {
+            return false;
+        }
+        if (args[0].equalsIgnoreCase("region")) {
+            if (args.length < 4 && !(sender instanceof Player)) {
+                return false;
+            }
+            return true;
+        } else if (args[0].equalsIgnoreCase("distance")) {
+            if (args.length < 2) {
+                return false;
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     @Override
     public boolean executeCommand(CommandSender sender, String[] args) {
-        if ((args.length < 4 && !(sender instanceof Player)) || args.length < 1
-                || !args[0].equalsIgnoreCase("region")) {
+        if (!hasValidArguments(sender, args)) {
             return false;
         }
         Set<String> options = getOptions(args);
