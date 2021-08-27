@@ -3,7 +3,6 @@ package dev.ratas.mobcolors.config.mob;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Map;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Function;
 
 import org.bukkit.DyeColor;
@@ -40,6 +39,7 @@ public final class MobTypes {
         map.put(EntityType.TROPICAL_FISH, new MobColorEnumProvider(TropicalFishVariant.class));
         ENTITY_COLOR_ENUMS = Collections.unmodifiableMap(map);
     }
+    private static final TranslationLayer TRANSLATION_LAYER = new TranslationLayer();
 
     private MobTypes() {
         throw new IllegalStateException("Cannot be initialized");
@@ -124,92 +124,11 @@ public final class MobTypes {
     }
 
     public static String fixTypeNames(String name, Class<?> clazz) {
-        if (Cat.Type.class.isAssignableFrom(clazz)) {
-            name = fixCatTypeNames(name);
-        } else if (Fox.Type.class.isAssignableFrom(clazz)) {
-            name = fixFoxTypeNames(name);
-        } else if (HorseVariant.class.isAssignableFrom(clazz)) {
-            String parts[] = name.split(HorseVariant.DELIMITER);
-            parts[0] = fixHorseColorNames(parts[0]);
-            if (parts.length > 1) {
-                parts[1] = fixHorseStyleNames(parts[1]);
-            }
-            name = String.join(HorseVariant.DELIMITER, parts);
-        } else if (Llama.Color.class.isAssignableFrom(clazz)) {
-            name = fixLlamaColorNames(name);
-        } else if (Rabbit.Type.class.isAssignableFrom(clazz)) {
-            name = fixRabbitTypeNames(name);
-        } else if (TropicalFishVariant.class.isAssignableFrom(clazz)) {
-            name = fixTropicalFishNames(name);
-        }
-        return name.toUpperCase().replace("-", "_").replace(" ", "_");
-
+        return TRANSLATION_LAYER.attemptTranslation(name, clazz);
     }
 
-    private static String fixCatTypeNames(String name) {
-        switch (name.toLowerCase()) {
-            case "britishshorthair":
-                return "british_shorthair";
-            case "tuxedo":
-                return "all_black";
-        }
-        return name;
-    }
-
-    private static String fixFoxTypeNames(String name) {
-        if (name.equalsIgnoreCase("white")) {
-            return "snow";
-        }
-        return name;
-    }
-
-    private static String fixHorseColorNames(String name) {
-        if (name.equalsIgnoreCase("darkbrown")) {
-            return "dark_brown";
-        }
-        return name;
-    }
-
-    private static String fixHorseStyleNames(String name) {
-        switch (name.toLowerCase()) {
-            case "whitedots":
-                return "white_dots";
-            case "blackdots":
-                return "black_dots";
-        }
-        return name;
-    }
-
-    private static String fixLlamaColorNames(String name) {
-        if (name.equalsIgnoreCase("cream")) {
-            return "creamy";
-        }
-        return name;
-    }
-
-    private static String fixRabbitTypeNames(String name) {
-        switch (name.toLowerCase()) {
-            case "killer":
-                return "the_killer_bunny";
-        }
-        return name;
-    }
-
-    private static String fixTropicalFishNames(String name) {
-        if (name.equalsIgnoreCase("random")) {
-            ThreadLocalRandom random = ThreadLocalRandom.current();
-            TropicalFish.Pattern[] patterns = TropicalFish.Pattern.values();
-            int nr = random.nextInt(patterns.length);
-            TropicalFish.Pattern pattern = patterns[nr];
-            DyeColor[] colors = DyeColor.values();
-            nr = random.nextInt(colors.length);
-            DyeColor color1 = colors[nr];
-            nr = random.nextInt(colors.length);
-            DyeColor color2 = colors[nr];
-            return pattern.name() + TropicalFishVariant.DELIMITER + color1.name() + TropicalFishVariant.DELIMITER
-                    + color2.name();
-        }
-        return name;
+    public static String reverseTranslate(String name) {
+        return TRANSLATION_LAYER.reverseTranslate(name);
     }
 
     public static final class MobColorEnumProvider {
