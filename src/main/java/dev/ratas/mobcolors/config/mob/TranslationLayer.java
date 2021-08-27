@@ -40,13 +40,14 @@ public class TranslationLayer {
         } else {
             translatedName = origName;
         }
+        translatedName = translatedName.toUpperCase().replace("-", "_").replace(" ", "_");
         if (translatedName != origName && !origName.equalsIgnoreCase("random")) { // there was a translation made if
                                                                                   // it's a different instance
                                                                                   // but ignore the tropical fish random
             usedTranslations.put(origName, translatedName);
             reverseTranslations.put(translatedName.toLowerCase(), origName);
         }
-        return translatedName.toUpperCase().replace("-", "_").replace(" ", "_");
+        return translatedName;
     }
 
     public String reverseTranslate(String name) {
