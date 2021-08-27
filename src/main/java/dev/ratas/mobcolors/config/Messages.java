@@ -1,5 +1,7 @@
 package dev.ratas.mobcolors.config;
 
+import java.util.List;
+
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -126,6 +128,35 @@ public class Messages extends CustomConfigHandler {
                 throw new IllegalArgumentException("Unknown color type: " + color);
             }
         }
+    }
+
+    public String getNoColormapsEnabledMessage() {
+        return getMessage("no-colormaps-enabled", "You currently have no color maps enabled in any world");
+    }
+
+    public String getEnabledMobColorMapsHeaderMessage(EntityType type) {
+        return getMessage("info-mob-header", "Enabled color maps for {type}:").replace("{type}",
+                type.name().toLowerCase());
+    }
+
+    public String getEnabledMobColorMapItemMessage(String name, List<String> worlds) {
+        return getMessage("info-mob-colormap-item", "{name}: {worlds}").replace("{name}", name).replace("{worlds}",
+                String.join(", ", worlds));
+    }
+
+    public String getNoColorMapsInWorldMessage(World world) {
+        return getMessage("info-no-colormaps-in-world", "There are no color maps enabled in world {world}")
+                .replace("{world}", world.getName());
+    }
+
+    public String getWorldColorMapsHeaderMessage(World world) {
+        return getMessage("info-world-header", "The following color maps have been enabled in {world}:")
+                .replace("{world}", world.getName());
+    }
+
+    public String getWorldColorMapItemMessage(EntityType type, String name) {
+        return getMessage("info-colormap-in-world", "{type}: {name}").replace("{type}", type.name().toLowerCase())
+                .replace("{name}", name);
     }
 
     public String updateCurrentVersion() {

@@ -33,6 +33,11 @@ permissions:
     children:
       mobcolors.command: true
   mobcolors.schedulerinfo:
+    description: Allows using the schedulerinfo subcommand
+    default: op
+    children:
+      mobcolors.command: true
+  mobcolors.info:
     description: Allows using the info subcommand
     default: op
     children:

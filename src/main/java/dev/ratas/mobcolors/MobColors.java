@@ -10,6 +10,7 @@ import dev.ratas.mobcolors.events.ListenerRegistrator;
 import dev.ratas.mobcolors.platform.PluginPlatform;
 import dev.ratas.mobcolors.scheduling.abstraction.Scheduler;
 import dev.ratas.mobcolors.utils.VersionProvider;
+import dev.ratas.mobcolors.utils.WorldProvider;
 
 public class MobColors extends JavaPlugin {
     private static final int ID = -1; // TODO - do ID
@@ -21,14 +22,15 @@ public class MobColors extends JavaPlugin {
         SettingsConfigProvider settingsProvider = new SettingsConfigProvider(this);
         ListenerRegistrator listenerRegistrator = new ListenerRegistrator(this);
         VersionProvider versionProvider = new VersionProvider(this);
+        WorldProvider worldProvider = new WorldProvider(this);
 
         // platform
         PluginPlatform platform = new PluginPlatform(scheduler, resourceProvider, settingsProvider, listenerRegistrator,
                 versionProvider, () -> reloadConfig(), getLogger());
 
         // commands
-        getCommand("mobcolors")
-                .setExecutor(new ParentCommand(platform, platform.getMessages(), platform.getSettings()));
+        getCommand("mobcolors").setExecutor(
+                new ParentCommand(platform, worldProvider, platform.getMessages(), platform.getSettings()));
 
         // metrics
         if (platform.getSettings().enableMetrics()) { // TODO - enable with ID

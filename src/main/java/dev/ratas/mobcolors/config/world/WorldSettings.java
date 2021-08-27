@@ -1,5 +1,7 @@
 package dev.ratas.mobcolors.config.world;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,7 +15,7 @@ import dev.ratas.mobcolors.scheduling.abstraction.Scheduler;
 
 public class WorldSettings {
     private final Map<EntityType, ColorMap<?>> entityColorMaps = new EnumMap<>(EntityType.class);
-    private final Map<String, ColorMap<?>> colorMapsByName = new HashMap<>();
+    private final Map<String, ColorMap<?>> colorMapsByName = new HashMap<>(); // useless as it ignores entity type
     private final Map<EntityType, MobColorer<?, ?>> colorers = new EnumMap<>(EntityType.class);
 
     public void addScheme(ColorMap<?> map, MobSettings settings, Scheduler scheduler) {
@@ -28,6 +30,10 @@ public class WorldSettings {
 
     public ColorMap<?> getColorMapByName(String name) {
         return colorMapsByName.get(name);
+    }
+
+    public Collection<ColorMap<?>> getEnabledColorMaps() {
+        return new ArrayList<>(entityColorMaps.values());
     }
 
     public MobColorer<?, ?> getColorer(EntityType type) {

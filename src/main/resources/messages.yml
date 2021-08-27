@@ -14,6 +14,12 @@ start-scanning-radius: "Starting to scan {mob} for radius {r} (updates every {up
 update-scanning-radius: "{done}/{total} chunks scanned ({percent}%)"
 done-scanning-header: "Scanning completed. Scanned {count} mobs in {chunks} loaded chunks"
 done-scanning-item: "{color}: {amount}"
+no-colormaps-enabled: "You currently have no color maps enabled in any world"
+info-mob-header: "Enabled color maps for {type}:"
+info-mob-colormap-item: "{name}: {worlds}"
+info-no-colormaps-in-world: "There are no color maps enabled in world {world}"
+info-world-header: "The following color maps have been enabled in {world}:"
+info-colormap-in-world: "{type}: {name}"
 
 updater-current-version: "You are running the latest version"
 updater-new-version: "A new version {VERSION} is available for download"
