@@ -12,7 +12,7 @@ start-scanning-region: "Starting to scan mobs in {world} for region {x}, {z} (up
 update-scanning-region: "{done}/{total} chunks scanned ({percent}%)"
 start-scanning-radius: "Starting to scan {mob} for radius {r} (updates every {update-ticks} ticks)"
 update-scanning-radius: "{done}/{total} chunks scanned ({percent}%)"
-done-scanning-header: "Scanning completed. Scanned {count} mobs in {chunks} loaded chunks"
+done-scanning-header: "Scanning completed. Scanned {count} {type} in {chunks} loaded chunks"
 done-scanning-item: "{color}: {amount}"
 no-colormaps-enabled: "You currently have no color maps enabled in any world"
 info-mob-header: "Enabled color maps for {type}:"
