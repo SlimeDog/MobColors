@@ -17,6 +17,7 @@ public class MobSettingsParser {
     private final Logger logger;
     private boolean hasParsed = false;
     private boolean enabled;
+    private String entityTypeName;
     private EntityType type;
     private Map<String, ColorMap<?>> colorMaps;
     private boolean includeLeashed;
@@ -33,8 +34,8 @@ public class MobSettingsParser {
     }
 
     private EntityType parseType() throws IllegalMobSettingsException {
-        String name = section.getName();
-        name = translateName(name);
+        entityTypeName = section.getName();
+        String name = translateName(entityTypeName);
         try {
             return EntityType.valueOf(name.toUpperCase());
         } catch (IllegalArgumentException e) {
@@ -67,7 +68,7 @@ public class MobSettingsParser {
                 logger.warning("Unable to parse color map " + name + " for " + type + ": " + e.getMessage());
                 continue;
             }
-            ColorMap<?> colorMap = new AbstractColorMap<>(type, parser.getName(), parser.getDyeColors(),
+            ColorMap<?> colorMap = new AbstractColorMap<>(entityTypeName, type, parser.getName(), parser.getDyeColors(),
                     parser.getEnabledWorlds());
             map.put(name, colorMap);
         }
