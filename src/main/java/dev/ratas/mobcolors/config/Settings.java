@@ -4,6 +4,7 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 
@@ -65,7 +66,14 @@ public class Settings implements Reloadable {
         }
         MobSettings settings = parser.get();
         if (settings == null) {
-
+            return; // disabled
+        }
+        if (settings.getEntityType() == EntityType.SHEEP
+                && Bukkit.getPluginManager().isPluginEnabled("SheepSpawnColors")) {
+            logger.warning("Detected the SheepSpawnColors plugin. "
+                    + "Disabling the sheep spawning functionality of MobColors "
+                    + "since both plugins would otherwise attempt to do similar things.");
+            return;
         }
         if (mobSettings.putIfAbsent(settings.getEntityType(), settings) != null) {
             logger.warning("Multiple mob settings found for " + mobName + ". Only using first defined one.");
