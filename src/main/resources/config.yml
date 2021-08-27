@@ -91,7 +91,7 @@ mobs:
 # Minecraft vanilla color probabilities when spawned, per https://minecraft.fandom.com/wiki/Cat.
 # The vanilla probabilities are subject to change upstream, and are listed here for reference only.
 #   black: 0.0910
-#   britishShorthair: 0.0909
+#   british-shorthair: 0.0909
 #   calico: 0.0909
 #   jellie: 0.0909
 #   persian: 0.0909
@@ -109,7 +109,7 @@ mobs:
     default:
       probabilities:
         black: 0.0910
-        britishShorthair: 0.0909
+        british-shorthair: 0.0909
         calico: 0.0909
         jellie: 0.0909
         persian: 0.0909
@@ -128,7 +128,7 @@ mobs:
     monochrome:
       probabilities:
         black: 0.17
-        britishShorthair: 0.16
+        british-shorthair: 0.16
         ragdoll: 0.16
         siamese: 0.17
         tuxedo: 0.17
@@ -137,7 +137,7 @@ mobs:
         - example_world_with_only_monochrome_cats
     white:
       probabilities:
-        britishShorthair: 0.25
+        british-shorthair: 0.25
         ragdoll: 0.25
         siamese: 0.25
         white: 0.25
