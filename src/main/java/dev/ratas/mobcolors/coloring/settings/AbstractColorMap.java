@@ -8,15 +8,12 @@ import java.util.Map;
 import org.bukkit.entity.EntityType;
 
 public class AbstractColorMap<T> implements ColorMap<T> {
-    private final String entityTypeName;
     private final EntityType type;
     private final String name;
     private final Map<T, Double> colorMap;
     private final Collection<String> worlds;
 
-    public AbstractColorMap(String entityTypeName, EntityType type, String name, Map<T, Double> map,
-            Collection<String> worlds) {
-        this.entityTypeName = entityTypeName;
+    public AbstractColorMap(EntityType type, String name, Map<T, Double> map, Collection<String> worlds) {
         this.type = type;
         this.name = name;
         this.colorMap = map;
@@ -51,11 +48,6 @@ public class AbstractColorMap<T> implements ColorMap<T> {
     @Override
     public Collection<String> getApplicableWorlds() {
         return Collections.unmodifiableCollection(worlds);
-    }
-
-    @Override
-    public String getOriginalEntityTypeName() {
-        return entityTypeName;
     }
 
 }

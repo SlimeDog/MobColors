@@ -23,8 +23,6 @@ public interface ColorMap<T> {
 
     EntityType getApplicableEntityType();
 
-    String getOriginalEntityTypeName();
-
     Collection<String> getApplicableWorlds();
 
 }
