@@ -9,6 +9,7 @@ import org.bukkit.entity.EntityType;
 
 import dev.ratas.mobcolors.config.abstraction.CustomConfigHandler;
 import dev.ratas.mobcolors.config.abstraction.ResourceProvider;
+import dev.ratas.mobcolors.config.mob.MobTypes;
 
 public class Messages extends CustomConfigHandler {
     private static final String NAME = "messages.yml";
@@ -118,7 +119,9 @@ public class Messages extends CustomConfigHandler {
     public String getDoneScanningItemMessage(Object color, int amount) {
         String msg = getMessage("done-scanning-item", "{color}: {amount}").replace("{amount}", String.valueOf(amount));
         if (color instanceof Enum) {
-            return msg.replace("{color}", ((Enum<?>) color).name().toLowerCase());
+            String enumName = ((Enum<?>) color).name().toLowerCase();
+            enumName = MobTypes.reverseTranslate(enumName);
+            return msg.replace("{color}", enumName);
         } else {
             if (color instanceof HorseVariant) {
                 return msg.replace("{color}", ((HorseVariant) color).getName().toLowerCase());
