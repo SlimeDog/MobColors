@@ -25,19 +25,6 @@ check-for-updates: true
 #
 enable-metrics: true
 
-# REMOVE THE OVERVIEW AFTER THE WIKI IS COMPLETE ===================================================
-# ========== OVERVIEW ==============================================================================
-# REMOVE HOW IT WORKS DESCRIPTIONS AFTER THEY ARE DOCUMENTED IN THE WIKI ===========================
-# How it works:
-# - Multiple color-schemes may be specified for each mob-type.
-# - Probabilities must be specified for each color-schemes; probabilities must sum to 1.0.
-# - If a default color-scheme is not specified for an mob-type, the MC vanilla scheme will be used.
-# - The default color-scheme for any mob-type may be modified to reflect your server design.
-# - Multiple worlds may be assigned to any color-scheme.
-# - Worlds not assigned to a color-scheme will use the default.
-# - Mobs in a specified distance from the player may be modified by commands. See the wiki for details.
-# - Mobs in a specified Minecraft region may be modified by commands. See the wiki for details.
-#
 # ========== OVERVIEW ==============================================================================
 # Color/variant specifications are defined in the following sections.
 #
