@@ -62,8 +62,6 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
             if (args[0].equalsIgnoreCase("region")) {
                 return StringUtil.copyPartialMatches(args[1],
                         Bukkit.getWorlds().stream().map(World::getName).collect(Collectors.toList()), list);
-            } else if (args[0].equalsIgnoreCase("distance")) {
-                return StringUtil.copyPartialMatches(args[1], OPTIONS, list);
             } else {
                 return list; // no tab-completion for distance
             }
