@@ -77,7 +77,7 @@ public class PluginPlatform {
         }
 
         // update
-        if (settings.checkForUpdates() && settings.checkForUpdates()) {
+        if (settings.checkForUpdates()) {
             new UpdateChecker(scheduler, versionProvider.getVersion(), (response, version) -> {
                 switch (response) {
                     case LATEST:
