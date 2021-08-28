@@ -45,4 +45,10 @@ public class WorldSettings {
         return colorers.get(type);
     }
 
+    void clear() {
+        entityColorMaps.clear();
+        colorMapsByName.clear();
+        colorers.clear();
+    }
+
 }

@@ -61,6 +61,7 @@ public class WorldManager {
 
     public void clear() {
         worldSettings.clear();
+        defaultWorldSettings.clear();
     }
 
 }
