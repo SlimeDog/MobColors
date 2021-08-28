@@ -23,7 +23,7 @@ public class WorldSettings {
         if (prev != null && prev != map) {
             entityColorMaps.put(prev.getApplicableEntityType(), prev);
             throw new IllegalArgumentException("Multiple color maps specified for the same world for the entity "
-                    + prev.getApplicableEntityType().name());
+                    + prev.getApplicableEntityType().name() + ": " + map.getName() + " and " + prev.getName());
         }
         colorMapsByName.put(map.getName(), map);
         colorers.put(map.getApplicableEntityType(), ColorerGenerator.generateColorer(map, settings, scheduler));
