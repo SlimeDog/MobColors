@@ -41,9 +41,12 @@ public class WorldManager {
             }
         }
         // refer to defaults in all worlds not named within a color map
+        ColorMap<?> defaultMap = settings.getDefaultColorMap();
+        if (defaultMap == null) {
+            return; // no defaults set
+        }
         for (String unNamedWorld : allWorlds) {
             WorldSettings ws = worldSettings.get(unNamedWorld.toLowerCase());
-            ColorMap<?> defaultMap = settings.getDefaultColorMap();
             ws.addScheme(defaultMap, settings, scheduler);
         }
     }
