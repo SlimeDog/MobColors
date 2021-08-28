@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import org.bukkit.World;
 
@@ -22,12 +23,17 @@ public class WorldManager {
         }
     }
 
-    public void addMobSettings(MobSettings settings, Scheduler scheduler) {
+    public void addMobSettings(MobSettings settings, Scheduler scheduler, Logger logger) {
         Set<String> allWorlds = new HashSet<>(worldSettings.keySet());
         for (ColorMap<?> map : settings.getAllColorMaps()) {
             for (String worldName : map.getApplicableWorlds()) {
                 WorldSettings ws = worldSettings.get(worldName.toLowerCase());
-                ws.addScheme(map, settings, scheduler);
+                try {
+                    ws.addScheme(map, settings, scheduler);
+                } catch (IllegalArgumentException e) {
+                    logger.warning("Problem setting color scheme for world " + worldName + " : " + e.getMessage());
+                    continue;
+                }
                 allWorlds.remove(worldName.toLowerCase());
             }
             if (map.getName().equals("default")) {

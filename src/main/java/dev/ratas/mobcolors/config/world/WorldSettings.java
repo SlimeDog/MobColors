@@ -19,7 +19,12 @@ public class WorldSettings {
     private final Map<EntityType, MobColorer<?, ?>> colorers = new EnumMap<>(EntityType.class);
 
     public void addScheme(ColorMap<?> map, MobSettings settings, Scheduler scheduler) {
-        entityColorMaps.put(map.getApplicableEntityType(), map);
+        ColorMap<?> prev = entityColorMaps.put(map.getApplicableEntityType(), map);
+        if (prev != null && prev != map) {
+            entityColorMaps.put(prev.getApplicableEntityType(), prev);
+            throw new IllegalArgumentException("Multiple color maps specified for the same world for the entity "
+                    + prev.getApplicableEntityType().name());
+        }
         colorMapsByName.put(map.getName(), map);
         colorers.put(map.getApplicableEntityType(), ColorerGenerator.generateColorer(map, settings, scheduler));
     }

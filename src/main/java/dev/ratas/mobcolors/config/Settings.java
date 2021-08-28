@@ -58,7 +58,7 @@ public class Settings implements Reloadable {
         // this makes sure tha the defaults get added to all worlds correctly
         worldManager.setAllUsedWorlds(namedWorlds);
         for (MobSettings settings : mobSettings.values()) {
-            worldManager.addMobSettings(settings, scheduler);
+            worldManager.addMobSettings(settings, scheduler, logger);
         }
     }
 
