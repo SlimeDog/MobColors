@@ -10,11 +10,10 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 
 import dev.ratas.mobcolors.SpawnListener;
-import dev.ratas.mobcolors.config.mob.MobTypes;
 import dev.ratas.mobcolors.scheduling.SimpleRegionTaskDelegator;
 import dev.ratas.mobcolors.scheduling.TaskScheduler;
 
-public class RegionMapper {
+public class RegionMapper extends AbstractRegionHandler {
     private final TaskScheduler scheduler;
     private final SpawnListener spawnListener;
 
@@ -37,19 +36,13 @@ public class RegionMapper {
             boolean skipPets, EntityType targetType) {
         report.countAChunk();
         for (Entity entity : chunk.getEntities()) {
-            if (targetType != null && !entity.getType().equals(targetType)) {
-                continue;
-            }
-            Class<?> clazz = MobTypes.getInterestingClass(entity);
-            if (clazz == null) {
-                continue; // ignore - not of correct type
-            }
-            if (!(entity instanceof LivingEntity)) {
-                continue; // ignore
-            }
-            if (!info.isInRange(entity)) {
-                continue;
-            }
+            dealWithEntity(entity, targetType, skipLeashed, skipPets, info, report);
+        }
+    }
+
+    private void dealWithEntity(Entity entity, EntityType targetType, boolean skipLeashed, boolean skipPets,
+            RegionInfo info, ScanReport<?> report) {
+        if (isApplicable(entity, targetType, info)) {
             if (spawnListener.handleEntity((LivingEntity) entity, SpawnReason.CUSTOM)) {
                 report.count(entity);
             }

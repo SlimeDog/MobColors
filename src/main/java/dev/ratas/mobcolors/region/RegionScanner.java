@@ -6,14 +6,12 @@ import java.util.function.BiConsumer;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
 
 import dev.ratas.mobcolors.config.mob.MobTypes;
 import dev.ratas.mobcolors.scheduling.SimpleRegionTaskDelegator;
 import dev.ratas.mobcolors.scheduling.TaskScheduler;
-import dev.ratas.mobcolors.utils.PetUtils;
 
-public class RegionScanner {
+public class RegionScanner extends AbstractRegionHandler {
     private final TaskScheduler scheduler;
 
     public RegionScanner(TaskScheduler scheduler) {
@@ -48,22 +46,9 @@ public class RegionScanner {
         if (targetType != null && !entity.getType().equals(targetType)) {
             return;
         }
-        Class<?> clazz = MobTypes.getInterestingClass(entity);
-        if (clazz == null) {
-            return; // ignore - not of correct type
+        if (isApplicable(entity, targetType, info)) {
+            countApplicableEntity(entity, report);
         }
-        if (entity instanceof LivingEntity) {
-            if (skipLeashed && ((LivingEntity) entity).isLeashed()) {
-                return; // skip
-            }
-        }
-        if (skipPets && PetUtils.isPet(entity)) {
-            return;
-        }
-        if (!info.isInRange(entity)) {
-            return;
-        }
-        countApplicableEntity(entity, report);
     }
 
     void countApplicableEntity(Entity entity, ScanReport<?> report) {
