@@ -551,10 +551,10 @@ mobs:
 # A non-vanilla default color-scheme may be specified, if desired.
 #
   tropical_fish:
+    enabled: false
+    include-leashed: false
+    include-pets: false
     blue:
-      enabled: false
-      include-leashed: false
-      include-pets: false
       probabilities:
         flopper/gray/blue: 0.25             # Blue Tang
         brinely/lime/light_blue: 0.25       # Queen Angelfish
@@ -563,9 +563,6 @@ mobs:
       enabled-worlds:
         - example_world_with_only_blue_fish
     red:
-      enabled: false
-      include-leashed: false
-      include-pets: false
       probabilities:
         betty/red/white: 0.20               # Red Cichlid
         blockfish/red/white: 0.20           # Red Snapper
@@ -575,9 +572,6 @@ mobs:
       enabled-worlds:
         - example_world_with_only_red_fish
     yellow:
-      enabled: false
-      include-leashed: false
-      include-pets: false
       probabilities:
         blockfish/purple/yellow: 0.20       # Dottyback
         flopper/white/yellow: 0.20          # Threadfin
@@ -587,9 +581,6 @@ mobs:
       enabled-worlds:
         - example_world_with_only_yellow_fish
     multicolor:
-      enabled: false
-      include-leashed: false
-      include-pets: false
       probabilities:
         spotty/pink/light_blue: 0.18        # Cotton Candy Betta
         blockfish/purple/yellow: 0.18       # Dottyback
@@ -600,9 +591,6 @@ mobs:
       enabled-worlds:
         - example_world_with_only_multicolor_fish
     monochrome:
-      enabled: false
-      include-leashed: false
-      include-pets: false
       probabilities:
         flopper/gray/gray: 0.25             # Black Tang
         glitter/white/gray: 0.25            # Moorish Idol
