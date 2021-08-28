@@ -1,11 +1,15 @@
 package dev.ratas.mobcolors.config;
 
+import java.util.EnumMap;
+import java.util.Map;
+
 import org.bukkit.DyeColor;
 import org.bukkit.entity.TropicalFish;
 
 import dev.ratas.mobcolors.utils.Triple;
 
 public class TropicalFishVariant extends Triple<TropicalFish.Pattern, DyeColor, DyeColor> {
+    private static final InstanceTracker INSTANCE_TRACKER = new InstanceTracker();
     public static final String DELIMITER = "/";
 
     private TropicalFishVariant(TropicalFish.Pattern pattern, DyeColor color1, DyeColor color2) {
@@ -28,7 +32,19 @@ public class TropicalFishVariant extends Triple<TropicalFish.Pattern, DyeColor, 
     }
 
     public static TropicalFishVariant getVariant(TropicalFish fish) {
-        return new TropicalFishVariant(fish.getPattern(), fish.getBodyColor(), fish.getPatternColor());
+        return INSTANCE_TRACKER.get(fish.getPattern(), fish.getBodyColor(), fish.getPatternColor());
+    }
+
+    private static class InstanceTracker {
+        private final Map<TropicalFish.Pattern, Map<DyeColor, Map<DyeColor, TropicalFishVariant>>> variantsMap = new EnumMap<>(
+                TropicalFish.Pattern.class);
+
+        private TropicalFishVariant get(TropicalFish.Pattern pattern, DyeColor color1, DyeColor color2) {
+            Map<DyeColor, Map<DyeColor, TropicalFishVariant>> map = variantsMap.computeIfAbsent(pattern,
+                    c -> new EnumMap<>(DyeColor.class));
+            Map<DyeColor, TropicalFishVariant> map2 = map.get(color1);
+            return map2.computeIfAbsent(color2, c -> new TropicalFishVariant(pattern, color1, color2));
+        }
     }
 
 }
