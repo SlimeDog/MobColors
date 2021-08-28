@@ -39,26 +39,31 @@ public class RegionScanner {
             EntityType targetType) {
         report.countAChunk();
         for (Entity entity : chunk.getEntities()) {
-            if (targetType != null && !entity.getType().equals(targetType)) {
-                continue;
-            }
-            Class<?> clazz = MobTypes.getInterestingClass(entity);
-            if (clazz == null) {
-                continue; // ignore - not of correct type
-            }
-            if (entity instanceof LivingEntity) {
-                if (skipLeashed && ((LivingEntity) entity).isLeashed()) {
-                    continue; // skip
-                }
-            }
-            if (skipPets && PetUtils.isPet(entity)) {
-                continue;
-            }
-            if (!info.isInRange(entity)) {
-                continue;
-            }
-            report.count(entity);
+            dealWithEntity(entity, targetType, skipLeashed, skipPets, info, report);
         }
+    }
+
+    void dealWithEntity(Entity entity, EntityType targetType, boolean skipLeashed, boolean skipPets, RegionInfo info,
+            ScanReport<?> report) {
+        if (targetType != null && !entity.getType().equals(targetType)) {
+            return;
+        }
+        Class<?> clazz = MobTypes.getInterestingClass(entity);
+        if (clazz == null) {
+            return; // ignore - not of correct type
+        }
+        if (entity instanceof LivingEntity) {
+            if (skipLeashed && ((LivingEntity) entity).isLeashed()) {
+                return; // skip
+            }
+        }
+        if (skipPets && PetUtils.isPet(entity)) {
+            return;
+        }
+        if (!info.isInRange(entity)) {
+            return;
+        }
+        report.count(entity);
     }
 
 }
