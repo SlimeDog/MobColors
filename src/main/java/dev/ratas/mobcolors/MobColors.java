@@ -13,7 +13,7 @@ import dev.ratas.mobcolors.utils.VersionProvider;
 import dev.ratas.mobcolors.utils.WorldProvider;
 
 public class MobColors extends JavaPlugin {
-    private static final int ID = -1; // TODO - do ID
+    private static final int BSTATS_ID = 12614;
 
     @Override
     public void onEnable() {
@@ -33,8 +33,8 @@ public class MobColors extends JavaPlugin {
                 new ParentCommand(platform, worldProvider, platform.getMessages(), platform.getSettings()));
 
         // metrics
-        if (platform.getSettings().enableMetrics()) { // TODO - enable with ID
-            new Metrics(this, ID);
+        if (platform.getSettings().enableMetrics()) {
+            new Metrics(this, BSTATS_ID);
         }
 
     }
