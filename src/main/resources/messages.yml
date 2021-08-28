@@ -21,7 +21,7 @@ info-mob-colormap-default-enabled: "- default: all other worlds"
 info-mob-colormap-default-disabled: "- vanilla default in all other worlds"
 info-no-colormaps-in-world: "There are no color maps enabled in world {world}"
 info-world-header: "The following color maps have been enabled in {world}:"
-info-colormap-in-world: "{type}: {name}"
+info-colormap-in-world: "- {type}: {name}"
 
 updater-current-version: "You are running the latest version"
 updater-new-version: "A new version {VERSION} is available for download"
