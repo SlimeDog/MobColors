@@ -23,6 +23,9 @@ public class AbstractColorSchemeParser {
         for (String worldName : section.getStringList("enabled-worlds")) {
             enabledWorlds.add(worldName.toLowerCase());
         }
+        if (name.equals("default") && !enabledWorlds.isEmpty()) {
+            throw new IllegalStateException("Cannot set worlds to default color map");
+        }
     }
 
     public String getName() {
