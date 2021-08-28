@@ -43,8 +43,8 @@ public class RegionScanner {
         }
     }
 
-    void dealWithEntity(Entity entity, EntityType targetType, boolean skipLeashed, boolean skipPets, RegionInfo info,
-            ScanReport<?> report) {
+    private void dealWithEntity(Entity entity, EntityType targetType, boolean skipLeashed, boolean skipPets,
+            RegionInfo info, ScanReport<?> report) {
         if (targetType != null && !entity.getType().equals(targetType)) {
             return;
         }
@@ -63,6 +63,10 @@ public class RegionScanner {
         if (!info.isInRange(entity)) {
             return;
         }
+        countApplicableEntity(entity, report);
+    }
+
+    void countApplicableEntity(Entity entity, ScanReport<?> report) {
         report.count(entity);
     }
 
