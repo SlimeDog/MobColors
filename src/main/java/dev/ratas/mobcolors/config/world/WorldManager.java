@@ -1,7 +1,10 @@
 package dev.ratas.mobcolors.config.world;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.bukkit.World;
 
@@ -13,15 +16,29 @@ public class WorldManager {
     private final Map<String, WorldSettings> worldSettings = new HashMap<>();
     private final WorldSettings defaultWorldSettings = new WorldSettings();
 
+    public void setAllUsedWorlds(List<String> worldNames) {
+        for (String world : worldNames) {
+            worldSettings.put(world.toLowerCase(), new WorldSettings());
+        }
+    }
+
     public void addMobSettings(MobSettings settings, Scheduler scheduler) {
+        Set<String> allWorlds = new HashSet<>(worldSettings.keySet());
         for (ColorMap<?> map : settings.getAllColorMaps()) {
             for (String worldName : map.getApplicableWorlds()) {
-                WorldSettings ws = worldSettings.computeIfAbsent(worldName.toLowerCase(), (n) -> new WorldSettings());
+                WorldSettings ws = worldSettings.get(worldName.toLowerCase());
                 ws.addScheme(map, settings, scheduler);
+                allWorlds.remove(worldName.toLowerCase());
             }
             if (map.getName().equals("default")) {
                 defaultWorldSettings.addScheme(map, settings, scheduler);
             }
+        }
+        // refer to defaults in all worlds not named within a color map
+        for (String unNamedWorld : allWorlds) {
+            WorldSettings ws = worldSettings.get(unNamedWorld.toLowerCase());
+            ColorMap<?> defaultMap = settings.getDefaultColorMap();
+            ws.addScheme(defaultMap, settings, scheduler);
         }
     }
 

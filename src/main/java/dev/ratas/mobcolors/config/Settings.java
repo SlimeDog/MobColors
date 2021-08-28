@@ -3,6 +3,7 @@ package dev.ratas.mobcolors.config;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -10,6 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 
+import dev.ratas.mobcolors.coloring.settings.ColorMap;
 import dev.ratas.mobcolors.config.abstraction.SettingsConfigProvider;
 import dev.ratas.mobcolors.config.mob.IllegalMobSettingsException;
 import dev.ratas.mobcolors.config.mob.MobSettings;
@@ -44,6 +46,19 @@ public class Settings implements Reloadable {
         }
         for (String mobName : mobsSection.getKeys(false)) {
             loadMob(mobName, mobsSection.getConfigurationSection(mobName));
+        }
+        // find all named worlds in all colormaps
+        List<String> namedWorlds = new ArrayList<>();
+        for (MobSettings mob : mobSettings.values()) {
+            for (ColorMap<?> map : mob.getAllColorMaps()) {
+                namedWorlds.addAll(map.getApplicableWorlds());
+            }
+        }
+        // register named worlds before adding mob settings
+        // this makes sure tha the defaults get added to all worlds correctly
+        worldManager.setAllUsedWorlds(namedWorlds);
+        for (MobSettings settings : mobSettings.values()) {
+            worldManager.addMobSettings(settings, scheduler);
         }
     }
 
@@ -80,7 +95,9 @@ public class Settings implements Reloadable {
         if (mobSettings.putIfAbsent(settings.getEntityType(), settings) != null) {
             logger.warning("Multiple mob settings found for " + mobName + ". Only using first defined one.");
         } else { // on success
-            worldManager.addMobSettings(settings, scheduler);
+            // moved this to a later stage in order to capture all the worlds that are
+            // registered and thus be able to register the defaults in all possible worlds
+            // worldManager.addMobSettings(settings, scheduler);
         }
     }
 
