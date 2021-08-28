@@ -52,8 +52,7 @@ public class SpawnListener implements Listener {
         if (decision == ColorDecision.IGNORE) {
             return false;
         }
-        colorer.color(t, decision == ColorDecision.RESCHEDULE);
-        return true;
+        return colorer.color(t, decision == ColorDecision.RESCHEDULE);
     }
 
     @EventHandler

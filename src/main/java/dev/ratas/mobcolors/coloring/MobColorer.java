@@ -16,6 +16,6 @@ public interface MobColorer<E, T> {
      * @param entity
      * @param nextTick
      */
-    void color(E entity, boolean nextTick);
+    boolean color(E entity, boolean nextTick);
 
 }
