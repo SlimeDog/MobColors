@@ -147,6 +147,14 @@ public class Messages extends CustomConfigHandler {
                 String.join(", ", worlds));
     }
 
+    public String getMobColorMapDefaultEnabledMessage() {
+        return getMessage("info-mob-colormap-default-enabled", "default: all other worlds");
+    }
+
+    public String getMobColorMapDefaultDisabledMessage() {
+        return getMessage("info-mob-colormap-default-disabled", "Vanilla behavior for all other worlds");
+    }
+
     public String getNoColorMapsInWorldMessage(World world) {
         return getMessage("info-no-colormaps-in-world", "There are no color maps enabled in world {world}")
                 .replace("{world}", world.getName());

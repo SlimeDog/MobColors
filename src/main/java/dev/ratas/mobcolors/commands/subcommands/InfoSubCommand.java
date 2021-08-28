@@ -69,6 +69,13 @@ public class InfoSubCommand extends SimpleSubCommand {
                 sender.sendMessage(messages.getEnabledMobColorMapItemMessage(info.map.getName(), info.activeWorlds));
             }
             foundEnabledColorMap = true;
+            String defaultsMessage;
+            if (mobSettings.getDefaultColorMap() != null) {
+                defaultsMessage = messages.getMobColorMapDefaultEnabledMessage();
+            } else {
+                defaultsMessage = messages.getMobColorMapDefaultDisabledMessage();
+            }
+            sender.sendMessage(defaultsMessage);
         }
         if (!foundEnabledColorMap) {
             sender.sendMessage(messages.getNoColormapsEnabledMessage());
