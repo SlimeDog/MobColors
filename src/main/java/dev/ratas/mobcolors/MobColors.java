@@ -1,11 +1,15 @@
 package dev.ratas.mobcolors;
 
 import org.bstats.bukkit.Metrics;
+import org.bstats.charts.SimplePie;
+import org.bukkit.entity.EntityType;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import dev.ratas.mobcolors.commands.ParentCommand;
 import dev.ratas.mobcolors.config.abstraction.ResourceProvider;
 import dev.ratas.mobcolors.config.abstraction.SettingsConfigProvider;
+import dev.ratas.mobcolors.config.mob.MobSettings;
+import dev.ratas.mobcolors.config.mob.MobTypes;
 import dev.ratas.mobcolors.events.ListenerRegistrator;
 import dev.ratas.mobcolors.platform.PluginPlatform;
 import dev.ratas.mobcolors.scheduling.abstraction.Scheduler;
@@ -34,7 +38,13 @@ public class MobColors extends JavaPlugin {
 
         // metrics
         if (platform.getSettings().enableMetrics()) {
-            new Metrics(this, BSTATS_ID);
+            Metrics metrics = new Metrics(this, BSTATS_ID);
+            for (EntityType type : MobTypes.ENTITY_COLOR_ENUMS.keySet()) {
+                metrics.addCustomChart(new SimplePie(String.format("mob_%s", type.name().toLowerCase()), () -> {
+                    MobSettings ms = platform.getSettings().getSettings(type);
+                    return ms == null ? "disabled" : "enabled";
+                }));
+            }
         }
 
     }
