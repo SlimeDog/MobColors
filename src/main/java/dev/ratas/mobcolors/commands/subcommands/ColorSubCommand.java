@@ -19,6 +19,7 @@ import dev.ratas.mobcolors.config.mob.MobTypes;
 import dev.ratas.mobcolors.region.DistanceRegionInfo;
 import dev.ratas.mobcolors.region.RegionInfo;
 import dev.ratas.mobcolors.region.RegionMapper;
+import dev.ratas.mobcolors.region.ScanReport;
 
 public class ColorSubCommand extends AbstractRegionSubCommand {
     private static final String NAME = "color";
@@ -143,11 +144,13 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
         mapper.dyeEntitiesInRegion(info, doLeashed, doPets, updateTicks,
                 (done, total) -> sender.sendMessage(isRegion ? messages.getUpdateOnColorRegionMessage(done, total)
                         : messages.getUpdateOnColorRadiusMessage(done, total)),
-                targetType).whenComplete((report, e) -> {
-                    int mobsCounted = countAllMobs(report);
-                    sender.sendMessage(messages.getDoneColoringRegionMessage(mobsCounted, report.getChunksCounted()));
+                targetType, showScan).whenComplete((result, e) -> {
+                    ScanReport<?> colorReport = result.getColoringReport();
+                    int mobsCounted = countAllMobs(colorReport);
+                    sender.sendMessage(
+                            messages.getDoneColoringRegionMessage(mobsCounted, colorReport.getChunksCounted()));
                     if (showScan) {
-                        showReport(sender, report);
+                        showReport(sender, result.getScanReport());
                     }
                 });
         return true;
