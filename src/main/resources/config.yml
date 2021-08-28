@@ -281,9 +281,10 @@ mobs:
         cream: 0.25
         gray: 0.25
         white: 0.25
-    cream:
+    brown:
       probabilities:
-        cream: 1.00
+        brown: 0.50
+        cream: 0.50
       enabled-worlds:
         - example_world_with_only_cream_llamas
     gray:
@@ -299,7 +300,8 @@ mobs:
         - example_world_with_only_monochrome_llamas
     white:
       probabilities:
-        white: 1.00
+        cream: 0.50
+        white: 0.50
       enabled-worlds:
         - example_world_with_only_white_llamas
 
