@@ -41,12 +41,12 @@ public class MultiReport extends ScanReport<Object> {
     }
 
     public EntityType getType() {
-        throw new IllegalStateException("Cannot direcly get type from multi report. "
+        throw new IllegalStateException("Cannot directly get type from multi report. "
                 + "Use MultiReport#getAllReports and get the type from each one separately.");
     }
 
     public Map<Object, Integer> getColors() {
-        throw new IllegalStateException("Cannot direcly get colors from multi report. "
+        throw new IllegalStateException("Cannot directly get colors from multi report. "
                 + "Use MultiReport#getAllReports and get the colors from each one separately.");
     }
 
