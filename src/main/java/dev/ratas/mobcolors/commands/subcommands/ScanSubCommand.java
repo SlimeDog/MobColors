@@ -151,8 +151,10 @@ public class ScanSubCommand extends AbstractRegionSubCommand {
                                 : messages.getUpdateOnScanRadiusMessage(done, total)),
                 targetType).whenComplete((report, e) -> {
                     int mobsCounted = countAllMobs(report);
-                    sender.sendMessage(
-                            messages.getDoneScanningHeaderMessage(mobsCounted, report.getChunksCounted(), targetType));
+                    if (!specifyMob) { // if mob specified, the one in showReport will suffice
+                        sender.sendMessage(messages.getDoneScanningHeaderMessage(mobsCounted, report.getChunksCounted(),
+                                targetType));
+                    }
                     showReport(sender, report);
                 });
         return true;
