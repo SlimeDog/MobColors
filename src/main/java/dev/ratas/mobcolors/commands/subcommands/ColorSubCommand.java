@@ -125,6 +125,10 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
         } else {
             targetType = null; // all
         }
+        if (!showScan && specifyMob && settings.getSettings(targetType) == null) {
+            sender.sendMessage(messages.getMobColorMapDisabledMessage(targetType));
+            return true;
+        }
         RegionInfo info;
         try {
             info = getRegionInfo(sender, args, isRegion, ignoredUngenerated);

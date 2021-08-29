@@ -36,6 +36,11 @@ public class Messages extends CustomConfigHandler {
         return getMessage("need-a-number", "A number is required, got: {val}").replace("{val}", val);
     }
 
+    public String getMobColorMapDisabledMessage(EntityType type) {
+        return getMessage("mob-colormap-disabled", "You cannot color {mob} because its color-scheme is disabled")
+                .replace("{mob}", type.name().toLowerCase());
+    }
+
     public String getStartingToColorRegionMessage(World world, int x, int z, long updateTicks, EntityType type) {
         return getMessage("start-coloring-region",
                 "Starting to color {mob} in {world} for region {x}, {z} (updates every {update-ticks} ticks)")
@@ -117,7 +122,8 @@ public class Messages extends CustomConfigHandler {
     }
 
     public String getDoneScanningItemMessage(Object color, int amount) {
-        String msg = getMessage("done-scanning-item", "- {color}: {amount}").replace("{amount}", String.valueOf(amount));
+        String msg = getMessage("done-scanning-item", "- {color}: {amount}").replace("{amount}",
+                String.valueOf(amount));
         if (color instanceof Enum) {
             String enumName = ((Enum<?>) color).name().toLowerCase();
             enumName = MobTypes.reverseTranslate(enumName);
