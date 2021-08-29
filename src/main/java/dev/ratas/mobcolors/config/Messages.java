@@ -37,8 +37,8 @@ public class Messages extends CustomConfigHandler {
     }
 
     public String getMobColorMapDisabledMessage(EntityType type) {
-        return getMessage("mob-colormap-disabled", "You cannot color {mob} because its color-scheme is disabled")
-                .replace("{mob}", type.name().toLowerCase());
+        return getMessage("mob-colormap-disabled", "MobColors does not manage {mob} mobs").replace("{mob}",
+                type.name().toLowerCase());
     }
 
     public String getStartingToColorRegionMessage(World world, int x, int z, long updateTicks, EntityType type) {
