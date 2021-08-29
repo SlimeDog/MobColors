@@ -57,7 +57,13 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
     public List<String> getTabComletions(CommandSender sender, String[] args) {
         List<String> list = new ArrayList<>();
         if (args.length == 1) {
-            return StringUtil.copyPartialMatches(args[0], FIRST_OPTIONS, list);
+            if (sender instanceof Player) {
+                return StringUtil.copyPartialMatches(args[0], FIRST_OPTIONS, list);
+            } else {
+                List<String> options = new ArrayList<>(FIRST_OPTIONS);
+                options.remove("distance");
+                return StringUtil.copyPartialMatches(args[0], options, list);
+            }
         }
         if (args.length == 2) {
             if (args[0].equalsIgnoreCase("region")) {
