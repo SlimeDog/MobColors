@@ -117,7 +117,7 @@ public class Messages extends CustomConfigHandler {
     }
 
     public String getDoneScanningItemMessage(Object color, int amount) {
-        String msg = getMessage("done-scanning-item", "{color}: {amount}").replace("{amount}", String.valueOf(amount));
+        String msg = getMessage("done-scanning-item", "- {color}: {amount}").replace("{amount}", String.valueOf(amount));
         if (color instanceof Enum) {
             String enumName = ((Enum<?>) color).name().toLowerCase();
             enumName = MobTypes.reverseTranslate(enumName);
@@ -134,39 +134,39 @@ public class Messages extends CustomConfigHandler {
     }
 
     public String getNoColormapsEnabledMessage() {
-        return getMessage("no-colormaps-enabled", "You currently have no color maps enabled in any world");
+        return getMessage("no-colormaps-enabled", "You currently have no color-schemes enabled in any world");
     }
 
     public String getEnabledMobColorMapsHeaderMessage(EntityType type) {
-        return getMessage("info-mob-header", "Enabled color maps for {type}:").replace("{type}",
+        return getMessage("info-mob-header", "Enabled color-schemes for {type}:").replace("{type}",
                 type.name().toLowerCase());
     }
 
     public String getEnabledMobColorMapItemMessage(String name, List<String> worlds) {
-        return getMessage("info-mob-colormap-item", "{name}: {worlds}").replace("{name}", name).replace("{worlds}",
+        return getMessage("info-mob-colormap-item", "- {name}: {worlds}").replace("{name}", name).replace("{worlds}",
                 String.join(", ", worlds));
     }
 
     public String getMobColorMapDefaultEnabledMessage() {
-        return getMessage("info-mob-colormap-default-enabled", "default: all other worlds");
+        return getMessage("info-mob-colormap-default-enabled", "- default: all other worlds");
     }
 
     public String getMobColorMapDefaultDisabledMessage() {
-        return getMessage("info-mob-colormap-default-disabled", "Vanilla behavior for all other worlds");
+        return getMessage("info-mob-colormap-default-disabled", "- vanilla behavior for all other worlds");
     }
 
     public String getNoColorMapsInWorldMessage(World world) {
-        return getMessage("info-no-colormaps-in-world", "There are no color maps enabled in world {world}")
+        return getMessage("info-no-colormaps-in-world", "There are no color-schemes enabled in world {world}")
                 .replace("{world}", world.getName());
     }
 
     public String getWorldColorMapsHeaderMessage(World world) {
-        return getMessage("info-world-header", "The following color maps have been enabled in {world}:")
+        return getMessage("info-world-header", "The following color-schemes have been enabled in {world}:")
                 .replace("{world}", world.getName());
     }
 
     public String getWorldColorMapItemMessage(EntityType type, String name) {
-        return getMessage("info-colormap-in-world", "{type}: {name}").replace("{type}", type.name().toLowerCase())
+        return getMessage("info-colormap-in-world", "- {type}: {name}").replace("{type}", type.name().toLowerCase())
                 .replace("{name}", name);
     }
 
