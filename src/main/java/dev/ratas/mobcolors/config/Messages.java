@@ -47,7 +47,7 @@ public class Messages extends CustomConfigHandler {
                         .replace("{world}", world.getName()).replace("{x}", String.valueOf(x))
                         .replace("{z}", String.valueOf(z)).replace("{update-ticks}", String.valueOf(updateTicks))
                         .replace("{update}", String.valueOf(updateTicks / 20L))
-                        .replace("{mob}", type == null ? "ALL" : MobTypes.reverseTranslateTypeName(type));
+                        .replace("{mob}", type == null ? "total" : MobTypes.reverseTranslateTypeName(type));
     }
 
     public String getStartingToColorRadiusMessage(World world, double distance, long updateTicks, EntityType type) {
@@ -56,7 +56,7 @@ public class Messages extends CustomConfigHandler {
                         .replace("{world}", world.getName()).replace("{r}", String.format("%.2f", distance))
                         .replace("{update-ticks}", String.valueOf(updateTicks))
                         .replace("{update}", String.valueOf(updateTicks / 20L))
-                        .replace("{mob}", type == null ? "ALL" : MobTypes.reverseTranslateTypeName(type));
+                        .replace("{mob}", type == null ? "total" : MobTypes.reverseTranslateTypeName(type));
     }
 
     public String getStartingToScanRegionMessage(World world, int x, int z, long updateTicks) {
@@ -73,7 +73,7 @@ public class Messages extends CustomConfigHandler {
                         .replace("{world}", world.getName()).replace("{r}", String.format("%.2f", distance))
                         .replace("{update-ticks}", String.valueOf(updateTicks))
                         .replace("{update}", String.valueOf(updateTicks / 20L))
-                        .replace("{mob}", type == null ? "ALL" : MobTypes.reverseTranslateTypeName(type));
+                        .replace("{mob}", type == null ? "total" : MobTypes.reverseTranslateTypeName(type));
     }
 
     public String getUpdateOnColorRegionMessage(long done, long total) {
@@ -118,7 +118,7 @@ public class Messages extends CustomConfigHandler {
     public String getDoneScanningHeaderMessage(long count, long chunks, EntityType type) {
         return getMessage("done-scanning-header", "The scanning was done. Scanned {count} {type} in {chunks} chunks")
                 .replace("{count}", String.valueOf(count)).replace("{chunks}", String.valueOf(chunks))
-                .replace("{type}", type == null ? "ALL" : MobTypes.reverseTranslateTypeName(type));
+                .replace("{type}", type == null ? "total" : MobTypes.reverseTranslateTypeName(type));
     }
 
     public String getDoneScanningItemMessage(Object color, int amount) {
