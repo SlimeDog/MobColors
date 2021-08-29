@@ -34,19 +34,12 @@ public class MobSettingsParser {
 
     private EntityType parseType() throws IllegalMobSettingsException {
         String name = section.getName();
-        name = translateName(name);
+        name = MobTypes.translateEntityTypeName(name);
         try {
             return EntityType.valueOf(name.toUpperCase());
         } catch (IllegalArgumentException e) {
             throw new IllegalMobSettingsException("Illegal entity type specified: " + name);
         }
-    }
-
-    private static String translateName(String name) {
-        if (name.equalsIgnoreCase("mooshroom")) {
-            return EntityType.MUSHROOM_COW.name();
-        }
-        return name;
     }
 
     private Map<String, ColorMap<?>> parseMaps() {

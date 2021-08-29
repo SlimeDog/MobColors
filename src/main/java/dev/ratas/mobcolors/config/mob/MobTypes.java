@@ -40,6 +40,7 @@ public final class MobTypes {
         ENTITY_COLOR_ENUMS = Collections.unmodifiableMap(map);
     }
     private static final TranslationLayer TRANSLATION_LAYER = new TranslationLayer();
+    private static final EntityTypeTranslationLayer ENTITY_TYPE_TRANSLATION_LAYER = new EntityTypeTranslationLayer();
 
     private MobTypes() {
         throw new IllegalStateException("Cannot be initialized");
@@ -129,6 +130,14 @@ public final class MobTypes {
 
     public static String reverseTranslate(String name) {
         return TRANSLATION_LAYER.reverseTranslate(name);
+    }
+
+    public static String translateEntityTypeName(String name) {
+        return ENTITY_TYPE_TRANSLATION_LAYER.attemptTranslation(name);
+    }
+
+    public static String reverseTranslateTypeName(EntityType type) {
+        return ENTITY_TYPE_TRANSLATION_LAYER.reverseTranslate(type);
     }
 
     public static final class MobColorEnumProvider {
