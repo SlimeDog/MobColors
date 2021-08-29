@@ -2,6 +2,7 @@ package dev.ratas.mobcolors.commands.subcommands;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.World;
@@ -58,7 +59,7 @@ public class InfoSubCommand extends SimpleSubCommand {
 
     private void showEnabledColorMaps(CommandSender sender) {
         boolean foundEnabledColorMap = false;
-        for (MobSettings mobSettings : settings.getEnabledMobSettings()) {
+        for (MobSettings mobSettings : settings.getEnabledMobSettings(true)) {
             List<EnabledColorMapInfo> enabledMaps = getEnabledColorMaps(mobSettings);
             if (enabledMaps.isEmpty()) {
                 continue;
@@ -90,6 +91,7 @@ public class InfoSubCommand extends SimpleSubCommand {
                 maps.add(new EnabledColorMapInfo(map, activeWorlds));
             }
         }
+        Collections.sort(maps, (m1, m2) -> m1.map.getName().compareTo(m2.map.getName()));
         return maps;
     }
 
@@ -110,7 +112,7 @@ public class InfoSubCommand extends SimpleSubCommand {
             return;
         }
         sender.sendMessage(messages.getWorldColorMapsHeaderMessage(world));
-        for (ColorMap<?> map : worldSettings.getEnabledColorMaps()) {
+        for (ColorMap<?> map : worldSettings.getEnabledColorMaps(true)) {
             sender.sendMessage(messages.getWorldColorMapItemMessage(map.getApplicableEntityType(), map.getName()));
         }
     }

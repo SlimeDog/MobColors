@@ -1,9 +1,10 @@
 package dev.ratas.mobcolors.config.world;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.bukkit.entity.EntityType;
@@ -37,8 +38,13 @@ public class WorldSettings {
         return colorMapsByName.get(name);
     }
 
-    public Collection<ColorMap<?>> getEnabledColorMaps() {
-        return new ArrayList<>(entityColorMaps.values());
+    public List<ColorMap<?>> getEnabledColorMaps(boolean sorted) {
+        List<ColorMap<?>> list = new ArrayList<>(entityColorMaps.values());
+        if (sorted) {
+            Collections.sort(list,
+                    (m1, m2) -> m1.getApplicableEntityType().name().compareTo(m2.getApplicableEntityType().name()));
+        }
+        return list;
     }
 
     public MobColorer<?, ?> getColorer(EntityType type) {

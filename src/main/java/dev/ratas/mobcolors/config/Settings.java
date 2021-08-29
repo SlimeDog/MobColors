@@ -1,7 +1,7 @@
 package dev.ratas.mobcolors.config;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
@@ -105,8 +105,12 @@ public class Settings implements Reloadable {
         return mobSettings.get(type);
     }
 
-    public Collection<MobSettings> getEnabledMobSettings() {
-        return new ArrayList<>(mobSettings.values());
+    public List<MobSettings> getEnabledMobSettings(boolean sorted) {
+        List<MobSettings> list = new ArrayList<>(mobSettings.values());
+        if (sorted) {
+            Collections.sort(list, (s1, s2) -> s1.getEntityType().name().compareTo(s2.getEntityType().name()));
+        }
+        return list;
     }
 
     private boolean _getDebug() {
