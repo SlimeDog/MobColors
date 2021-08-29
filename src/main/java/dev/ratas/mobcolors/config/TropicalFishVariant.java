@@ -42,7 +42,7 @@ public class TropicalFishVariant extends Triple<TropicalFish.Pattern, DyeColor, 
         private TropicalFishVariant get(TropicalFish.Pattern pattern, DyeColor color1, DyeColor color2) {
             Map<DyeColor, Map<DyeColor, TropicalFishVariant>> map = variantsMap.computeIfAbsent(pattern,
                     c -> new EnumMap<>(DyeColor.class));
-            Map<DyeColor, TropicalFishVariant> map2 = map.get(color1);
+            Map<DyeColor, TropicalFishVariant> map2 = map.computeIfAbsent(color1, (c) -> new EnumMap<>(DyeColor.class));
             return map2.computeIfAbsent(color2, c -> new TropicalFishVariant(pattern, color1, color2));
         }
     }
