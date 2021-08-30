@@ -2,8 +2,10 @@ package dev.ratas.mobcolors.config.mob;
 
 import java.util.Collections;
 import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.bukkit.DyeColor;
 import org.bukkit.entity.Axolotl;
@@ -41,6 +43,9 @@ public final class MobTypes {
     }
     private static final TranslationLayer TRANSLATION_LAYER = new TranslationLayer();
     private static final EntityTypeTranslationLayer ENTITY_TYPE_TRANSLATION_LAYER = new EntityTypeTranslationLayer();
+    public static final List<String> ENTITY_TYPE_NAMES = Collections.unmodifiableList(MobTypes.ENTITY_COLOR_ENUMS
+            .keySet().stream().map(type -> type == EntityType.MUSHROOM_COW ? "mooshroom" : type.name().toLowerCase())
+            .collect(Collectors.toList()));
 
     private MobTypes() {
         throw new IllegalStateException("Cannot be initialized");

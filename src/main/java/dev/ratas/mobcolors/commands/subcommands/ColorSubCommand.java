@@ -28,8 +28,6 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
     private static final String PERMS = "mobcolors.region";
     private static final List<String> FIRST_OPTIONS = Arrays.asList("region", "distance");
     private static final List<String> OPTIONS = Arrays.asList("--all", "--leashed", "--pets", "--scan", "--mob");
-    private static final List<String> ENTITY_TYPE_NAMES = MobTypes.ENTITY_COLOR_ENUMS.keySet().stream()
-            .map(type -> type.name().toLowerCase()).collect(Collectors.toList());
     private final RegionMapper mapper;
     private final Settings settings;
     private final Messages messages;
@@ -75,7 +73,7 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
         }
         if (args.length > 4 || (args[0].equalsIgnoreCase("distance") && args.length > 2)) {
             if (args[args.length - 2].equalsIgnoreCase("--mob")) { // after --mob, need entity type
-                return StringUtil.copyPartialMatches(args[args.length - 1], ENTITY_TYPE_NAMES, list);
+                return StringUtil.copyPartialMatches(args[args.length - 1], MobTypes.ENTITY_TYPE_NAMES, list);
             }
             List<String> curOptions = new ArrayList<>(OPTIONS);
             for (String prevOption : getOptions(args)) {

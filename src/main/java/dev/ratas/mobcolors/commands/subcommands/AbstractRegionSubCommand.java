@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 
 import dev.ratas.mobcolors.commands.SimpleSubCommand;
 import dev.ratas.mobcolors.config.Messages;
+import dev.ratas.mobcolors.config.mob.MobTypes;
 import dev.ratas.mobcolors.region.DistanceRegionInfo;
 import dev.ratas.mobcolors.region.MultiReport;
 import dev.ratas.mobcolors.region.RectangularRegionInfo;
@@ -107,6 +108,7 @@ public abstract class AbstractRegionSubCommand extends SimpleSubCommand {
         boolean optionFound = false;
         for (String arg : args) {
             if (optionFound) {
+                arg = MobTypes.translateEntityTypeName(arg);
                 try {
                     return EntityType.valueOf(arg.toUpperCase());
                 } catch (IllegalArgumentException e) {
