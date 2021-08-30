@@ -275,6 +275,7 @@ mobs:
     enabled: false
     include-leashed: false
     include-pets: false
+    include-traders: false
     default:
       probabilities:
         brown: 0.25
