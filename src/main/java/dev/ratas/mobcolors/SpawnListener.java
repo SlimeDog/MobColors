@@ -14,6 +14,7 @@ import dev.ratas.mobcolors.coloring.settings.ColorReason;
 import dev.ratas.mobcolors.config.Settings;
 import dev.ratas.mobcolors.config.mob.MobTypes;
 import dev.ratas.mobcolors.config.world.WorldSettings;
+import dev.ratas.mobcolors.region.RegionOptions;
 
 public class SpawnListener implements Listener {
     private final Settings settings;
@@ -24,18 +25,19 @@ public class SpawnListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onSpawn(CreatureSpawnEvent event) {
-        handleEntity(event.getEntity(), event.getSpawnReason());
+        handleEntity(event.getEntity(), null, event.getSpawnReason());
     }
 
-    public boolean handleEntity(LivingEntity ent, SpawnReason spawnReason) {
+    public boolean handleEntity(LivingEntity ent, RegionOptions options, SpawnReason spawnReason) {
         Class<?> clazz = MobTypes.getInterestingClass(ent);
         if (clazz == null) {
             return false;
         }
-        return handleEntity(ent, spawnReason, clazz);
+        return handleEntity(ent, options, spawnReason, clazz);
     }
 
-    private <T> boolean handleEntity(LivingEntity ent, SpawnReason spawnReason, Class<T> entityClass) {
+    private <T> boolean handleEntity(LivingEntity ent, RegionOptions options, SpawnReason spawnReason,
+            Class<T> entityClass) {
         WorldSettings ws = settings.getWorldManager().getWorldSettings(ent.getWorld());
         if (ws == null) {
             return false;
@@ -48,7 +50,7 @@ public class SpawnListener implements Listener {
         @SuppressWarnings("unchecked")
         T t = (T) ent;
         ColorReason reason = ColorReason.fromSpawnReason(spawnReason);
-        ColorDecision decision = colorer.shouldColor(t, reason);
+        ColorDecision decision = colorer.shouldColor(t, options, reason);
         if (decision == ColorDecision.IGNORE) {
             return false;
         }
@@ -61,7 +63,7 @@ public class SpawnListener implements Listener {
             if (!(ent instanceof LivingEntity)) {
                 continue;
             }
-            handleEntity((LivingEntity) ent, SpawnReason.DEFAULT);
+            handleEntity((LivingEntity) ent, null, SpawnReason.DEFAULT);
         }
     }
 

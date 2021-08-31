@@ -49,7 +49,7 @@ public class RegionMapper extends AbstractRegionHandler {
     private void dealWithEntity(Entity entity, RegionOptions options, RegionInfo info, ScanReport<?> report,
             ScanReport<?> scanReport) {
         if (isApplicable(entity, options, info)) {
-            if (spawnListener.handleEntity((LivingEntity) entity, SpawnReason.CUSTOM)) {
+            if (spawnListener.handleEntity((LivingEntity) entity, options, SpawnReason.CUSTOM)) {
                 report.count(entity);
             }
             if (scanReport != null) {

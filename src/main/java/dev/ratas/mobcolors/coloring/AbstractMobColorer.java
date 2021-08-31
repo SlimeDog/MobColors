@@ -8,6 +8,7 @@ import dev.ratas.mobcolors.coloring.settings.ColorMap;
 import dev.ratas.mobcolors.coloring.settings.ColorDecision;
 import dev.ratas.mobcolors.coloring.settings.ColorReason;
 import dev.ratas.mobcolors.config.mob.MobSettings;
+import dev.ratas.mobcolors.region.RegionOptions;
 import dev.ratas.mobcolors.utils.PetUtils;
 
 public abstract class AbstractMobColorer<E, T> implements MobColorer<E, T> {
@@ -25,9 +26,10 @@ public abstract class AbstractMobColorer<E, T> implements MobColorer<E, T> {
     }
 
     @Override
-    public ColorDecision shouldColor(E entity, ColorReason reason) {
+    public ColorDecision shouldColor(E entity, RegionOptions options, ColorReason reason) {
         // TODO - fix casting below - it's not guaranteed to be safe
         Entity ent = (Entity) entity;
+        MobSettings settings = options != null ? this.settings.wrapWith(options) : this.settings;
         if (!settings.shouldIncludePets() && PetUtils.isPet(ent)) {
             return ColorDecision.IGNORE;
         }
