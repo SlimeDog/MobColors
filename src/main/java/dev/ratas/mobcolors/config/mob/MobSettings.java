@@ -54,4 +54,17 @@ public class MobSettings {
         return Collections.unmodifiableCollection(colorMaps.values());
     }
 
+    public MobSettings wrapWith(boolean includeLeashed, boolean includePets) {
+        return new MobSettingsWrapper(this, includeLeashed, includePets);
+    }
+
+    private final class MobSettingsWrapper extends MobSettings {
+
+        private MobSettingsWrapper(MobSettings delegate, Boolean includeLeashed, Boolean includePets) {
+            super(delegate.type, delegate.colorMaps, includeLeashed != null ? includeLeashed : delegate.includeLeashed,
+                    includePets != null ? includePets : delegate.includePets);
+        }
+
+    }
+
 }
