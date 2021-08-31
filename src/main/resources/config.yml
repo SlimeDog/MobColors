@@ -337,11 +337,11 @@ mobs:
 # ========== PARROT ================================================================================
 # Minecraft vanilla color probabilities when spawned, per https://minecraft.fandom.com/wiki/Parrot.
 # The vanilla probabilities are subject to change upstream, and are listed here for reference only.
-#   red: 0.80
 #   blue: 0.20
-#   green: 0.20
 #   cyan: 0.20
 #   gray: 0.20
+#   green: 0.20
+#   red: 0.20
 #
   parrot:
     enabled: false
