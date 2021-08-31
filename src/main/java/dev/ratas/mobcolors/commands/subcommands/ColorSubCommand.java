@@ -19,6 +19,7 @@ import dev.ratas.mobcolors.config.mob.MobTypes;
 import dev.ratas.mobcolors.region.DistanceRegionInfo;
 import dev.ratas.mobcolors.region.RegionInfo;
 import dev.ratas.mobcolors.region.RegionMapper;
+import dev.ratas.mobcolors.region.RegionOptions;
 import dev.ratas.mobcolors.region.ScanReport;
 
 public class ColorSubCommand extends AbstractRegionSubCommand {
@@ -28,6 +29,8 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
     private static final String PERMS = "mobcolors.region";
     private static final List<String> FIRST_OPTIONS = Arrays.asList("region", "distance");
     private static final List<String> OPTIONS = Arrays.asList("--all", "--leashed", "--pets", "--scan", "--mob");
+    private static final List<String> LLAMA_OPTIONS = Arrays.asList("--all", "--leashed", "--pets", "--traders",
+            "--scan", "--mob");
     private final RegionMapper mapper;
     private final Settings settings;
     private final Messages messages;
@@ -75,13 +78,19 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
             if (args[args.length - 2].equalsIgnoreCase("--mob")) { // after --mob, need entity type
                 return StringUtil.copyPartialMatches(args[args.length - 1], MobTypes.ENTITY_TYPE_NAMES, list);
             }
-            List<String> curOptions = new ArrayList<>(OPTIONS);
+            List<String> curOptions;
+            if (getTargetType(args) != EntityType.LLAMA) {
+                curOptions = new ArrayList<>(OPTIONS);
+            } else {
+                curOptions = new ArrayList<>(LLAMA_OPTIONS);
+            }
             for (String prevOption : getOptions(args)) {
                 curOptions.remove(prevOption);
                 if (prevOption.equalsIgnoreCase("--all")) {
                     curOptions.remove("--all");
                     curOptions.remove("--pets");
                     curOptions.remove("--leashed");
+                    curOptions.remove("--traders");
                 }
             }
             return StringUtil.copyPartialMatches(args[args.length - 1], curOptions, list);
@@ -120,6 +129,7 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
         boolean ignoredUngenerated = !options.contains("--ungenerated");
         boolean showScan = options.contains("--scan");
         boolean specifyMob = options.contains("--mob");
+        boolean doTraders = options.contains("--all") || options.contains("--traders");
         EntityType targetType;
         if (specifyMob) {
             targetType = getTargetType(args);
@@ -142,6 +152,7 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
         if (info == null) {
             return true;
         }
+        RegionOptions regionOptions = new RegionOptions(targetType, !doPets, !doLeashed, !doTraders);
         long updateTicks = settings.ticksBetweenLongTaskUpdates();
         String msg = isRegion
                 ? messages.getStartingToColorRegionMessage(info.getWorld(), info.getStartChunkX() >> 5,
@@ -149,10 +160,11 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
                 : messages.getStartingToColorRadiusMessage(info.getWorld(),
                         ((DistanceRegionInfo) info).getMaxDistance(), updateTicks, targetType);
         sender.sendMessage(msg);
-        mapper.dyeEntitiesInRegion(info, doLeashed, doPets, updateTicks,
-                (done, total) -> sender.sendMessage(isRegion ? messages.getUpdateOnColorRegionMessage(done, total)
-                        : messages.getUpdateOnColorRadiusMessage(done, total)),
-                targetType, showScan).whenComplete((result, e) -> {
+        mapper.dyeEntitiesInRegion(
+                info, regionOptions, updateTicks, (done,
+                        total) -> sender.sendMessage(isRegion ? messages.getUpdateOnColorRegionMessage(done, total)
+                                : messages.getUpdateOnColorRadiusMessage(done, total)),
+                showScan).whenComplete((result, e) -> {
                     ScanReport<?> colorReport = result.getColoringReport();
                     int mobsCounted = countAllMobs(colorReport);
                     sender.sendMessage(

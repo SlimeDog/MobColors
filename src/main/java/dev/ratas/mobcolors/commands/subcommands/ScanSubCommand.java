@@ -18,6 +18,7 @@ import dev.ratas.mobcolors.config.Settings;
 import dev.ratas.mobcolors.config.mob.MobTypes;
 import dev.ratas.mobcolors.region.DistanceRegionInfo;
 import dev.ratas.mobcolors.region.RegionInfo;
+import dev.ratas.mobcolors.region.RegionOptions;
 import dev.ratas.mobcolors.region.RegionScanner;
 
 public class ScanSubCommand extends AbstractRegionSubCommand {
@@ -27,6 +28,8 @@ public class ScanSubCommand extends AbstractRegionSubCommand {
     private static final String PERMS = "mobcolors.scan";
     private static final List<String> FIRST_OPTIONS = Arrays.asList("region", "distance");
     private static final List<String> OPTIONS = Arrays.asList("--all", "--leashed", "--pets", "--mob");
+    private static final List<String> LLAMA_OPTIONS = Arrays.asList("--all", "--leashed", "--pets", "--traders",
+            "--scan", "--mob");
     private final RegionScanner scanner;
     private final Messages messages;
     private final Settings settings;
@@ -74,13 +77,19 @@ public class ScanSubCommand extends AbstractRegionSubCommand {
             if (args[args.length - 2].equalsIgnoreCase("--mob")) { // after --mob, need entity type
                 return StringUtil.copyPartialMatches(args[args.length - 1], MobTypes.ENTITY_TYPE_NAMES, list);
             }
-            List<String> curOptions = new ArrayList<>(OPTIONS);
+            List<String> curOptions;
+            if (getTargetType(args) != EntityType.LLAMA) {
+                curOptions = new ArrayList<>(OPTIONS);
+            } else {
+                curOptions = new ArrayList<>(LLAMA_OPTIONS);
+            }
             for (String prevOption : getOptions(args)) {
                 curOptions.remove(prevOption);
                 if (prevOption.equalsIgnoreCase("--all")) {
                     curOptions.remove("--all");
                     curOptions.remove("--pets");
                     curOptions.remove("--leashed");
+                    curOptions.remove("--traders");
                 }
             }
             return StringUtil.copyPartialMatches(args[args.length - 1], curOptions, list);
@@ -118,6 +127,7 @@ public class ScanSubCommand extends AbstractRegionSubCommand {
         boolean doPets = options.contains("--all") || options.contains("--pets");
         boolean ignoredUngenerated = !options.contains("--ungenerated");
         boolean specifyMob = options.contains("--mob");
+        boolean doTraders = options.contains("--all") || options.contains("--traders");
         EntityType targetType;
         if (specifyMob) {
             targetType = getTargetType(args);
@@ -136,6 +146,7 @@ public class ScanSubCommand extends AbstractRegionSubCommand {
         if (info == null) {
             return true;
         }
+        RegionOptions regionOptions = new RegionOptions(targetType, !doPets, !doLeashed, !doTraders);
         long updateTicks = settings.ticksBetweenLongTaskUpdates();
         String msg = isRegion
                 ? messages.getStartingToScanRegionMessage(info.getWorld(), info.getStartChunkX() >> 5,
@@ -143,11 +154,10 @@ public class ScanSubCommand extends AbstractRegionSubCommand {
                 : messages.getStartingToScanRadiusMessage(info.getWorld(), ((DistanceRegionInfo) info).getMaxDistance(),
                         updateTicks, targetType);
         sender.sendMessage(msg);
-        scanner.scanRegion(
-                info, doLeashed, doPets, updateTicks, (done,
-                        total) -> sender.sendMessage(isRegion ? messages.getUpdateOnScanRegionMessage(done, total)
-                                : messages.getUpdateOnScanRadiusMessage(done, total)),
-                targetType).whenComplete((report, e) -> {
+        scanner.scanRegion(info, regionOptions, updateTicks,
+                (done, total) -> sender.sendMessage(isRegion ? messages.getUpdateOnScanRegionMessage(done, total)
+                        : messages.getUpdateOnScanRadiusMessage(done, total)))
+                .whenComplete((report, e) -> {
                     int mobsCounted = countAllMobs(report);
                     if (!specifyMob) { // if mob specified, the one in showReport will suffice
                         sender.sendMessage(messages.getDoneScanningHeaderMessage(mobsCounted, report.getChunksCounted(),

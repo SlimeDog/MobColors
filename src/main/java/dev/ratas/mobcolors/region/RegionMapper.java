@@ -5,7 +5,6 @@ import java.util.function.BiConsumer;
 
 import org.bukkit.Chunk;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 
@@ -24,32 +23,32 @@ public class RegionMapper extends AbstractRegionHandler {
         this.scanner = scanner;
     }
 
-    public CompletableFuture<ColoringResults> dyeEntitiesInRegion(RegionInfo info, boolean doLeashed, boolean doPets,
-            long updateTicks, BiConsumer<Long, Long> updaterConsumer, EntityType targetType, boolean showScan) {
+    public CompletableFuture<ColoringResults> dyeEntitiesInRegion(RegionInfo info, RegionOptions options,
+            long updateTicks, BiConsumer<Long, Long> updaterConsumer, boolean showScan) {
         CompletableFuture<ColoringResults> future = new CompletableFuture<>();
         ScanReport<?> report = new MultiReport();
         ScanReport<?> scanReport = showScan ? new MultiReport() : null;
         ColoringResults results = new ColoringResults(report, scanReport);
-        scheduler.scheduleTask(new SimpleRegionTaskDelegator(info,
-                (chunk) -> dyeMobInChunk(info, chunk, report, !doLeashed, !doPets, targetType, scanReport),
-                () -> future.complete(results), updateTicks, updaterConsumer));
+        scheduler.scheduleTask(
+                new SimpleRegionTaskDelegator(info, (chunk) -> dyeMobInChunk(info, chunk, report, options, scanReport),
+                        () -> future.complete(results), updateTicks, updaterConsumer));
         return future;
     }
 
-    private void dyeMobInChunk(RegionInfo info, Chunk chunk, ScanReport<?> report, boolean skipLeashed,
-            boolean skipPets, EntityType targetType, ScanReport<?> scanReport) {
+    private void dyeMobInChunk(RegionInfo info, Chunk chunk, ScanReport<?> report, RegionOptions options,
+            ScanReport<?> scanReport) {
         report.countAChunk();
         if (scanReport != null) {
             scanReport.countAChunk();
         }
         for (Entity entity : chunk.getEntities()) {
-            dealWithEntity(entity, targetType, skipLeashed, skipPets, info, report, scanReport);
+            dealWithEntity(entity, options, info, report, scanReport);
         }
     }
 
-    private void dealWithEntity(Entity entity, EntityType targetType, boolean skipLeashed, boolean skipPets,
-            RegionInfo info, ScanReport<?> report, ScanReport<?> scanReport) {
-        if (isApplicable(entity, targetType, info)) {
+    private void dealWithEntity(Entity entity, RegionOptions options, RegionInfo info, ScanReport<?> report,
+            ScanReport<?> scanReport) {
+        if (isApplicable(entity, options, info)) {
             if (spawnListener.handleEntity((LivingEntity) entity, SpawnReason.CUSTOM)) {
                 report.count(entity);
             }

@@ -8,6 +8,7 @@ import java.util.Map;
 import org.bukkit.entity.EntityType;
 
 import dev.ratas.mobcolors.coloring.settings.ColorMap;
+import dev.ratas.mobcolors.region.RegionOptions;
 
 public class MobSettings {
     private final EntityType type;
@@ -15,14 +16,21 @@ public class MobSettings {
     private final ColorMap<?> defaultColorMap;
     private final boolean includeLeashed;
     private final boolean includePets;
+    private final boolean includeTraders;
 
-    public MobSettings(EntityType type, Map<String, ColorMap<?>> colorMaps, boolean includeLeashed,
-            boolean includePets) {
+    public MobSettings(EntityType type, Map<String, ColorMap<?>> colorMaps, boolean includeLeashed, boolean includePets,
+            boolean includeTraders) {
+        this(type, colorMaps, includeLeashed, includePets, includeTraders, true);
+    }
+
+    private MobSettings(EntityType type, Map<String, ColorMap<?>> colorMaps, boolean includeLeashed,
+            boolean includePets, boolean includeTraders, boolean wrapMap) {
         this.type = type;
-        this.colorMaps = new HashMap<>(colorMaps);
+        this.colorMaps = wrapMap ? new HashMap<>(colorMaps) : colorMaps;
         this.defaultColorMap = colorMaps.get("default");
         this.includeLeashed = includeLeashed;
         this.includePets = includePets;
+        this.includeTraders = includeTraders;
     }
 
     public EntityType getEntityType() {
@@ -50,19 +58,26 @@ public class MobSettings {
         return includePets;
     }
 
+    public boolean shouldIncludeTraders() {
+        return includeTraders;
+    }
+
     public Collection<ColorMap<?>> getAllColorMaps() {
         return Collections.unmodifiableCollection(colorMaps.values());
     }
 
-    public MobSettings wrapWith(boolean includeLeashed, boolean includePets) {
-        return new MobSettingsWrapper(this, includeLeashed, includePets);
+    public MobSettings wrapWith(RegionOptions options) {
+        return new MobSettingsWrapper(this, !options.shouldIgnoreLeashed(), !options.shouldIgnorePets(),
+                !options.shouldIgnoreTraders());
     }
 
     private final class MobSettingsWrapper extends MobSettings {
 
-        private MobSettingsWrapper(MobSettings delegate, Boolean includeLeashed, Boolean includePets) {
+        private MobSettingsWrapper(MobSettings delegate, Boolean includeLeashed, Boolean includePets,
+                Boolean includeTraders) {
             super(delegate.type, delegate.colorMaps, includeLeashed != null ? includeLeashed : delegate.includeLeashed,
-                    includePets != null ? includePets : delegate.includePets);
+                    includePets != null ? includePets : delegate.includePets,
+                    includeTraders != null ? includeTraders : delegate.includeTraders, false);
         }
 
     }

@@ -1,15 +1,14 @@
 package dev.ratas.mobcolors.region;
 
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 
 import dev.ratas.mobcolors.config.mob.MobTypes;
 
 public abstract class AbstractRegionHandler {
 
-    protected boolean isApplicable(Entity entity, EntityType targetType, RegionInfo info) {
-        if (targetType != null && !entity.getType().equals(targetType)) {
+    protected boolean isApplicable(Entity entity, RegionOptions options, RegionInfo info) {
+        if (options.hasTargetType() && !entity.getType().equals(options.getTargetType())) {
             return false;
         }
         Class<?> clazz = MobTypes.getInterestingClass(entity);

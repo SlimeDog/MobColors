@@ -21,6 +21,7 @@ public class MobSettingsParser {
     private Map<String, ColorMap<?>> colorMaps;
     private boolean includeLeashed;
     private boolean includePets;
+    private boolean includeTaders;
 
     public MobSettingsParser(ConfigurationSection section, Logger logger) throws IllegalMobSettingsException {
         this.section = section;
@@ -75,6 +76,10 @@ public class MobSettingsParser {
         return section.getBoolean("include-pets");
     }
 
+    private boolean parseIncludeTraders() {
+        return section.getBoolean("include-traders");
+    }
+
     public void parse() throws IllegalMobSettingsException {
         enabled = parseEnabled();
         if (enabled) { // only parse the rest if needed
@@ -82,6 +87,9 @@ public class MobSettingsParser {
             colorMaps = parseMaps();
             includeLeashed = parseIncludeLeashed();
             includePets = parseIncludePets();
+            if (type == EntityType.LLAMA) {
+                includeTaders = parseIncludeTraders();
+            }
         }
         hasParsed = true;
     }
@@ -106,7 +114,7 @@ public class MobSettingsParser {
         if (!enabled) {
             return null;
         }
-        return new MobSettings(type, colorMaps, includeLeashed, includePets);
+        return new MobSettings(type, colorMaps, includeLeashed, includePets, includeTaders);
     }
 
 }
