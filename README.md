@@ -1,5 +1,11 @@
 ## MobColors
 
+⚠️ **MobColors** is under active development. It is not ready for prime time.
+
+⚠️ Feel free to peruse the code, and to give us feedback based on test server usage.
+
+⚠️ Please do not deploy to a production environment until formal release, which will be announced on SpigotMC.
+
 ### Overview
 
 **MobColors** manages mob colors and variants, on a per-world basis. The following mob-types may be managed:<br>
