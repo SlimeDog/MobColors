@@ -39,9 +39,6 @@ public class RegionScanner extends AbstractRegionHandler {
     }
 
     private void dealWithEntity(Entity entity, RegionOptions options, RegionInfo info, ScanReport<?> report) {
-        if (options.hasTargetType() && !entity.getType().equals(options.getTargetType())) {
-            return;
-        }
         if (isApplicable(entity, options, info)) {
             countApplicableEntity(entity, report);
         }

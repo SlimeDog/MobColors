@@ -8,7 +8,7 @@ import dev.ratas.mobcolors.config.mob.MobTypes;
 public abstract class AbstractRegionHandler {
 
     protected boolean isApplicable(Entity entity, RegionOptions options, RegionInfo info) {
-        if (options.hasTargetType() && !entity.getType().equals(options.getTargetType())) {
+        if (options.hasTargetType() && entity.getType() != options.getTargetType()) {
             return false;
         }
         Class<?> clazz = MobTypes.getInterestingClass(entity);
