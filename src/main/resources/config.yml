@@ -454,15 +454,13 @@ mobs:
 # ========== SHULKER ===============================================================================
 # Minecraft vanilla color probabilities when spawned, per https://minecraft.fandom.com/wiki/Shulker.
 # The vanilla probabilities are subject to change upstream, and are listed here for reference only.
-#   white: 0.81836
-#   gray: 0.05
-#   light_gray: 0.05
-#   black: 0.05
-#   brown: 0.03
-#   pink: 0.00164
+#   default: 1.00
+# Shulkers spawn in a unique lavender default color, but may be dyed with the standard dye colors.
 # Any of the 16 standard dye colors may be used:
 #    black, red, green, brown, blue, purple, cyan, light_gray
 #    gray, pink, lime, yellow, light_blue, magenta, orange, white
+#
+# A different default color-scheme may be specified, if desired.
 #
   shulker:
     enabled: false
@@ -470,30 +468,13 @@ mobs:
     include-pets: false
     default:
       probabilities:
-        white: 0.81836
-        gray: 0.05
-        light_gray: 0.05
-        black: 0.05
-        brown: 0.03
-        pink: 0.00164
-    black:
+        default: 1.00
+    black-and-red:
       probabilities:
-        white: 0.05
-        gray: 0.05
-        light_gray: 0.05
-        black: 0.81836
-        brown: 0.03
-        pink: 0.00164
+        red: 0.50
+        black: 0.50
       enabled-worlds:
-        - example_world_with_mostly_black_shulkers
-    monochrome:
-      probabilities:
-        white: 0.55
-        gray: 0.15
-        light_gray: 0.15
-        black: 0.15
-      enabled-worlds:
-        - example_world_with_only_monochrome_shulkers
+        - example_world_with_black_and_red_shulkers
 
 # ========== TROPICAL_FISH =========================================================================
 # Minecraft vanilla color/shape variants when spawned, per https://minecraft.fandom.com/wiki/Tropical_Fish.
