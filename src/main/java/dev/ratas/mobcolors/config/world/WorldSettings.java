@@ -28,6 +28,10 @@ public class WorldSettings {
         }
         colorMapsByName.put(map.getName(), map);
         colorers.put(map.getApplicableEntityType(), ColorerGenerator.generateColorer(map, settings, scheduler));
+        if (map.getApplicableEntityType() == EntityType.LLAMA) {
+            entityColorMaps.put(EntityType.TRADER_LLAMA, map);
+            colorers.put(EntityType.TRADER_LLAMA, colorers.get(EntityType.LLAMA));
+        }
     }
 
     public ColorMap<?> getColorMapByEntityType(EntityType type) {

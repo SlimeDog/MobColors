@@ -1,6 +1,7 @@
 package dev.ratas.mobcolors.coloring;
 
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 
 import dev.ratas.mobcolors.coloring.settings.ColorChoice;
@@ -34,6 +35,9 @@ public abstract class AbstractMobColorer<E, T> implements MobColorer<E, T> {
             return ColorDecision.IGNORE;
         }
         if (!settings.shouldIncludeLeashed() && ent instanceof LivingEntity && ((LivingEntity) ent).isLeashed()) {
+            return ColorDecision.IGNORE;
+        }
+        if (ent.getType() == EntityType.TRADER_LLAMA && !settings.shouldIncludeTraders()) {
             return ColorDecision.IGNORE;
         }
         return reason == ColorReason.SPAWN ? ColorDecision.RESCHEDULE : ColorDecision.COLOR;

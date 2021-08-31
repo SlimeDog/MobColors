@@ -33,11 +33,10 @@ public class SpawnListener implements Listener {
         if (clazz == null) {
             return false;
         }
-        return handleEntity(ent, options, spawnReason, clazz);
+        return handleEntityInternal(ent, options, spawnReason);
     }
 
-    private <T> boolean handleEntity(LivingEntity ent, RegionOptions options, SpawnReason spawnReason,
-            Class<T> entityClass) {
+    private <T> boolean handleEntityInternal(LivingEntity ent, RegionOptions options, SpawnReason spawnReason) {
         WorldSettings ws = settings.getWorldManager().getWorldSettings(ent.getWorld());
         if (ws == null) {
             return false;
