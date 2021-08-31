@@ -382,7 +382,7 @@ mobs:
 #     killer
 #     toast
 #
-# A different default color-scheme may be specified, if desired.
+# A non-vanilla default color-scheme may be specified, if desired.
 #
   rabbit:
     enabled: false
@@ -460,7 +460,7 @@ mobs:
 #    black, red, green, brown, blue, purple, cyan, light_gray
 #    gray, pink, lime, yellow, light_blue, magenta, orange, white
 #
-# A different default color-scheme may be specified, if desired.
+# A non-vanilla default color-scheme may be specified, if desired.
 #
   shulker:
     enabled: false
