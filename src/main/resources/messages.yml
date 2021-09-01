@@ -23,6 +23,8 @@ info-mob-colormap-default-disabled: "- vanilla default in all other worlds"
 info-no-colormaps-in-world: "There are no color-schemes enabled in world {world}"
 info-world-header: "The following color-schemes have been enabled in {world}:"
 info-colormap-in-world: "- {type}: {name}"
+scan-distance-too-big: "You are trying to scan an area that is too large. The maximum distance allowed is {max-distance}."
+color-distance-too-big: "You are trying to color an area that is too large. The maximum distance allowed is {max-distance}."
 
 updater-current-version: "You are running the latest version"
 updater-new-version: "A new version {VERSION} is available for download"

@@ -36,7 +36,7 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
     private final Messages messages;
 
     public ColorSubCommand(RegionMapper mapper, Settings settings, Messages messages) {
-        super(messages, NAME, USAGE_REGION + "\n" + USAGE_DISTANCE, PERMS, false);
+        super(settings, messages, NAME, USAGE_REGION + "\n" + USAGE_DISTANCE, PERMS, false);
         this.mapper = mapper;
         this.settings = settings;
         this.messages = messages;
@@ -145,7 +145,7 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
         }
         RegionInfo info;
         try {
-            info = getRegionInfo(sender, args, isRegion, ignoredUngenerated);
+            info = getRegionInfo(sender, args, isRegion, ignoredUngenerated, true);
         } catch (IllegalArgumentException e) {
             return false;
         }

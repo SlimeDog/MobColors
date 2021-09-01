@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 
 import dev.ratas.mobcolors.commands.SimpleSubCommand;
 import dev.ratas.mobcolors.config.Messages;
+import dev.ratas.mobcolors.config.Settings;
 import dev.ratas.mobcolors.config.mob.MobTypes;
 import dev.ratas.mobcolors.region.DistanceRegionInfo;
 import dev.ratas.mobcolors.region.MultiReport;
@@ -17,25 +18,28 @@ import dev.ratas.mobcolors.region.RegionInfo;
 import dev.ratas.mobcolors.region.ScanReport;
 
 public abstract class AbstractRegionSubCommand extends SimpleSubCommand {
+    private final Settings settings;
     private final Messages messages;
 
-    public AbstractRegionSubCommand(Messages messages, String name, String usage, String perms, boolean needsPlayer) {
-        this(messages, name, usage, perms, needsPlayer, true);
+    public AbstractRegionSubCommand(Settings settings, Messages messages, String name, String usage, String perms,
+            boolean needsPlayer) {
+        this(settings, messages, name, usage, perms, needsPlayer, true);
     }
 
-    public AbstractRegionSubCommand(Messages messages, String name, String usage, String perms, boolean needsPlayer,
-            boolean showOnTabComplete) {
+    public AbstractRegionSubCommand(Settings settings, Messages messages, String name, String usage, String perms,
+            boolean needsPlayer, boolean showOnTabComplete) {
         super(name, usage, perms, needsPlayer, showOnTabComplete);
+        this.settings = settings;
         this.messages = messages;
     }
 
     protected RegionInfo getRegionInfo(CommandSender sender, String[] args, boolean isRegion,
-            boolean ignoredUngenerated) {
+            boolean ignoredUngenerated, boolean isColor) {
         if (!isRegion) { // distance
             if (!(sender instanceof Player)) {
                 throw new IllegalArgumentException("Cannot use distance with console");
             }
-            return getDistanceRegionInfo((Player) sender, args, ignoredUngenerated);
+            return getDistanceRegionInfo((Player) sender, args, ignoredUngenerated, isColor);
         }
         if (args.length < 4 && sender instanceof Player) {
             if (args.length > 1) {
@@ -65,7 +69,8 @@ public abstract class AbstractRegionSubCommand extends SimpleSubCommand {
         return new RectangularRegionInfo(world, regionX, regionZ, ignoredUngenerated);
     }
 
-    protected RegionInfo getDistanceRegionInfo(Player player, String[] args, boolean ignoreUngenerated) {
+    protected RegionInfo getDistanceRegionInfo(Player player, String[] args, boolean ignoreUngenerated,
+            boolean isColor) {
         if (args.length < 2) {
             throw new IllegalArgumentException("Too few argumens. Expected at least 2. Got " + args.length);
         }
@@ -75,6 +80,12 @@ public abstract class AbstractRegionSubCommand extends SimpleSubCommand {
             dist = Double.parseDouble(arg);
         } catch (IllegalArgumentException e) {
             throw e;
+        }
+        double maxDist = settings.maxDistanceForCommands();
+        if (dist > maxDist) {
+            String msg = isColor ? messages.getColorDistanceTooBig(maxDist) : messages.getScanDistanceTooBig(maxDist);
+            player.sendMessage(msg);
+            return null;
         }
         return new DistanceRegionInfo(player.getLocation(), dist, ignoreUngenerated);
     }

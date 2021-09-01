@@ -158,4 +158,8 @@ public class Settings implements Reloadable {
         return provider.getBaseSettingsConfig().getLong("max-ms-per-tick-in-scheduler", 20L);
     }
 
+    public double maxDistanceForCommands() {
+        return provider.getBaseSettingsConfig().getDouble("distance-limit", 512.0D);
+    }
+
 }

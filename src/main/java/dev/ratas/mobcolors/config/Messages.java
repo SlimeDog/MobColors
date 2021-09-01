@@ -177,6 +177,18 @@ public class Messages extends CustomConfigHandler {
                 .replace("{type}", MobTypes.reverseTranslateTypeName(type)).replace("{name}", name);
     }
 
+    public String getScanDistanceTooBig(double maxDistance) {
+        return getMessage("scan-distance-too-big",
+                "You are trying to scan an area that is too large. The maximum distance allowed is {max-distance}.")
+                        .replace("{max-distance}", String.format("%.0f", maxDistance));
+    }
+
+    public String getColorDistanceTooBig(double maxDistance) {
+        return getMessage("color-distance-too-big",
+                "You are trying to color an area that is too large. The maximum distance allowed is {max-distance}.")
+                        .replace("{max-distance}", String.format("%.0f", maxDistance));
+    }
+
     public String updateCurrentVersion() {
         return getMessage("updater-current-version", "You are running the latest version");
     }

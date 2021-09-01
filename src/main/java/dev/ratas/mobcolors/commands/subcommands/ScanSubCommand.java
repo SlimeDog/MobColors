@@ -35,7 +35,7 @@ public class ScanSubCommand extends AbstractRegionSubCommand {
     private final Settings settings;
 
     public ScanSubCommand(RegionScanner scanner, Settings settings, Messages messages) {
-        super(messages, NAME, USAGE_REGION + "\n" + USAGE_DISTANCE, PERMS, false);
+        super(settings, messages, NAME, USAGE_REGION + "\n" + USAGE_DISTANCE, PERMS, false);
         this.scanner = scanner;
         this.settings = settings;
         this.messages = messages;
@@ -139,7 +139,7 @@ public class ScanSubCommand extends AbstractRegionSubCommand {
         }
         RegionInfo info;
         try {
-            info = getRegionInfo(sender, args, isRegion, ignoredUngenerated);
+            info = getRegionInfo(sender, args, isRegion, ignoredUngenerated, false);
         } catch (IllegalArgumentException e) {
             return false;
         }
