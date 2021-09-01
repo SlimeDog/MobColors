@@ -8,4 +8,6 @@ public interface TaskScheduler {
 
     void scheduleTask(LongTask task);
 
+    boolean hasRunningTask();
+
 }

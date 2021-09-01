@@ -76,4 +76,9 @@ public class SimpleTaskScheduler implements TaskScheduler, Runnable {
                 timeSpentOnTasks);
     }
 
+    @Override
+    public boolean hasRunningTask() {
+        return !queue.isEmpty();
+    }
+
 }
