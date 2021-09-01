@@ -10,6 +10,8 @@ import java.util.function.Function;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 
+import dev.ratas.mobcolors.config.mob.MobTypes;
+
 public class ScanReport<T> {
     private final Map<T, Integer> colors = new HashMap<>();
     private long countedChunks = 0;
@@ -42,8 +44,8 @@ public class ScanReport<T> {
         List<Map.Entry<T, Integer>> list = new ArrayList<>(colors.entrySet());
         Collections.sort(list, (e1, e2) -> {
             // special case of shulker defaults (for which the key is null)
-            String n1 = e1.getKey() != null ? e1.getKey().toString() : "default";
-            String n2 = e2.getKey() != null ? e2.getKey().toString() : "default";
+            String n1 = e1.getKey() != null ? MobTypes.reverseTranslate(e1.getKey().toString()) : "default";
+            String n2 = e2.getKey() != null ? MobTypes.reverseTranslate(e2.getKey().toString()) : "default";
             return n1.compareTo(n2);
         });
         return list;
