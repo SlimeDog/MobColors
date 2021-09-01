@@ -122,6 +122,10 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
         if (!hasValidArguments(sender, args)) {
             return false;
         }
+        if (mapper.isBusy()) {
+            sender.sendMessage(messages.getSchedulerBusyMessage());
+            return true;
+        }
         Set<String> options = getOptions(args);
         boolean isRegion = args[0].equalsIgnoreCase("region"); // otherwise distance
         boolean doLeashed = options.contains("--all") || options.contains("--leashed");

@@ -189,6 +189,10 @@ public class Messages extends CustomConfigHandler {
                         .replace("{max-distance}", String.format("%.0f", maxDistance));
     }
 
+    public String getSchedulerBusyMessage() {
+        return getMessage("scheduler-busy", "The task shceduler is busy right now. Please try again later.");
+    }
+
     public String updateCurrentVersion() {
         return getMessage("updater-current-version", "You are running the latest version");
     }

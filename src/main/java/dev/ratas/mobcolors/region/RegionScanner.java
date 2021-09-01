@@ -17,6 +17,10 @@ public class RegionScanner extends AbstractRegionHandler {
         this.scheduler = scheduler;
     }
 
+    public boolean isBusy() {
+        return scheduler.hasRunningTask();
+    }
+
     public CompletableFuture<ScanReport<?>> scanRegion(RegionInfo info, RegionOptions options, double updateProgress,
             BiConsumer<Long, Long> updaterConsumer) {
         CompletableFuture<ScanReport<?>> future = new CompletableFuture<>();

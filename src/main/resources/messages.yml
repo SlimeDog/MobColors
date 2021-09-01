@@ -25,6 +25,7 @@ info-world-header: "The following color-schemes have been enabled in {world}:"
 info-colormap-in-world: "- {type}: {name}"
 scan-distance-too-big: "You are trying to scan an area that is too large. The maximum distance allowed is {max-distance}."
 color-distance-too-big: "You are trying to color an area that is too large. The maximum distance allowed is {max-distance}."
+scheduler-busy: "The task shceduler is busy right now. Please try again later."
 
 updater-current-version: "You are running the latest version"
 updater-new-version: "A new version {VERSION} is available for download"

@@ -121,6 +121,10 @@ public class ScanSubCommand extends AbstractRegionSubCommand {
         if (!hasValidArguments(sender, args)) {
             return false;
         }
+        if (scanner.isBusy()) {
+            sender.sendMessage(messages.getSchedulerBusyMessage());
+            return true;
+        }
         boolean isRegion = args[0].equalsIgnoreCase("region");
         Set<String> options = getOptions(args);
         boolean doLeashed = options.contains("--all") || options.contains("--leashed");

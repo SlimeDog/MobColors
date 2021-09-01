@@ -23,6 +23,10 @@ public class RegionMapper extends AbstractRegionHandler {
         this.scanner = scanner;
     }
 
+    public boolean isBusy() {
+        return scheduler.hasRunningTask();
+    }
+
     public CompletableFuture<ColoringResults> dyeEntitiesInRegion(RegionInfo info, RegionOptions options,
             double updateProgress, BiConsumer<Long, Long> updaterConsumer, boolean showScan) {
         CompletableFuture<ColoringResults> future = new CompletableFuture<>();
