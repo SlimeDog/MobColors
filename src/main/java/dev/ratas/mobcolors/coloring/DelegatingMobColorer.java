@@ -37,7 +37,7 @@ public class DelegatingMobColorer<E, T> extends AbstractMobColorer<E, T> {
 
     private void colorInternal(E entity, T color) {
         try {
-            setter.accept(entity, rollColor().getColor());
+            setter.accept(entity, color);
         } catch (RuntimeException e) {
             e.printStackTrace();
         }
