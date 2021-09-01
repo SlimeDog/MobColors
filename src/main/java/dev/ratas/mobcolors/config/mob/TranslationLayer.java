@@ -9,7 +9,6 @@ import org.bukkit.entity.Cat;
 import org.bukkit.entity.Fox;
 import org.bukkit.entity.Llama;
 import org.bukkit.entity.Rabbit;
-import org.bukkit.entity.Shulker;
 import org.bukkit.entity.TropicalFish;
 
 import dev.ratas.mobcolors.config.HorseVariant;
@@ -39,7 +38,8 @@ public class TranslationLayer {
             translatedName = fixRabbitTypeNames(origName);
         } else if (TropicalFishVariant.class.isAssignableFrom(clazz)) {
             translatedName = fixTropicalFishNames(origName);
-        } else if (Shulker.class.isAssignableFrom(clazz)) {
+        } else if (DyeColor.class.isAssignableFrom(clazz)) {
+            // TODO - make sure this is actually a shulker!
             translatedName = fixShulkerNames(origName);
         } else {
             translatedName = origName;

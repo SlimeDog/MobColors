@@ -26,7 +26,7 @@ public class ColorSchemeParser<T> extends AbstractColorSchemeParser {
         for (String key : probabilitiesSection.getKeys(false)) {
             String variantName = MobTypes.fixTypeNames(key, clazz);
             T color;
-            if (variantName.equals(TranslationLayer.DEFAULT_SHULKER_TYPE_NAME.toLowerCase())) {
+            if (variantName == TranslationLayer.DEFAULT_SHULKER_TYPE_NAME) {
                 color = null; // special case for default shulker
             } else {
                 try {
