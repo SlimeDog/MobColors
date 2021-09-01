@@ -111,7 +111,7 @@ public abstract class AbstractRegionSubCommand extends SimpleSubCommand {
         long mobsCounted = countAllMobs(report);
         long chunks = report.getChunksCounted();
         sender.sendMessage(messages.getDoneScanningHeaderMessage(mobsCounted, chunks, report.getType()));
-        report.getColors().entrySet().forEach(
+        report.getSortedColors().forEach(
                 (entry) -> sender.sendMessage(messages.getDoneScanningItemMessage(entry.getKey(), entry.getValue())));
     }
 

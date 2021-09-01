@@ -1,6 +1,9 @@
 package dev.ratas.mobcolors.region;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -33,6 +36,12 @@ public class ScanReport<T> {
 
     public EntityType getType() {
         return type;
+    }
+
+    public List<Map.Entry<T, Integer>> getSortedColors() {
+        List<Map.Entry<T, Integer>> list = new ArrayList<>(colors.entrySet());
+        Collections.sort(list, (e1, e2) -> e1.getKey().toString().compareTo(e2.getKey().toString()));
+        return list;
     }
 
     public Map<T, Integer> getColors() {
