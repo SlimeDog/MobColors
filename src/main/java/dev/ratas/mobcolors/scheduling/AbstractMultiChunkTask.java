@@ -12,32 +12,9 @@ public abstract class AbstractMultiChunkTask implements LongTask {
 
     public AbstractMultiChunkTask(RegionInfo regionInfo) {
         this.regionInfo = regionInfo;
-        // this.world = world;
-        // this.minChunkX = minChunkX;
-        // this.minChunkZ = minChunkZ;
-        // this.maxChunkX = maxChunkX;
-        // this.maxChunkZ = maxChunkZ;
         this.curX = regionInfo.getStartChunkX();
         this.curZ = regionInfo.getStartChunkZ();
-        // this.totalChunks = (maxChunkX + 1 - minChunkX) * (maxChunkZ + 1 - minChunkZ);
-        // this.ignoreUngenerated = ignoreUngenerated;
     }
-
-    // public int getMinChunkX() {
-    // return minChunkX;
-    // }
-
-    // public int getMaxChunkX() {
-    // return maxChunkX;
-    // }
-
-    // public int getMinChunkZ() {
-    // return minChunkZ;
-    // }
-
-    // public int getMaxChunkZ() {
-    // return maxChunkZ;
-    // }
 
     public Chunk getCurrentChunk() {
         return regionInfo.getWorld().getChunkAt(curX, curZ);
