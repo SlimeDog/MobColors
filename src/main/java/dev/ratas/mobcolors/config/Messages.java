@@ -129,6 +129,8 @@ public class Messages extends CustomConfigHandler {
             String enumName = ((Enum<?>) color).name().toLowerCase();
             enumName = MobTypes.reverseTranslate(enumName);
             return msg.replace("{color}", enumName);
+        } else if (color == null) { // shulker special case with default
+            return msg.replace("{color}", "default");
         } else {
             if (color instanceof HorseVariant) {
                 return msg.replace("{color}", ((HorseVariant) color).getName().toLowerCase());
