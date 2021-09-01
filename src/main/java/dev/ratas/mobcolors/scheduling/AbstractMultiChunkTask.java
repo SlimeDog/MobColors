@@ -8,7 +8,7 @@ public abstract class AbstractMultiChunkTask implements LongTask {
     private long chunksDone = 0;
     private int curX;
     private int curZ;
-    private long ticks = 0;
+    private double lastUpdateProgress = 0;
 
     public AbstractMultiChunkTask(RegionInfo regionInfo) {
         this.regionInfo = regionInfo;
@@ -84,8 +84,14 @@ public abstract class AbstractMultiChunkTask implements LongTask {
 
     @Override
     public void tickUpdate() {
-        if ((++ticks % getTicksForUpdate()) == 0) {
+        double nextProgress = lastUpdateProgress + getUpdateProgress();
+        double currentProgress = (double) getNumberOfPartsDone() / getNumberOfParts();
+        if (currentProgress >= nextProgress) {
             onUpdateTime();
+            while (lastUpdateProgress < currentProgress) { // in case we went from 0 to 51% with a 25% step,
+                                                           // don't update next tick but at 75%
+                lastUpdateProgress += getUpdateProgress();
+            }
         }
     }
 

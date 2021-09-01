@@ -41,38 +41,39 @@ public class Messages extends CustomConfigHandler {
                 MobTypes.reverseTranslateTypeName(type));
     }
 
-    public String getStartingToColorRegionMessage(World world, int x, int z, long updateTicks, EntityType type) {
+    public String getStartingToColorRegionMessage(World world, int x, int z, double updateProgress, EntityType type) {
         return getMessage("start-coloring-region",
-                "Starting to color {mob} in {world} for region {x}, {z} (updates every {update-ticks} ticks)")
+                "Starting to color {mob} in {world} for region {x}, {z} (updates every {update-progress}%)")
                         .replace("{world}", world.getName()).replace("{x}", String.valueOf(x))
-                        .replace("{z}", String.valueOf(z)).replace("{update-ticks}", String.valueOf(updateTicks))
-                        .replace("{update}", String.valueOf(updateTicks / 20L))
+                        .replace("{z}", String.valueOf(z))
+                        .replace("{update-progress}", String.format("%d", (int) updateProgress * 100))
+                        .replace("{update}", String.valueOf(updateProgress / 20L))
                         .replace("{mob}", type == null ? "total" : MobTypes.reverseTranslateTypeName(type));
     }
 
-    public String getStartingToColorRadiusMessage(World world, double distance, long updateTicks, EntityType type) {
+    public String getStartingToColorRadiusMessage(World world, double distance, double updateProgress,
+            EntityType type) {
         return getMessage("start-coloring-radius",
-                "Starting to color {mob} for radius {r} (updates every {update-ticks} ticks)")
+                "Starting to color {mob} for radius {r} (updates every {update-progress}%)")
                         .replace("{world}", world.getName()).replace("{r}", String.format("%.2f", distance))
-                        .replace("{update-ticks}", String.valueOf(updateTicks))
-                        .replace("{update}", String.valueOf(updateTicks / 20L))
+                        .replace("{update-progress}", String.format("%d", (int) updateProgress * 100))
+                        .replace("{update}", String.valueOf(updateProgress / 20L))
                         .replace("{mob}", type == null ? "total" : MobTypes.reverseTranslateTypeName(type));
     }
 
-    public String getStartingToScanRegionMessage(World world, int x, int z, long updateTicks) {
+    public String getStartingToScanRegionMessage(World world, int x, int z, double updateProgress) {
         return getMessage("start-scanning-region",
-                "Starting to scan mobs in {world} for region {x}, {z} (updates every {update-ticks} ticks)")
+                "Starting to scan mobs in {world} for region {x}, {z} (updates every {update-progress}%)")
                         .replace("{world}", world.getName()).replace("{x}", String.valueOf(x))
-                        .replace("{z}", String.valueOf(z)).replace("{update-ticks}", String.valueOf(updateTicks))
-                        .replace("{update}", String.valueOf(updateTicks / 20L));
+                        .replace("{z}", String.valueOf(z))
+                        .replace("{update-progress}", String.format("%d", (int) updateProgress * 100));
     }
 
-    public String getStartingToScanRadiusMessage(World world, double distance, long updateTicks, EntityType type) {
+    public String getStartingToScanRadiusMessage(World world, double distance, double updateProgress, EntityType type) {
         return getMessage("start-scanning-radius",
-                "Starting to scan {mob} for radius {r} (updates every {update-ticks} ticks)")
+                "Starting to scan {mob} for radius {r} (updates every {update-progress}%)")
                         .replace("{world}", world.getName()).replace("{r}", String.format("%.2f", distance))
-                        .replace("{update-ticks}", String.valueOf(updateTicks))
-                        .replace("{update}", String.valueOf(updateTicks / 20L))
+                        .replace("{update-progress}", String.format("%d", (int) updateProgress * 100))
                         .replace("{mob}", type == null ? "total" : MobTypes.reverseTranslateTypeName(type));
     }
 

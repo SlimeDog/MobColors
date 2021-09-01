@@ -138,8 +138,20 @@ public class Settings implements Reloadable {
         return provider.getBaseSettingsConfig().getBoolean("enable-metrics", true);
     }
 
-    public long ticksBetweenLongTaskUpdates() {
-        return provider.getBaseSettingsConfig().getLong("ticks-between-task-update", 40L);
+    public double colorDistanceUpdateProgress() {
+        return provider.getBaseSettingsConfig().getInt("report-distance-color-progress", 25) / 100.0;
+    }
+
+    public double scanDistanceUpdateProgress() {
+        return provider.getBaseSettingsConfig().getInt("report-distance-scan-progress", 25) / 100.0;
+    }
+
+    public double colorRegionUpdateProgress() {
+        return provider.getBaseSettingsConfig().getInt("report-region-color-progress", 5) / 100.0;
+    }
+
+    public double scanRegionUpdateProgress() {
+        return provider.getBaseSettingsConfig().getInt("report-region-scan-progress", 10) / 100.0;
     }
 
     public long maxMsPerTickInScheduler() {

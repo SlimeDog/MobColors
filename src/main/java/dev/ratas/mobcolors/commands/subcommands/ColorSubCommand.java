@@ -153,15 +153,16 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
             return true;
         }
         RegionOptions regionOptions = new RegionOptions(targetType, !doPets, !doLeashed, !doTraders);
-        long updateTicks = settings.ticksBetweenLongTaskUpdates();
+        double updateProgress = isRegion ? settings.colorRegionUpdateProgress()
+                : settings.colorDistanceUpdateProgress();
         String msg = isRegion
                 ? messages.getStartingToColorRegionMessage(info.getWorld(), info.getStartChunkX() >> 5,
-                        info.getStartChunkZ() >> 5, updateTicks, targetType)
+                        info.getStartChunkZ() >> 5, updateProgress, targetType)
                 : messages.getStartingToColorRadiusMessage(info.getWorld(),
-                        ((DistanceRegionInfo) info).getMaxDistance(), updateTicks, targetType);
+                        ((DistanceRegionInfo) info).getMaxDistance(), updateProgress, targetType);
         sender.sendMessage(msg);
         mapper.dyeEntitiesInRegion(
-                info, regionOptions, updateTicks, (done,
+                info, regionOptions, updateProgress, (done,
                         total) -> sender.sendMessage(isRegion ? messages.getUpdateOnColorRegionMessage(done, total)
                                 : messages.getUpdateOnColorRadiusMessage(done, total)),
                 showScan).whenComplete((result, e) -> {

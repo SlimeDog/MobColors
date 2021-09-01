@@ -10,20 +10,20 @@ import dev.ratas.mobcolors.region.RegionInfo;
 public class SimpleRegionTaskDelegator extends AbstractMultiChunkTask {
     private final Consumer<Chunk> chunkConsumer;
     private final Runnable onCompletion;
-    private final long updateTicks;
+    private final double updatePgoress;
     private final BiConsumer<Long, Long> onUpdate;
 
     public SimpleRegionTaskDelegator(RegionInfo info, Consumer<Chunk> chunkConsumer, Runnable onCompletion,
-            long updateTicks, BiConsumer<Long, Long> onUpdate) {
-        this(info, chunkConsumer, onCompletion, updateTicks, onUpdate, false);
+            double updateProgress, BiConsumer<Long, Long> onUpdate) {
+        this(info, chunkConsumer, onCompletion, updateProgress, onUpdate, false);
     }
 
     public SimpleRegionTaskDelegator(RegionInfo info, Consumer<Chunk> chunkConsumer, Runnable onCompletion,
-            long updateTicks, BiConsumer<Long, Long> onUpdate, boolean ignoreUngenerated) {
+            double updateProgress, BiConsumer<Long, Long> onUpdate, boolean ignoreUngenerated) {
         super(info);
         this.chunkConsumer = chunkConsumer;
         this.onCompletion = onCompletion;
-        this.updateTicks = updateTicks;
+        this.updatePgoress = updateProgress;
         this.onUpdate = onUpdate;
     }
 
@@ -42,8 +42,8 @@ public class SimpleRegionTaskDelegator extends AbstractMultiChunkTask {
     }
 
     @Override
-    public long getTicksForUpdate() {
-        return updateTicks;
+    public double getUpdateProgress() {
+        return updatePgoress;
     }
 
     @Override

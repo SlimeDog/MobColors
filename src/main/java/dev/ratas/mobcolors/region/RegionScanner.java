@@ -17,7 +17,7 @@ public class RegionScanner extends AbstractRegionHandler {
         this.scheduler = scheduler;
     }
 
-    public CompletableFuture<ScanReport<?>> scanRegion(RegionInfo info, RegionOptions options, long updateTicks,
+    public CompletableFuture<ScanReport<?>> scanRegion(RegionInfo info, RegionOptions options, double updateProgress,
             BiConsumer<Long, Long> updaterConsumer) {
         CompletableFuture<ScanReport<?>> future = new CompletableFuture<>();
         ScanReport<?> report;
@@ -27,7 +27,7 @@ public class RegionScanner extends AbstractRegionHandler {
             report = new ScanReport<>(options.getTargetType(), MobTypes.getFunctionForType(options.getTargetType()));
         }
         scheduler.scheduleTask(new SimpleRegionTaskDelegator(info, (chunk) -> checkChunk(info, chunk, report, options),
-                () -> future.complete(report), updateTicks, updaterConsumer));
+                () -> future.complete(report), updateProgress, updaterConsumer));
         return future;
     }
 

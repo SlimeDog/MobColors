@@ -12,7 +12,7 @@ public interface LongTask {
 
     void onComplete();
 
-    long getTicksForUpdate();
+    double getUpdateProgress();
 
     void tickUpdate();
 

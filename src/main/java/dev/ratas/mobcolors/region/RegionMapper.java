@@ -24,14 +24,14 @@ public class RegionMapper extends AbstractRegionHandler {
     }
 
     public CompletableFuture<ColoringResults> dyeEntitiesInRegion(RegionInfo info, RegionOptions options,
-            long updateTicks, BiConsumer<Long, Long> updaterConsumer, boolean showScan) {
+            double updateProgress, BiConsumer<Long, Long> updaterConsumer, boolean showScan) {
         CompletableFuture<ColoringResults> future = new CompletableFuture<>();
         ScanReport<?> report = new MultiReport();
         ScanReport<?> scanReport = showScan ? new MultiReport() : null;
         ColoringResults results = new ColoringResults(report, scanReport);
         scheduler.scheduleTask(
                 new SimpleRegionTaskDelegator(info, (chunk) -> dyeMobInChunk(info, chunk, report, options, scanReport),
-                        () -> future.complete(results), updateTicks, updaterConsumer));
+                        () -> future.complete(results), updateProgress, updaterConsumer));
         return future;
     }
 
