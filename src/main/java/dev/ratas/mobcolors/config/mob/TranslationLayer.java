@@ -9,12 +9,14 @@ import org.bukkit.entity.Cat;
 import org.bukkit.entity.Fox;
 import org.bukkit.entity.Llama;
 import org.bukkit.entity.Rabbit;
+import org.bukkit.entity.Shulker;
 import org.bukkit.entity.TropicalFish;
 
 import dev.ratas.mobcolors.config.HorseVariant;
 import dev.ratas.mobcolors.config.TropicalFishVariant;
 
 public class TranslationLayer {
+    public static final String DEFAULT_SHULKER_TYPE_NAME = "#DEFAULT#";
     private final Map<String, String> usedTranslations = new HashMap<>();
     private final Map<String, String> reverseTranslations = new HashMap<>();
 
@@ -37,15 +39,19 @@ public class TranslationLayer {
             translatedName = fixRabbitTypeNames(origName);
         } else if (TropicalFishVariant.class.isAssignableFrom(clazz)) {
             translatedName = fixTropicalFishNames(origName);
+        } else if (Shulker.class.isAssignableFrom(clazz)) {
+            translatedName = fixShulkerNames(origName);
         } else {
             translatedName = origName;
         }
-        translatedName = translatedName.toUpperCase().replace("-", "_").replace(" ", "_");
         if (translatedName != origName && !origName.equalsIgnoreCase("random")) { // there was a translation made if
                                                                                   // it's a different instance
                                                                                   // but ignore the tropical fish random
+            translatedName = translatedName.toUpperCase().replace("-", "_").replace(" ", "_");
             usedTranslations.put(origName, translatedName);
             reverseTranslations.put(translatedName.toLowerCase(), origName);
+        } else {
+            translatedName = translatedName.toUpperCase().replace("-", "_").replace(" ", "_");
         }
         return translatedName;
     }
@@ -117,6 +123,13 @@ public class TranslationLayer {
             DyeColor color2 = colors[nr];
             return pattern.name() + TropicalFishVariant.DELIMITER + color1.name() + TropicalFishVariant.DELIMITER
                     + color2.name();
+        }
+        return name;
+    }
+
+    private String fixShulkerNames(String name) {
+        if (name.equalsIgnoreCase("default")) {
+            return DEFAULT_SHULKER_TYPE_NAME;
         }
         return name;
     }

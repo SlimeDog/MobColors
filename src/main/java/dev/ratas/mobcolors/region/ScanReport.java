@@ -40,7 +40,12 @@ public class ScanReport<T> {
 
     public List<Map.Entry<T, Integer>> getSortedColors() {
         List<Map.Entry<T, Integer>> list = new ArrayList<>(colors.entrySet());
-        Collections.sort(list, (e1, e2) -> e1.getKey().toString().compareTo(e2.getKey().toString()));
+        Collections.sort(list, (e1, e2) -> {
+            // special case of shulker defaults (for which the key is null)
+            String n1 = e1.getKey() != null ? e1.getKey().toString() : "default";
+            String n2 = e2.getKey() != null ? e2.getKey().toString() : "default";
+            return n1.compareTo(n2);
+        });
         return list;
     }
 
