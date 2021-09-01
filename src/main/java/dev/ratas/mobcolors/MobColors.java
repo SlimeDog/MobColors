@@ -40,7 +40,8 @@ public class MobColors extends JavaPlugin {
         if (platform.getSettings().enableMetrics()) {
             Metrics metrics = new Metrics(this, BSTATS_ID);
             for (EntityType type : MobTypes.ENTITY_COLOR_ENUMS.keySet()) {
-                metrics.addCustomChart(new SimplePie(String.format("mob_%s", type.name().toLowerCase()), () -> {
+                String name = MobTypes.reverseTranslateTypeName(type);
+                metrics.addCustomChart(new SimplePie(String.format("mob_%s", name), () -> {
                     MobSettings ms = platform.getSettings().getSettings(type);
                     return ms == null ? "disabled" : "enabled";
                 }));
