@@ -459,6 +459,7 @@ mobs:
 # Any of the 16 standard dye colors may be used:
 #    black, red, green, brown, blue, purple, cyan, light_gray
 #    gray, pink, lime, yellow, light_blue, magenta, orange, white
+# as well as "default".
 #
 # A non-vanilla default color-scheme may be specified, if desired.
 #
