@@ -31,6 +31,11 @@ public class TropicalFishVariant extends Triple<TropicalFish.Pattern, DyeColor, 
                 DyeColor.valueOf(keys[2]));
     }
 
+    @Override
+    public String toString() {
+        return getName();
+    }
+
     public static TropicalFishVariant getVariant(TropicalFish fish) {
         return INSTANCE_TRACKER.get(fish.getPattern(), fish.getBodyColor(), fish.getPatternColor());
     }

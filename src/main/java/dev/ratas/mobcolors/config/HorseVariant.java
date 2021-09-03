@@ -19,6 +19,11 @@ public final class HorseVariant extends Pair<Horse.Color, Horse.Style> {
         return getOne().name() + "/" + getTwo().name();
     }
 
+    @Override
+    public String toString() {
+        return getName();
+    }
+
     public static HorseVariant valueOf(String name) {
         String[] keys = name.split(DELIMITER);
         int nr = keys.length;
