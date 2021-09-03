@@ -54,8 +54,8 @@ public class Messages extends CustomConfigHandler {
     public String getStartingToColorRadiusMessage(World world, double distance, double updateProgress,
             EntityType type) {
         return getMessage("start-coloring-radius",
-                "Starting to color {mob} for radius {r} (updates every {update-progress}%)")
-                        .replace("{world}", world.getName()).replace("{r}", String.format("%.2f", distance))
+                "Starting to color {mob} for radius {d} (updates every {update-progress}%)")
+                        .replace("{world}", world.getName()).replace("{d}", String.format("%.2f", distance))
                         .replace("{update-progress}", String.format("%d", (int) updateProgress * 100))
                         .replace("{update}", String.valueOf(updateProgress / 20L))
                         .replace("{mob}", type == null ? "total" : MobTypes.reverseTranslateTypeName(type));
@@ -71,8 +71,8 @@ public class Messages extends CustomConfigHandler {
 
     public String getStartingToScanRadiusMessage(World world, double distance, double updateProgress, EntityType type) {
         return getMessage("start-scanning-radius",
-                "Starting to scan {mob} for radius {r} (updates every {update-progress}%)")
-                        .replace("{world}", world.getName()).replace("{r}", String.format("%.2f", distance))
+                "Starting to scan {mob} for radius {d} (updates every {update-progress}%)")
+                        .replace("{world}", world.getName()).replace("{d}", String.format("%.2f", distance))
                         .replace("{update-progress}", String.format("%d", (int) updateProgress * 100))
                         .replace("{mob}", type == null ? "total" : MobTypes.reverseTranslateTypeName(type));
     }
@@ -111,9 +111,9 @@ public class Messages extends CustomConfigHandler {
     }
 
     public String getDoneColoringRadiusMessage(long count, long chunks, double distance) {
-        return getMessage("done-coloring-radius", "Coloring completed. Colored {count} mobs in radius {r}")
+        return getMessage("done-coloring-radius", "Coloring completed. Colored {count} mobs in radius {d}")
                 .replace("{count}", String.valueOf(count)).replace("{chunks}", String.valueOf(chunks))
-                .replace("{r}", String.format("%.2f", distance));
+                .replace("{d}", String.format("%.2f", distance));
     }
 
     public String getDoneScanningHeaderMessage(long count, long chunks, EntityType type) {
@@ -200,8 +200,8 @@ public class Messages extends CustomConfigHandler {
     }
 
     public String updateNewVersionAvailable(String version) {
-        return getMessage("updater-new-version", "A new version {VERSION} is available for download")
-                .replace("{VERSION}", version);
+        return getMessage("updater-new-version", "A new version {version} is available for download")
+                .replace("{version}", version);
     }
 
     public String updateInfoUnavailable() {

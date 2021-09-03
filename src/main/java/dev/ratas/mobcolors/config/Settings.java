@@ -147,11 +147,11 @@ public class Settings implements Reloadable {
     }
 
     public double colorRegionUpdateProgress() {
-        return provider.getBaseSettingsConfig().getInt("report-region-color-progress", 5) / 100.0;
+        return provider.getBaseSettingsConfig().getInt("report-region-color-progress", 10) / 100.0;
     }
 
     public double scanRegionUpdateProgress() {
-        return provider.getBaseSettingsConfig().getInt("report-region-scan-progress", 10) / 100.0;
+        return provider.getBaseSettingsConfig().getInt("report-region-scan-progress", 25) / 100.0;
     }
 
     public long maxMsPerTickInScheduler() {
