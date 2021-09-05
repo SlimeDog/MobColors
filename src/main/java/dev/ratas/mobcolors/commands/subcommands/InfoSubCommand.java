@@ -1,6 +1,7 @@
 package dev.ratas.mobcolors.commands.subcommands;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -15,14 +16,16 @@ import dev.ratas.mobcolors.commands.SimpleSubCommand;
 import dev.ratas.mobcolors.config.Messages;
 import dev.ratas.mobcolors.config.Settings;
 import dev.ratas.mobcolors.config.mob.MobSettings;
+import dev.ratas.mobcolors.config.mob.MobTypes;
 import dev.ratas.mobcolors.config.world.WorldSettings;
 import dev.ratas.mobcolors.utils.WorldDescriptor;
 import dev.ratas.mobcolors.utils.WorldProvider;
 
 public class InfoSubCommand extends SimpleSubCommand {
     private static final String NAME = "info";
-    private static final String USAGE = "/mobcolors info [world]";
+    private static final String USAGE = "/mobcolors info [world] --mob";
     private static final String PERMS = "mobcolors.info";
+    private static final List<String> OPTIONS = Collections.unmodifiableList(Arrays.asList("--mob"));
     private final Settings settings;
     private final WorldProvider worldProvider;
     private final Messages messages;
@@ -38,27 +41,35 @@ public class InfoSubCommand extends SimpleSubCommand {
     public List<String> getTabComletions(CommandSender sender, String[] args) {
         List<String> list = new ArrayList<>();
         if (args.length == 1) {
+            if (args[1].startsWith("--")) {
+                return StringUtil.copyPartialMatches(args[0], OPTIONS, list);
+            }
             return StringUtil.copyPartialMatches(args[0], worldProvider.getWorldNames(), list);
+        } else if (args.length == 2) {
+            return StringUtil.copyPartialMatches(args[1], OPTIONS, list);
+        } else if (args.length == 3 && args[1].equals("--mob")) {
+            return StringUtil.copyPartialMatches(args[args.length - 1], MobTypes.ENTITY_TYPE_NAMES, list);
         }
         return list;
     }
 
     @Override
     public boolean executeCommand(CommandSender sender, String[] args) {
+        EntityType targetType = getTargetType(args);
         if (args.length < 1) {
-            showEnabledColorMaps(sender);
+            showEnabledColorMaps(sender, targetType);
         } else {
             World world = worldProvider.getWorld(args[0]);
             if (world == null) {
                 sender.sendMessage(messages.getWorldNotFoundMessage(args[0]));
             } else {
-                showColorMapsInWorld(WorldDescriptor.wrap(world), sender);
+                showColorMapsInWorld(WorldDescriptor.wrap(world), sender, targetType);
             }
         }
         return true;
     }
 
-    private void showEnabledColorMaps(CommandSender sender) {
+    private void showEnabledColorMaps(CommandSender sender, EntityType targetType) {
         boolean foundEnabledColorMap = false;
         for (MobSettings mobSettings : settings.getEnabledMobSettings(true)) {
             List<EnabledColorMapInfo> enabledMaps = getEnabledColorMaps(mobSettings);
@@ -66,6 +77,9 @@ public class InfoSubCommand extends SimpleSubCommand {
                 continue;
             }
             EntityType type = mobSettings.getEntityType();
+            if (targetType != null && type != targetType) {
+                continue;
+            }
             sender.sendMessage(messages.getEnabledMobColorMapsHeaderMessage(type));
             for (EnabledColorMapInfo info : enabledMaps) {
                 sender.sendMessage(messages.getEnabledMobColorMapItemMessage(info.map.getName(), info.activeWorlds));
@@ -106,7 +120,7 @@ public class InfoSubCommand extends SimpleSubCommand {
         return activeWorlds;
     }
 
-    private void showColorMapsInWorld(WorldDescriptor world, CommandSender sender) {
+    private void showColorMapsInWorld(WorldDescriptor world, CommandSender sender, EntityType targetType) {
         WorldSettings worldSettings = settings.getWorldManager().getWorldSettings(world);
         if (worldSettings == null) {
             sender.sendMessage(messages.getNoColorMapsInWorldMessage(world));
@@ -114,7 +128,11 @@ public class InfoSubCommand extends SimpleSubCommand {
         }
         sender.sendMessage(messages.getWorldColorMapsHeaderMessage(world));
         for (ColorMap<?> map : worldSettings.getEnabledColorMaps(true)) {
-            sender.sendMessage(messages.getWorldColorMapItemMessage(map.getApplicableEntityType(), map.getName()));
+            EntityType type = map.getApplicableEntityType();
+            if (targetType != null && type != targetType) {
+                continue;
+            }
+            sender.sendMessage(messages.getWorldColorMapItemMessage(type, map.getName()));
         }
     }
 
