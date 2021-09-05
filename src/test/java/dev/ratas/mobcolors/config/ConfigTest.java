@@ -6,9 +6,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.bukkit.DyeColor;
 import org.bukkit.World;
 import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.entity.Axolotl;
+import org.bukkit.entity.Cat;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Fox;
+import org.bukkit.entity.Horse;
+import org.bukkit.entity.Llama;
+import org.bukkit.entity.MushroomCow;
+import org.bukkit.entity.Parrot;
+import org.bukkit.entity.Rabbit;
+import org.bukkit.entity.TropicalFish;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -138,6 +148,39 @@ public class ConfigTest {
         String res = getString(messages, method);
         Assertions.assertFalse(res.contains("{"), "Message has unfilled placeholder for method: " + method.getName());
         Assertions.assertFalse(res.contains("}"), "Message has unfilled placeholder for method: " + method.getName());
+    }
+
+    @Test
+    @DisplayName("Checking that item conversion works for all correct types")
+    public void testItemMessageObjectConversion() {
+        ResourceProvider fileProvider = new FileResourceProvider(LOGGER);
+        Messages messages;
+        try {
+            messages = new Messages(fileProvider);
+        } catch (InvalidConfigurationException e) {
+            throw new IllegalStateException(e);
+        }
+        Object color = DyeColor.CYAN;
+        messages.getDoneScanningItemMessage(color, 10);
+        color = Axolotl.Variant.BLUE;
+        messages.getDoneScanningItemMessage(color, 10);
+        color = Cat.Type.ALL_BLACK;
+        messages.getDoneScanningItemMessage(color, 10);
+        color = Fox.Type.RED;
+        messages.getDoneScanningItemMessage(color, 10);
+        color = HorseVariant.getVariant(Horse.Color.BLACK, Horse.Style.BLACK_DOTS);
+        messages.getDoneScanningItemMessage(color, 10);
+        color = Llama.Color.GRAY;
+        messages.getDoneScanningItemMessage(color, 10);
+        color = MushroomCow.Variant.BROWN;
+        messages.getDoneScanningItemMessage(color, 10);
+        color = Parrot.Variant.GRAY;
+        messages.getDoneScanningItemMessage(color, 10);
+        color = Rabbit.Type.BROWN;
+        messages.getDoneScanningItemMessage(color, 10);
+        color = TropicalFishVariant.getVariant(TropicalFish.Pattern.SNOOPER, DyeColor.BROWN, DyeColor.LIGHT_GRAY);
+        messages.getDoneScanningItemMessage(color, 10);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> messages.getDoneScanningItemMessage("color", 10));
     }
 
 }
