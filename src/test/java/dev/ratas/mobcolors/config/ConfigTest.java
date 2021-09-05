@@ -19,6 +19,25 @@ public class ConfigTest {
     private static final Logger LOGGER = Logger.getLogger("[MobColors TEST]");
 
     @Test
+    @DisplayName("Checking that all public methods within Messages class return strings")
+    public void testMessagesAreStrings() {
+        ResourceProvider fileProvider = new FileResourceProvider(LOGGER);
+        Messages messages;
+        try {
+            messages = new Messages(fileProvider);
+        } catch (InvalidConfigurationException e) {
+            throw new IllegalStateException(e);
+        }
+        for (Method method : Messages.class.getDeclaredMethods()) {
+            if (!method.canAccess(messages)) { // only test public methods
+                continue;
+            }
+            Object res = invokeMethod(messages, method);
+            Assertions.assertTrue(res instanceof String, "Messages need to be strings");
+        }
+    }
+
+    @Test
     @DisplayName("Checking that messages are the same in code and in messages.yml")
     public void testConfigEntries() {
         ResourceProvider fileProvider = new FileResourceProvider(LOGGER);
@@ -40,20 +59,28 @@ public class ConfigTest {
     }
 
     private void checkMethod(Messages file, Messages code, Method method) {
+        String inFile = getString(file, method);
+        String inCode = getString(code, method);
+        Assertions.assertEquals(inFile, inCode, "Issue with " + method.getName() + " method");
+    }
+
+    // Can be used after the first test makes sure they are all strings
+    public String getString(Messages messages, Method method) {
+        return (String) invokeMethod(messages, method);
+    }
+
+    private Object invokeMethod(Messages messages, Method method) {
         Class<?>[] argTypes = method.getParameterTypes();
         Object[] args = new Object[argTypes.length];
         for (int i = 0; i < argTypes.length; i++) {
             args[i] = getArgOfType(argTypes[i]);
         }
-        Object inFile;
-        Object inCode;
+
         try {
-            inFile = method.invoke(file, args);
-            inCode = method.invoke(code, args);
+            return method.invoke(messages, args);
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
             throw new IllegalStateException(e);
         }
-        Assertions.assertEquals(inFile, inCode, "Issue with " + method.getName() + " method");
     }
 
     private Object getArgOfType(Class<?> clazz) {
@@ -86,13 +113,31 @@ public class ConfigTest {
             list.add("<ArrayList Placeholder>");
             return list;
         }
-        throw new IllegalArgumentException("Do not know how to create an instance of " + clazz + " at test time "
-                + (String.class.isAssignableFrom(clazz)) + " " + (clazz.isAssignableFrom(String.class)) + " "
-                + (clazz == String.class) + " " + (clazz.equals(String.class)) + " "
-                + ("String".getClass().isAssignableFrom(clazz)) + " "
-                + ("String".getClass().isAssignableFrom("String".getClass())) + " "
-                + ("String".getClass().equals("String".getClass())) + " " + ("String".getClass() == "String".getClass())
-                + " ");
+        throw new IllegalArgumentException("Do not know how to create an instance of " + clazz + " at test time");
+    }
+
+    @Test
+    @DisplayName("Checking that no placeholders are left unfilled within messages")
+    public void testConfigUsesPlaceholders() {
+        ResourceProvider fileProvider = new FileResourceProvider(LOGGER);
+        Messages messages;
+        try {
+            messages = new Messages(fileProvider);
+        } catch (InvalidConfigurationException e) {
+            throw new IllegalStateException(e);
+        }
+        for (Method method : Messages.class.getDeclaredMethods()) {
+            if (!method.canAccess(messages)) { // only test public methods
+                continue;
+            }
+            checkMethodResult(messages, method);
+        }
+    }
+
+    private void checkMethodResult(Messages messages, Method method) {
+        String res = getString(messages, method);
+        Assertions.assertFalse(res.contains("{"), "Message has unfilled placeholder for method: " + method.getName());
+        Assertions.assertFalse(res.contains("}"), "Message has unfilled placeholder for method: " + method.getName());
     }
 
 }
