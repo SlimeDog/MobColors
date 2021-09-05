@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Test;
 
 import dev.ratas.mobcolors.config.abstraction.ResourceProvider;
 
-public class ConfigTest {
+public class MessagesTests {
     private static final Logger LOGGER = Logger.getLogger("[MobColors TEST]");
 
     @Test
@@ -49,7 +49,7 @@ public class ConfigTest {
 
     @Test
     @DisplayName("Checking that messages are the same in code and in messages.yml")
-    public void testConfigEntries() {
+    public void testParityOfMessageEntries() {
         ResourceProvider fileProvider = new FileResourceProvider(LOGGER);
         ResourceProvider dummyProvider = new DummyResourceProvider(LOGGER);
         Messages fileMessages;
@@ -128,7 +128,7 @@ public class ConfigTest {
 
     @Test
     @DisplayName("Checking that no placeholders are left unfilled within messages")
-    public void testConfigUsesPlaceholders() {
+    public void testMesagesUsesPlaceholders() {
         ResourceProvider fileProvider = new FileResourceProvider(LOGGER);
         Messages messages;
         try {
