@@ -66,15 +66,9 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
                 return StringUtil.copyPartialMatches(args[0], options, list);
             }
         }
-        if (args.length == 2) {
-            if (args[0].equalsIgnoreCase("region")) {
-                return StringUtil.copyPartialMatches(args[1],
-                        Bukkit.getWorlds().stream().map(World::getName).collect(Collectors.toList()), list);
-            } else {
-                return list; // no tab-completion for distance
-            }
-        }
-        if (args.length > 4 || (args[0].equalsIgnoreCase("distance") && args.length > 2)) {
+        if (shouldShowOptions(sender, args)) {
+            // (sender instanceof Player && args.length > 1) || args.length > 4
+            // || (args[0].equalsIgnoreCase("distance") && args.length > 2)) {
             if (args[args.length - 2].equalsIgnoreCase("--mob")) { // after --mob, need entity type
                 return StringUtil.copyPartialMatches(args[args.length - 1], MobTypes.ENTITY_TYPE_NAMES, list);
             }
@@ -94,8 +88,32 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
                 }
             }
             return StringUtil.copyPartialMatches(args[args.length - 1], curOptions, list);
+        } else if (args.length == 2) {
+            if (args[0].equalsIgnoreCase("region")) {
+                return StringUtil.copyPartialMatches(args[1],
+                        Bukkit.getWorlds().stream().map(World::getName).collect(Collectors.toList()), list);
+            } else {
+                return list; // no tab-completion for distance
+            }
         }
         return list;
+    }
+
+    private boolean shouldShowOptions(CommandSender sender, String[] args) {
+        if (sender instanceof Player) {
+            if (args.length > 1 && args[0].equalsIgnoreCase("region")) {
+                if ((args.length <= 4 && args[1].startsWith("--")) || args.length > 4) {
+                    return true;
+                }
+            }
+            return false;
+        } else {
+            if (args.length > 1 && args[0].equalsIgnoreCase("distance")) {
+                return args.length >= 3;
+            } else {
+                return args.length > 4;
+            }
+        }
     }
 
     private boolean hasValidArguments(CommandSender sender, String[] args) {
