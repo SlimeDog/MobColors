@@ -35,7 +35,11 @@ public final class HorseVariant extends Pair<Horse.Color, Horse.Style> {
     }
 
     public static HorseVariant getVariant(Horse horse) {
-        return INSTANCE_TRACKER.get(horse.getColor(), horse.getStyle());
+        return getVariant(horse.getColor(), horse.getStyle());
+    }
+
+    public static HorseVariant getVariant(Horse.Color color, Horse.Style style) {
+        return INSTANCE_TRACKER.get(color, style);
     }
 
     private static class InstanceTracker {
