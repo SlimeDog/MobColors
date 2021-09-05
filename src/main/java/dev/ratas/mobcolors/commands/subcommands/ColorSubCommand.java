@@ -4,10 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-import org.bukkit.Bukkit;
-import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -21,6 +18,7 @@ import dev.ratas.mobcolors.region.RegionInfo;
 import dev.ratas.mobcolors.region.RegionMapper;
 import dev.ratas.mobcolors.region.RegionOptions;
 import dev.ratas.mobcolors.region.ScanReport;
+import dev.ratas.mobcolors.utils.WorldProvider;
 
 public class ColorSubCommand extends AbstractRegionSubCommand {
     private static final String NAME = "color";
@@ -32,12 +30,14 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
     private static final List<String> LLAMA_OPTIONS = Arrays.asList("--all", "--leashed", "--pets", "--traders",
             "--scan", "--mob");
     private final RegionMapper mapper;
+    private final WorldProvider worldProvider;
     private final Settings settings;
     private final Messages messages;
 
-    public ColorSubCommand(RegionMapper mapper, Settings settings, Messages messages) {
+    public ColorSubCommand(RegionMapper mapper, WorldProvider worldProvider, Settings settings, Messages messages) {
         super(settings, messages, NAME, USAGE_REGION + "\n" + USAGE_DISTANCE, PERMS, false);
         this.mapper = mapper;
+        this.worldProvider = worldProvider;
         this.settings = settings;
         this.messages = messages;
     }
@@ -90,8 +90,7 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
             return StringUtil.copyPartialMatches(args[args.length - 1], curOptions, list);
         } else if (args.length == 2) {
             if (args[0].equalsIgnoreCase("region")) {
-                return StringUtil.copyPartialMatches(args[1],
-                        Bukkit.getWorlds().stream().map(World::getName).collect(Collectors.toList()), list);
+                return StringUtil.copyPartialMatches(args[1], worldProvider.getWorldNames(), list);
             } else {
                 return list; // no tab-completion for distance
             }
