@@ -4,29 +4,14 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.logging.Logger;
 
-import org.bukkit.plugin.java.JavaPlugin;
+public interface ResourceProvider {
 
-public class ResourceProvider {
-    private final JavaPlugin plugin;
+    File getDataFolder();
 
-    public ResourceProvider(JavaPlugin plugin) {
-        this.plugin = plugin;
-    }
+    InputStream getResource(String filename);
 
-    public File getDataFolder() {
-        return plugin.getDataFolder();
-    }
+    void saveResource(String filename, boolean force);
 
-    public InputStream getResource(String filename) {
-        return plugin.getResource(filename);
-    }
+    Logger getLogger();
 
-    public void saveResource(String filename, boolean force) {
-        plugin.saveResource(filename, force);
-    }
-
-    public Logger getLogger() {
-        return plugin.getLogger();
-    }
-    
 }

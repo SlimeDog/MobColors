@@ -6,6 +6,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import dev.ratas.mobcolors.commands.ParentCommand;
+import dev.ratas.mobcolors.config.abstraction.PluginResourceProvider;
 import dev.ratas.mobcolors.config.abstraction.ResourceProvider;
 import dev.ratas.mobcolors.config.abstraction.SettingsConfigProvider;
 import dev.ratas.mobcolors.config.mob.MobSettings;
@@ -22,7 +23,7 @@ public class MobColors extends JavaPlugin {
     @Override
     public void onEnable() {
         Scheduler scheduler = new Scheduler(this, this.getServer().getScheduler());
-        ResourceProvider resourceProvider = new ResourceProvider(this);
+        ResourceProvider resourceProvider = new PluginResourceProvider(this);
         SettingsConfigProvider settingsProvider = new SettingsConfigProvider(this);
         ListenerRegistrator listenerRegistrator = new ListenerRegistrator(this);
         VersionProvider versionProvider = new VersionProvider(this);
