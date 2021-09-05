@@ -42,39 +42,33 @@ public class Messages extends CustomConfigHandler {
     }
 
     public String getStartingToColorRegionMessage(World world, int x, int z, double updateProgress, EntityType type) {
-        return getMessage("start-coloring-region",
-                "Starting to color {mob} in {world} for region {x}, {z} (updates every {update-progress}%)")
-                        .replace("{world}", world.getName()).replace("{x}", String.valueOf(x))
-                        .replace("{z}", String.valueOf(z))
-                        .replace("{update-progress}", String.format("%d", (int) updateProgress * 100))
-                        .replace("{update}", String.valueOf(updateProgress / 20L))
-                        .replace("{mob}", type == null ? "total" : MobTypes.reverseTranslateTypeName(type));
+        return getMessage("start-coloring-region", "Starting to color {mob} in {world} for region {x}, {z}")
+                .replace("{world}", world.getName()).replace("{x}", String.valueOf(x)).replace("{z}", String.valueOf(z))
+                .replace("{update-progress}", String.format("%d", (int) updateProgress * 100))
+                .replace("{update}", String.valueOf(updateProgress / 20L))
+                .replace("{mob}", type == null ? "total" : MobTypes.reverseTranslateTypeName(type));
     }
 
     public String getStartingToColorRadiusMessage(World world, double distance, double updateProgress,
             EntityType type) {
-        return getMessage("start-coloring-distance",
-                "Starting to color {mob} for distance {d} (updates every {update-progress}%)")
-                        .replace("{world}", world.getName()).replace("{d}", String.format("%.2f", distance))
-                        .replace("{update-progress}", String.format("%d", (int) updateProgress * 100))
-                        .replace("{update}", String.valueOf(updateProgress / 20L))
-                        .replace("{mob}", type == null ? "total" : MobTypes.reverseTranslateTypeName(type));
+        return getMessage("start-coloring-distance", "Starting to color {mob} for distance {d}")
+                .replace("{world}", world.getName()).replace("{d}", String.format("%.2f", distance))
+                .replace("{update-progress}", String.format("%d", (int) updateProgress * 100))
+                .replace("{update}", String.valueOf(updateProgress / 20L))
+                .replace("{mob}", type == null ? "total" : MobTypes.reverseTranslateTypeName(type));
     }
 
     public String getStartingToScanRegionMessage(World world, int x, int z, double updateProgress) {
-        return getMessage("start-scanning-region",
-                "Starting to scan mobs in {world} for region {x}, {z} (updates every {update-progress}%)")
-                        .replace("{world}", world.getName()).replace("{x}", String.valueOf(x))
-                        .replace("{z}", String.valueOf(z))
-                        .replace("{update-progress}", String.format("%d", (int) updateProgress * 100));
+        return getMessage("start-scanning-region", "Starting to scan mobs in {world} for region {x}, {z}")
+                .replace("{world}", world.getName()).replace("{x}", String.valueOf(x)).replace("{z}", String.valueOf(z))
+                .replace("{update-progress}", String.format("%d", (int) updateProgress * 100));
     }
 
     public String getStartingToScanRadiusMessage(World world, double distance, double updateProgress, EntityType type) {
-        return getMessage("start-scanning-distance",
-                "Starting to scan {mob} for distance {d} (updates every {update-progress}%)")
-                        .replace("{world}", world.getName()).replace("{d}", String.format("%.2f", distance))
-                        .replace("{update-progress}", String.format("%d", (int) updateProgress * 100))
-                        .replace("{mob}", type == null ? "total" : MobTypes.reverseTranslateTypeName(type));
+        return getMessage("start-scanning-distance", "Starting to scan {mob} for distance {d}")
+                .replace("{world}", world.getName()).replace("{d}", String.format("%.2f", distance))
+                .replace("{update-progress}", String.format("%d", (int) updateProgress * 100))
+                .replace("{mob}", type == null ? "total" : MobTypes.reverseTranslateTypeName(type));
     }
 
     public String getUpdateOnColorRegionMessage(long done, long total) {
@@ -117,9 +111,10 @@ public class Messages extends CustomConfigHandler {
     }
 
     public String getDoneScanningHeaderMessage(long count, long chunks, EntityType type) {
-        return getMessage("done-scanning-header", "The scanning was done. Scanned {count} {type} in {chunks} chunks")
-                .replace("{count}", String.valueOf(count)).replace("{chunks}", String.valueOf(chunks))
-                .replace("{type}", type == null ? "total" : MobTypes.reverseTranslateTypeName(type));
+        return getMessage("done-scanning-header",
+                "Scanning completed. Scanned {count} {type} in {chunks} loaded chunks")
+                        .replace("{count}", String.valueOf(count)).replace("{chunks}", String.valueOf(chunks))
+                        .replace("{type}", type == null ? "total" : MobTypes.reverseTranslateTypeName(type));
     }
 
     public String getDoneScanningItemMessage(Object color, int amount) {
@@ -161,7 +156,7 @@ public class Messages extends CustomConfigHandler {
     }
 
     public String getMobColorMapDefaultDisabledMessage() {
-        return getMessage("info-mob-colormap-default-disabled", "- vanilla behavior for all other worlds");
+        return getMessage("info-mob-colormap-default-disabled", "- vanilla default in all other worlds");
     }
 
     public String getNoColorMapsInWorldMessage(World world) {
@@ -192,7 +187,7 @@ public class Messages extends CustomConfigHandler {
     }
 
     public String getSchedulerBusyMessage() {
-        return getMessage("scheduler-busy", "The task shceduler is busy right now. Please try again later.");
+        return getMessage("scheduler-busy", "The task scheduler is busy right now. Please try again later.");
     }
 
     public String updateCurrentVersion() {
