@@ -4,10 +4,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 import org.bukkit.DyeColor;
-import org.bukkit.World;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Axolotl;
 import org.bukkit.entity.Cat;
@@ -24,6 +24,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import dev.ratas.mobcolors.config.abstraction.ResourceProvider;
+import dev.ratas.mobcolors.utils.WorldDescriptor;
 
 public class MessagesTests {
     private static final Logger LOGGER = Logger.getLogger("[MobColors TEST]");
@@ -112,8 +113,8 @@ public class MessagesTests {
         if (clazz == EntityType.class) {
             return EntityType.AREA_EFFECT_CLOUD;
         }
-        if (clazz == World.class) {
-            return new NamedWorld("<World Name Placeholder>");
+        if (clazz == WorldDescriptor.class) {
+            return new WorldDescriptor(UUID.randomUUID(), "<World Name Placeholder>");
         }
         if (clazz == Object.class) {
             return EntityType.BEE;

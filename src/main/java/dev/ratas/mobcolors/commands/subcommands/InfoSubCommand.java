@@ -16,6 +16,7 @@ import dev.ratas.mobcolors.config.Messages;
 import dev.ratas.mobcolors.config.Settings;
 import dev.ratas.mobcolors.config.mob.MobSettings;
 import dev.ratas.mobcolors.config.world.WorldSettings;
+import dev.ratas.mobcolors.utils.WorldDescriptor;
 import dev.ratas.mobcolors.utils.WorldProvider;
 
 public class InfoSubCommand extends SimpleSubCommand {
@@ -51,7 +52,7 @@ public class InfoSubCommand extends SimpleSubCommand {
             if (world == null) {
                 sender.sendMessage(messages.getWorldNotFoundMessage(args[0]));
             } else {
-                showColorMapsInWorld(world, sender);
+                showColorMapsInWorld(WorldDescriptor.wrap(world), sender);
             }
         }
         return true;
@@ -105,7 +106,7 @@ public class InfoSubCommand extends SimpleSubCommand {
         return activeWorlds;
     }
 
-    private void showColorMapsInWorld(World world, CommandSender sender) {
+    private void showColorMapsInWorld(WorldDescriptor world, CommandSender sender) {
         WorldSettings worldSettings = settings.getWorldManager().getWorldSettings(world);
         if (worldSettings == null) {
             sender.sendMessage(messages.getNoColorMapsInWorldMessage(world));

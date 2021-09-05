@@ -3,13 +3,13 @@ package dev.ratas.mobcolors.config;
 import java.util.List;
 
 import org.bukkit.ChatColor;
-import org.bukkit.World;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.EntityType;
 
 import dev.ratas.mobcolors.config.abstraction.CustomConfigHandler;
 import dev.ratas.mobcolors.config.abstraction.ResourceProvider;
 import dev.ratas.mobcolors.config.mob.MobTypes;
+import dev.ratas.mobcolors.utils.WorldDescriptor;
 
 public class Messages extends CustomConfigHandler {
     private static final String NAME = "messages.yml";
@@ -41,7 +41,8 @@ public class Messages extends CustomConfigHandler {
                 MobTypes.reverseTranslateTypeName(type));
     }
 
-    public String getStartingToColorRegionMessage(World world, int x, int z, double updateProgress, EntityType type) {
+    public String getStartingToColorRegionMessage(WorldDescriptor world, int x, int z, double updateProgress,
+            EntityType type) {
         return getMessage("start-coloring-region", "Starting to color {mob} in {world} for region {x}, {z}")
                 .replace("{world}", world.getName()).replace("{x}", String.valueOf(x)).replace("{z}", String.valueOf(z))
                 .replace("{update-progress}", String.format("%d", (int) updateProgress * 100))
@@ -49,7 +50,7 @@ public class Messages extends CustomConfigHandler {
                 .replace("{mob}", type == null ? "total" : MobTypes.reverseTranslateTypeName(type));
     }
 
-    public String getStartingToColorRadiusMessage(World world, double distance, double updateProgress,
+    public String getStartingToColorRadiusMessage(WorldDescriptor world, double distance, double updateProgress,
             EntityType type) {
         return getMessage("start-coloring-distance", "Starting to color {mob} for distance {d}")
                 .replace("{world}", world.getName()).replace("{d}", String.format("%.2f", distance))
@@ -58,13 +59,14 @@ public class Messages extends CustomConfigHandler {
                 .replace("{mob}", type == null ? "total" : MobTypes.reverseTranslateTypeName(type));
     }
 
-    public String getStartingToScanRegionMessage(World world, int x, int z, double updateProgress) {
+    public String getStartingToScanRegionMessage(WorldDescriptor world, int x, int z, double updateProgress) {
         return getMessage("start-scanning-region", "Starting to scan mobs in {world} for region {x}, {z}")
                 .replace("{world}", world.getName()).replace("{x}", String.valueOf(x)).replace("{z}", String.valueOf(z))
                 .replace("{update-progress}", String.format("%d", (int) updateProgress * 100));
     }
 
-    public String getStartingToScanRadiusMessage(World world, double distance, double updateProgress, EntityType type) {
+    public String getStartingToScanRadiusMessage(WorldDescriptor world, double distance, double updateProgress,
+            EntityType type) {
         return getMessage("start-scanning-distance", "Starting to scan {mob} for distance {d}")
                 .replace("{world}", world.getName()).replace("{d}", String.format("%.2f", distance))
                 .replace("{update-progress}", String.format("%d", (int) updateProgress * 100))
@@ -159,12 +161,12 @@ public class Messages extends CustomConfigHandler {
         return getMessage("info-mob-colormap-default-disabled", "- vanilla default in all other worlds");
     }
 
-    public String getNoColorMapsInWorldMessage(World world) {
+    public String getNoColorMapsInWorldMessage(WorldDescriptor world) {
         return getMessage("info-no-colormaps-in-world", "There are no color-schemes enabled in world {world}")
                 .replace("{world}", world.getName());
     }
 
-    public String getWorldColorMapsHeaderMessage(World world) {
+    public String getWorldColorMapsHeaderMessage(WorldDescriptor world) {
         return getMessage("info-world-header", "The following color-schemes have been enabled in {world}:")
                 .replace("{world}", world.getName());
     }

@@ -153,10 +153,10 @@ public class ScanSubCommand extends AbstractRegionSubCommand {
         RegionOptions regionOptions = new RegionOptions(targetType, !doPets, !doLeashed, !doTraders);
         double updateProgress = isRegion ? settings.scanRegionUpdateProgress() : settings.scanDistanceUpdateProgress();
         String msg = isRegion
-                ? messages.getStartingToScanRegionMessage(info.getWorld(), info.getStartChunkX() >> 5,
+                ? messages.getStartingToScanRegionMessage(info.getWorldDescriptor(), info.getStartChunkX() >> 5,
                         info.getStartChunkZ() >> 5, updateProgress)
-                : messages.getStartingToScanRadiusMessage(info.getWorld(), ((DistanceRegionInfo) info).getMaxDistance(),
-                        updateProgress, targetType);
+                : messages.getStartingToScanRadiusMessage(info.getWorldDescriptor(),
+                        ((DistanceRegionInfo) info).getMaxDistance(), updateProgress, targetType);
         sender.sendMessage(msg);
         scanner.scanRegion(info, regionOptions, updateProgress,
                 (done, total) -> sender.sendMessage(isRegion ? messages.getUpdateOnScanRegionMessage(done, total)

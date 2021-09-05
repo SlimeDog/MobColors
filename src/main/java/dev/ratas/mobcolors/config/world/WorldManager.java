@@ -12,6 +12,7 @@ import org.bukkit.World;
 import dev.ratas.mobcolors.coloring.settings.ColorMap;
 import dev.ratas.mobcolors.config.mob.MobSettings;
 import dev.ratas.mobcolors.scheduling.abstraction.Scheduler;
+import dev.ratas.mobcolors.utils.WorldDescriptor;
 
 public class WorldManager {
     private final Map<String, WorldSettings> worldSettings = new HashMap<>();
@@ -49,6 +50,10 @@ public class WorldManager {
             WorldSettings ws = worldSettings.get(unNamedWorld.toLowerCase());
             ws.addScheme(defaultMap, settings, scheduler);
         }
+    }
+
+    public WorldSettings getWorldSettings(WorldDescriptor world) {
+        return getWorldSettings(world.getName());
     }
 
     public WorldSettings getWorldSettings(World world) {

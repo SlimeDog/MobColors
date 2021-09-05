@@ -160,9 +160,9 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
         double updateProgress = isRegion ? settings.colorRegionUpdateProgress()
                 : settings.colorDistanceUpdateProgress();
         String msg = isRegion
-                ? messages.getStartingToColorRegionMessage(info.getWorld(), info.getStartChunkX() >> 5,
+                ? messages.getStartingToColorRegionMessage(info.getWorldDescriptor(), info.getStartChunkX() >> 5,
                         info.getStartChunkZ() >> 5, updateProgress, targetType)
-                : messages.getStartingToColorRadiusMessage(info.getWorld(),
+                : messages.getStartingToColorRadiusMessage(info.getWorldDescriptor(),
                         ((DistanceRegionInfo) info).getMaxDistance(), updateProgress, targetType);
         sender.sendMessage(msg);
         mapper.dyeEntitiesInRegion(
