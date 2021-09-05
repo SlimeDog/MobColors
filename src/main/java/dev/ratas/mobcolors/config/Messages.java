@@ -53,8 +53,8 @@ public class Messages extends CustomConfigHandler {
 
     public String getStartingToColorRadiusMessage(World world, double distance, double updateProgress,
             EntityType type) {
-        return getMessage("start-coloring-radius",
-                "Starting to color {mob} for radius {d} (updates every {update-progress}%)")
+        return getMessage("start-coloring-distance",
+                "Starting to color {mob} for distance {d} (updates every {update-progress}%)")
                         .replace("{world}", world.getName()).replace("{d}", String.format("%.2f", distance))
                         .replace("{update-progress}", String.format("%d", (int) updateProgress * 100))
                         .replace("{update}", String.valueOf(updateProgress / 20L))
@@ -70,8 +70,8 @@ public class Messages extends CustomConfigHandler {
     }
 
     public String getStartingToScanRadiusMessage(World world, double distance, double updateProgress, EntityType type) {
-        return getMessage("start-scanning-radius",
-                "Starting to scan {mob} for radius {d} (updates every {update-progress}%)")
+        return getMessage("start-scanning-distance",
+                "Starting to scan {mob} for distance {d} (updates every {update-progress}%)")
                         .replace("{world}", world.getName()).replace("{d}", String.format("%.2f", distance))
                         .replace("{update-progress}", String.format("%d", (int) updateProgress * 100))
                         .replace("{mob}", type == null ? "total" : MobTypes.reverseTranslateTypeName(type));
@@ -86,7 +86,7 @@ public class Messages extends CustomConfigHandler {
 
     public String getUpdateOnColorRadiusMessage(long done, long total) {
         String percent = String.valueOf((done * 100) / total);
-        return getMessage("update-coloring-radius", "{done}/{total} chunks colored ({percent}%)")
+        return getMessage("update-coloring-distance", "{done}/{total} chunks colored ({percent}%)")
                 .replace("{done}", String.valueOf(done)).replace("{total}", String.valueOf(total))
                 .replace("{percent}", String.valueOf(percent));
     }
@@ -100,7 +100,7 @@ public class Messages extends CustomConfigHandler {
 
     public String getUpdateOnScanRadiusMessage(long done, long total) {
         String percent = String.valueOf((done * 100) / total);
-        return getMessage("update-scanning-radius", "{done}/{total} chunks scanned ({percent}%)")
+        return getMessage("update-scanning-distance", "{done}/{total} chunks scanned ({percent}%)")
                 .replace("{done}", String.valueOf(done)).replace("{total}", String.valueOf(total))
                 .replace("{percent}", String.valueOf(percent));
     }
@@ -111,7 +111,7 @@ public class Messages extends CustomConfigHandler {
     }
 
     public String getDoneColoringRadiusMessage(long count, long chunks, double distance) {
-        return getMessage("done-coloring-radius", "Coloring completed. Colored {count} mobs in radius {d}")
+        return getMessage("done-coloring-distance", "Coloring completed. Colored {count} mobs in distance {d}")
                 .replace("{count}", String.valueOf(count)).replace("{chunks}", String.valueOf(chunks))
                 .replace("{d}", String.format("%.2f", distance));
     }
