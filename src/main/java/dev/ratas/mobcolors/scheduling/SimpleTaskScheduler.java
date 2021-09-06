@@ -28,6 +28,8 @@ public class SimpleTaskScheduler implements TaskScheduler, Runnable {
             if (task.isDone()) {
                 queue.poll().onComplete();
                 totalTasksDone++;
+            } else {
+                task.tickUpdate();
             }
             atomicPartsDone++;
         }
