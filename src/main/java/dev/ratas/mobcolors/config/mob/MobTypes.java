@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 import org.bukkit.entity.Axolotl;
 import org.bukkit.entity.Cat;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Fox;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Llama;
@@ -24,7 +23,6 @@ import dev.ratas.mobcolors.config.TropicalFishVariant;
 
 public final class MobTypes {
     private static final TranslationLayer TRANSLATION_LAYER = new TranslationLayer();
-    private static final EntityTypeTranslationLayer ENTITY_TYPE_TRANSLATION_LAYER = new EntityTypeTranslationLayer();
     public static final List<String> ENTITY_TYPE_NAMES = Collections
             .unmodifiableList(Arrays.stream(MobType.values()).map(Enum::name).collect(Collectors.toList()));
 
@@ -116,14 +114,6 @@ public final class MobTypes {
 
     public static String reverseTranslate(String name) {
         return TRANSLATION_LAYER.reverseTranslate(name);
-    }
-
-    public static String translateEntityTypeName(String name) {
-        return ENTITY_TYPE_TRANSLATION_LAYER.attemptTranslation(name);
-    }
-
-    public static String reverseTranslateTypeName(EntityType type) {
-        return ENTITY_TYPE_TRANSLATION_LAYER.reverseTranslate(type);
     }
 
 }
