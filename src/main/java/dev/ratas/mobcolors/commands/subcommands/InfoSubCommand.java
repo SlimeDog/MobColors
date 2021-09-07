@@ -8,7 +8,6 @@ import java.util.List;
 
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.EntityType;
 import org.bukkit.util.StringUtil;
 
 import dev.ratas.mobcolors.coloring.settings.ColorMap;
@@ -16,6 +15,7 @@ import dev.ratas.mobcolors.commands.SimpleSubCommand;
 import dev.ratas.mobcolors.config.Messages;
 import dev.ratas.mobcolors.config.Settings;
 import dev.ratas.mobcolors.config.mob.MobSettings;
+import dev.ratas.mobcolors.config.mob.MobType;
 import dev.ratas.mobcolors.config.mob.MobTypes;
 import dev.ratas.mobcolors.config.world.WorldSettings;
 import dev.ratas.mobcolors.utils.WorldDescriptor;
@@ -55,7 +55,7 @@ public class InfoSubCommand extends SimpleSubCommand {
 
     @Override
     public boolean executeCommand(CommandSender sender, String[] args) {
-        EntityType targetType = getTargetType(args);
+        MobType targetType = getTargetType(args);
         if (args.length < 1) {
             showEnabledColorMaps(sender, targetType);
         } else {
@@ -69,14 +69,14 @@ public class InfoSubCommand extends SimpleSubCommand {
         return true;
     }
 
-    private void showEnabledColorMaps(CommandSender sender, EntityType targetType) {
+    private void showEnabledColorMaps(CommandSender sender, MobType targetType) {
         boolean foundEnabledColorMap = false;
         for (MobSettings mobSettings : settings.getEnabledMobSettings(true)) {
             List<EnabledColorMapInfo> enabledMaps = getEnabledColorMaps(mobSettings);
             if (enabledMaps.isEmpty()) {
                 continue;
             }
-            EntityType type = mobSettings.getEntityType();
+            MobType type = mobSettings.getEntityType();
             if (targetType != null && type != targetType) {
                 continue;
             }
@@ -120,7 +120,7 @@ public class InfoSubCommand extends SimpleSubCommand {
         return activeWorlds;
     }
 
-    private void showColorMapsInWorld(WorldDescriptor world, CommandSender sender, EntityType targetType) {
+    private void showColorMapsInWorld(WorldDescriptor world, CommandSender sender, MobType targetType) {
         WorldSettings worldSettings = settings.getWorldManager().getWorldSettings(world);
         if (worldSettings == null) {
             sender.sendMessage(messages.getNoColorMapsInWorldMessage(world));
@@ -128,7 +128,7 @@ public class InfoSubCommand extends SimpleSubCommand {
         }
         sender.sendMessage(messages.getWorldColorMapsHeaderMessage(world));
         for (ColorMap<?> map : worldSettings.getEnabledColorMaps(true)) {
-            EntityType type = map.getApplicableEntityType();
+            MobType type = map.getApplicableEntityType();
             if (targetType != null && type != targetType) {
                 continue;
             }

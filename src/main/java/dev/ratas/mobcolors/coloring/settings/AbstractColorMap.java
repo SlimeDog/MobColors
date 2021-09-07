@@ -5,15 +5,15 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
 
-import org.bukkit.entity.EntityType;
+import dev.ratas.mobcolors.config.mob.MobType;
 
 public class AbstractColorMap<T> implements ColorMap<T> {
-    private final EntityType type;
+    private final MobType type;
     private final String name;
     private final Map<T, Double> colorMap;
     private final Collection<String> worlds;
 
-    public AbstractColorMap(EntityType type, String name, Map<T, Double> map, Collection<String> worlds) {
+    public AbstractColorMap(MobType type, String name, Map<T, Double> map, Collection<String> worlds) {
         this.type = type;
         this.name = name;
         this.colorMap = map;
@@ -36,7 +36,7 @@ public class AbstractColorMap<T> implements ColorMap<T> {
     }
 
     @Override
-    public EntityType getApplicableEntityType() {
+    public MobType getApplicableEntityType() {
         return type;
     }
 

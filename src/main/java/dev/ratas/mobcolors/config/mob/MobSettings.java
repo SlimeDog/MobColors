@@ -5,25 +5,23 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.bukkit.entity.EntityType;
-
 import dev.ratas.mobcolors.coloring.settings.ColorMap;
 import dev.ratas.mobcolors.region.RegionOptions;
 
 public class MobSettings {
-    private final EntityType type;
+    private final MobType type;
     private final Map<String, ColorMap<?>> colorMaps;
     private final ColorMap<?> defaultColorMap;
     private final boolean includeLeashed;
     private final boolean includePets;
     private final boolean includeTraders;
 
-    public MobSettings(EntityType type, Map<String, ColorMap<?>> colorMaps, boolean includeLeashed, boolean includePets,
+    public MobSettings(MobType type, Map<String, ColorMap<?>> colorMaps, boolean includeLeashed, boolean includePets,
             boolean includeTraders) {
         this(type, colorMaps, includeLeashed, includePets, includeTraders, true);
     }
 
-    private MobSettings(EntityType type, Map<String, ColorMap<?>> colorMaps, boolean includeLeashed,
+    private MobSettings(MobType type, Map<String, ColorMap<?>> colorMaps, boolean includeLeashed,
             boolean includePets, boolean includeTraders, boolean wrapMap) {
         this.type = type;
         this.colorMaps = wrapMap ? new HashMap<>(colorMaps) : colorMaps;
@@ -33,7 +31,7 @@ public class MobSettings {
         this.includeTraders = includeTraders;
     }
 
-    public EntityType getEntityType() {
+    public MobType getEntityType() {
         return type;
     }
 

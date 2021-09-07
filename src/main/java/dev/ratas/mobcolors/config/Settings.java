@@ -9,13 +9,13 @@ import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.EntityType;
 
 import dev.ratas.mobcolors.coloring.settings.ColorMap;
 import dev.ratas.mobcolors.config.abstraction.SettingsConfigProvider;
 import dev.ratas.mobcolors.config.mob.IllegalMobSettingsException;
 import dev.ratas.mobcolors.config.mob.MobSettings;
 import dev.ratas.mobcolors.config.mob.MobSettingsParser;
+import dev.ratas.mobcolors.config.mob.MobType;
 import dev.ratas.mobcolors.config.world.WorldManager;
 import dev.ratas.mobcolors.reload.Reloadable;
 import dev.ratas.mobcolors.scheduling.abstraction.Scheduler;
@@ -24,7 +24,7 @@ public class Settings implements Reloadable {
     private final SettingsConfigProvider provider;
     private boolean isDebug;
     private final Scheduler scheduler;
-    private final Map<EntityType, MobSettings> mobSettings = new EnumMap<>(EntityType.class);
+    private final Map<MobType, MobSettings> mobSettings = new EnumMap<>(MobType.class);
     private final WorldManager worldManager = new WorldManager();
     private final Logger logger;
 
@@ -85,7 +85,7 @@ public class Settings implements Reloadable {
         if (settings == null) {
             return; // disabled
         }
-        if (settings.getEntityType() == EntityType.SHEEP
+        if (settings.getEntityType() == MobType.sheep
                 && Bukkit.getPluginManager().isPluginEnabled("SheepSpawnColors")) {
             logger.warning("Detected the SheepSpawnColors plugin. "
                     + "Disabling the sheep spawning functionality of MobColors "
@@ -101,7 +101,7 @@ public class Settings implements Reloadable {
         }
     }
 
-    public MobSettings getSettings(EntityType type) {
+    public MobSettings getSettings(MobType type) {
         return mobSettings.get(type);
     }
 

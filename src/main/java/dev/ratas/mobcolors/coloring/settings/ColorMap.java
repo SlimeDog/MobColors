@@ -3,7 +3,7 @@ package dev.ratas.mobcolors.coloring.settings;
 import java.util.Collection;
 import java.util.Map;
 
-import org.bukkit.entity.EntityType;
+import dev.ratas.mobcolors.config.mob.MobType;
 
 /**
  * Represents a color map. A distribution of colors/types/variants. While the
@@ -21,7 +21,7 @@ public interface ColorMap<T> {
 
     ColorChoice<T> rollColor();
 
-    EntityType getApplicableEntityType();
+    MobType getApplicableEntityType();
 
     Collection<String> getApplicableWorlds();
 

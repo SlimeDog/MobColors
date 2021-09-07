@@ -5,9 +5,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.EntityType;
 
-import dev.ratas.mobcolors.config.mob.MobTypes;
+import dev.ratas.mobcolors.config.mob.MobType;
 
 public abstract class SimpleSubCommand implements SubCommand {
     private final String name;
@@ -61,13 +60,12 @@ public abstract class SimpleSubCommand implements SubCommand {
         return needsPlayer;
     }
 
-    protected EntityType getTargetType(String[] args) {
+    protected MobType getTargetType(String[] args) {
         boolean optionFound = false;
         for (String arg : args) {
             if (optionFound) {
-                arg = MobTypes.translateEntityTypeName(arg);
                 try {
-                    return EntityType.valueOf(arg.toUpperCase());
+                    return MobType.valueOf(arg.toLowerCase());
                 } catch (IllegalArgumentException e) {
                     return null;
                 }

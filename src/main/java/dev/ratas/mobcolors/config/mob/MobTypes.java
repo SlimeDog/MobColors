@@ -1,13 +1,11 @@
 package dev.ratas.mobcolors.config.mob;
 
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.EnumMap;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import org.bukkit.DyeColor;
 import org.bukkit.entity.Axolotl;
 import org.bukkit.entity.Cat;
 import org.bukkit.entity.Entity;
@@ -25,27 +23,10 @@ import dev.ratas.mobcolors.config.HorseVariant;
 import dev.ratas.mobcolors.config.TropicalFishVariant;
 
 public final class MobTypes {
-    public static final Map<EntityType, MobColorEnumProvider> ENTITY_COLOR_ENUMS;
-    static {
-        Map<EntityType, MobColorEnumProvider> map = new EnumMap<>(EntityType.class);
-        map.put(EntityType.AXOLOTL, new MobColorEnumProvider(Axolotl.Variant.class));
-        map.put(EntityType.CAT, new MobColorEnumProvider(Cat.Type.class));
-        map.put(EntityType.FOX, new MobColorEnumProvider(Fox.Type.class));
-        map.put(EntityType.HORSE, new MobColorEnumProvider(HorseVariant.class));
-        map.put(EntityType.LLAMA, new MobColorEnumProvider(Llama.Color.class));
-        map.put(EntityType.MUSHROOM_COW, new MobColorEnumProvider(MushroomCow.Variant.class));
-        map.put(EntityType.PARROT, new MobColorEnumProvider(Parrot.Variant.class));
-        map.put(EntityType.RABBIT, new MobColorEnumProvider(Rabbit.Type.class));
-        map.put(EntityType.SHEEP, new MobColorEnumProvider(DyeColor.class));
-        map.put(EntityType.SHULKER, new MobColorEnumProvider(DyeColor.class));
-        map.put(EntityType.TROPICAL_FISH, new MobColorEnumProvider(TropicalFishVariant.class));
-        ENTITY_COLOR_ENUMS = Collections.unmodifiableMap(map);
-    }
     private static final TranslationLayer TRANSLATION_LAYER = new TranslationLayer();
     private static final EntityTypeTranslationLayer ENTITY_TYPE_TRANSLATION_LAYER = new EntityTypeTranslationLayer();
-    public static final List<String> ENTITY_TYPE_NAMES = Collections.unmodifiableList(MobTypes.ENTITY_COLOR_ENUMS
-            .keySet().stream().map(type -> type == EntityType.MUSHROOM_COW ? "mooshroom" : type.name().toLowerCase())
-            .collect(Collectors.toList()));
+    public static final List<String> ENTITY_TYPE_NAMES = Collections
+            .unmodifiableList(Arrays.stream(MobType.values()).map(Enum::name).collect(Collectors.toList()));
 
     private MobTypes() {
         throw new IllegalStateException("Cannot be initialized");
@@ -103,26 +84,26 @@ public final class MobTypes {
         }
     }
 
-    public static Function<Entity, ?> getFunctionForType(EntityType type) {
-        if (type == EntityType.SHEEP || type == EntityType.SHULKER) {
+    public static Function<Entity, ?> getFunctionForType(MobType type) {
+        if (type == MobType.sheep || type == MobType.sheep) {
             return e -> ((Colorable) e).getColor();
-        } else if (type == EntityType.AXOLOTL) {
+        } else if (type == MobType.axolotl) {
             return e -> ((Axolotl) e).getVariant();
-        } else if (type == EntityType.CAT) {
+        } else if (type == MobType.cat) {
             return e -> ((Cat) e).getCatType();
-        } else if (type == EntityType.FOX) {
+        } else if (type == MobType.fox) {
             return e -> ((Fox) e).getFoxType();
-        } else if (type == EntityType.LLAMA) {
+        } else if (type == MobType.llama) {
             return e -> ((Llama) e).getColor();
-        } else if (type == EntityType.MUSHROOM_COW) {
+        } else if (type == MobType.mooshroom) {
             return e -> ((MushroomCow) e).getVariant();
-        } else if (type == EntityType.PARROT) {
+        } else if (type == MobType.parrot) {
             return e -> ((Parrot) e).getVariant();
-        } else if (type == EntityType.RABBIT) {
+        } else if (type == MobType.rabbit) {
             return e -> ((Rabbit) e).getRabbitType();
-        } else if (type == EntityType.HORSE) {
+        } else if (type == MobType.horse) {
             return e -> HorseVariant.getVariant((Horse) e);
-        } else if (type == EntityType.TROPICAL_FISH) {
+        } else if (type == MobType.tropical_fish) {
             return e -> TropicalFishVariant.getVariant((TropicalFish) e);
         } else {
             throw new IllegalArgumentException("Not a type of interest: " + type);
@@ -143,19 +124,6 @@ public final class MobTypes {
 
     public static String reverseTranslateTypeName(EntityType type) {
         return ENTITY_TYPE_TRANSLATION_LAYER.reverseTranslate(type);
-    }
-
-    public static final class MobColorEnumProvider {
-        private final Class<?> clazz;
-
-        private MobColorEnumProvider(Class<?> clazz) {
-            this.clazz = clazz;
-        }
-
-        public Class<?> getEnumClass() {
-            return clazz;
-        }
-
     }
 
 }

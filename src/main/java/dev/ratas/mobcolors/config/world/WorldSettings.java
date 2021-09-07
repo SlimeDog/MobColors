@@ -12,25 +12,25 @@ import org.bukkit.entity.EntityType;
 import dev.ratas.mobcolors.coloring.MobColorer;
 import dev.ratas.mobcolors.coloring.settings.ColorMap;
 import dev.ratas.mobcolors.config.mob.MobSettings;
+import dev.ratas.mobcolors.config.mob.MobType;
 import dev.ratas.mobcolors.scheduling.abstraction.Scheduler;
 
 public class WorldSettings {
     private final Map<EntityType, ColorMap<?>> entityColorMaps = new EnumMap<>(EntityType.class);
     private final Map<String, ColorMap<?>> colorMapsByName = new HashMap<>(); // useless as it ignores entity type
-    private final Map<EntityType, MobColorer<?, ?>> colorers = new EnumMap<>(EntityType.class);
+    private final Map<MobType, MobColorer<?, ?>> colorers = new EnumMap<>(MobType.class);
 
     public void addScheme(ColorMap<?> map, MobSettings settings, Scheduler scheduler) {
-        ColorMap<?> prev = entityColorMaps.put(map.getApplicableEntityType(), map);
+        ColorMap<?> prev = entityColorMaps.put(map.getApplicableEntityType().getEntityType(), map);
         if (prev != null && prev != map) {
-            entityColorMaps.put(prev.getApplicableEntityType(), prev);
+            entityColorMaps.put(prev.getApplicableEntityType().getEntityType(), prev);
             throw new IllegalArgumentException("Multiple color maps specified for the same world for the entity "
                     + prev.getApplicableEntityType().name() + ": " + map.getName() + " and " + prev.getName());
         }
         colorMapsByName.put(map.getName(), map);
         colorers.put(map.getApplicableEntityType(), ColorerGenerator.generateColorer(map, settings, scheduler));
-        if (map.getApplicableEntityType() == EntityType.LLAMA) {
+        if (map.getApplicableEntityType() == MobType.llama) {
             entityColorMaps.put(EntityType.TRADER_LLAMA, map);
-            colorers.put(EntityType.TRADER_LLAMA, colorers.get(EntityType.LLAMA));
         }
     }
 
@@ -52,7 +52,11 @@ public class WorldSettings {
     }
 
     public MobColorer<?, ?> getColorer(EntityType type) {
-        return colorers.get(type);
+        MobType mobType = MobType.getType(type);
+        if (mobType == null) {
+            return null;
+        }
+        return colorers.get(mobType);
     }
 
     void clear() {

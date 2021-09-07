@@ -5,19 +5,17 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.EntityType;
 
 import dev.ratas.mobcolors.coloring.settings.AbstractColorMap;
 import dev.ratas.mobcolors.coloring.settings.ColorMap;
 import dev.ratas.mobcolors.config.ColorSchemeParser;
-import dev.ratas.mobcolors.config.mob.MobTypes.MobColorEnumProvider;
 
 public class MobSettingsParser {
     private final ConfigurationSection section;
     private final Logger logger;
     private boolean hasParsed = false;
     private boolean enabled;
-    private EntityType type;
+    private MobType type;
     private Map<String, ColorMap<?>> colorMaps;
     private boolean includeLeashed;
     private boolean includePets;
@@ -33,11 +31,10 @@ public class MobSettingsParser {
         return section.getBoolean("enabled");
     }
 
-    private EntityType parseType() throws IllegalMobSettingsException {
+    private MobType parseType() throws IllegalMobSettingsException {
         String name = section.getName();
-        name = MobTypes.translateEntityTypeName(name);
         try {
-            return EntityType.valueOf(name.toUpperCase());
+            return MobType.valueOf(name.toUpperCase());
         } catch (IllegalArgumentException e) {
             throw new IllegalMobSettingsException("Illegal entity type specified: " + name);
         }
@@ -45,11 +42,7 @@ public class MobSettingsParser {
 
     private Map<String, ColorMap<?>> parseMaps() {
         Map<String, ColorMap<?>> map = new HashMap<>();
-        MobColorEnumProvider provider = MobTypes.ENTITY_COLOR_ENUMS.get(type);
-        if (provider == null) {
-            throw new IllegalMobSettingsException("Entity of " + type + " type does not have any changes configured");
-        }
-        Class<?> clazz = provider.getEnumClass();
+        Class<?> clazz = type.getTypeClass();
         for (String name : section.getKeys(false)) {
             if (!section.isConfigurationSection(name)) {
                 continue; // ignore non-sections such as 'enabled', 'include-leashed' and 'include-pets'
@@ -87,7 +80,7 @@ public class MobSettingsParser {
             colorMaps = parseMaps();
             includeLeashed = parseIncludeLeashed();
             includePets = parseIncludePets();
-            if (type == EntityType.LLAMA) {
+            if (type == MobType.llama) {
                 includeTaders = parseIncludeTraders();
             }
         }

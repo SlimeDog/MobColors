@@ -4,10 +4,10 @@ import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.entity.EntityType;
 
 import dev.ratas.mobcolors.config.abstraction.CustomConfigHandler;
 import dev.ratas.mobcolors.config.abstraction.ResourceProvider;
+import dev.ratas.mobcolors.config.mob.MobType;
 import dev.ratas.mobcolors.config.mob.MobTypes;
 import dev.ratas.mobcolors.utils.WorldDescriptor;
 
@@ -36,27 +36,27 @@ public class Messages extends CustomConfigHandler {
         return getMessage("need-a-number", "A number is required, got: {val}").replace("{val}", val);
     }
 
-    public String getMobColorMapDisabledMessage(EntityType type) {
+    public String getMobColorMapDisabledMessage(MobType type) {
         return getMessage("mob-colormap-disabled", "MobColors does not manage {mob} mobs").replace("{mob}",
-                MobTypes.reverseTranslateTypeName(type));
+                type.name());
     }
 
     public String getStartingToColorRegionMessage(WorldDescriptor world, int x, int z, double updateProgress,
-            EntityType type) {
+            MobType type) {
         return getMessage("start-coloring-region", "Starting to color {mob} in {world} for region {x}, {z}")
                 .replace("{world}", world.getName()).replace("{x}", String.valueOf(x)).replace("{z}", String.valueOf(z))
                 .replace("{update-progress}", String.format("%d", (int) updateProgress * 100))
                 .replace("{update}", String.valueOf(updateProgress / 20L))
-                .replace("{mob}", type == null ? "total" : MobTypes.reverseTranslateTypeName(type));
+                .replace("{mob}", type == null ? "total" : type.name());
     }
 
     public String getStartingToColorRadiusMessage(WorldDescriptor world, double distance, double updateProgress,
-            EntityType type) {
+            MobType type) {
         return getMessage("start-coloring-distance", "Starting to color {mob} for distance {d}")
                 .replace("{world}", world.getName()).replace("{d}", String.format("%.2f", distance))
                 .replace("{update-progress}", String.format("%d", (int) updateProgress * 100))
                 .replace("{update}", String.valueOf(updateProgress / 20L))
-                .replace("{mob}", type == null ? "total" : MobTypes.reverseTranslateTypeName(type));
+                .replace("{mob}", type == null ? "total" : type.name());
     }
 
     public String getStartingToScanRegionMessage(WorldDescriptor world, int x, int z, double updateProgress) {
@@ -66,11 +66,11 @@ public class Messages extends CustomConfigHandler {
     }
 
     public String getStartingToScanRadiusMessage(WorldDescriptor world, double distance, double updateProgress,
-            EntityType type) {
+            MobType type) {
         return getMessage("start-scanning-distance", "Starting to scan {mob} for distance {d}")
                 .replace("{world}", world.getName()).replace("{d}", String.format("%.2f", distance))
                 .replace("{update-progress}", String.format("%d", (int) updateProgress * 100))
-                .replace("{mob}", type == null ? "total" : MobTypes.reverseTranslateTypeName(type));
+                .replace("{mob}", type == null ? "total" : type.name());
     }
 
     public String getUpdateOnColorRegionMessage(long done, long total) {
@@ -112,11 +112,11 @@ public class Messages extends CustomConfigHandler {
                 .replace("{d}", String.format("%.2f", distance));
     }
 
-    public String getDoneScanningHeaderMessage(long count, long chunks, EntityType type) {
+    public String getDoneScanningHeaderMessage(long count, long chunks, MobType type) {
         return getMessage("done-scanning-header",
                 "Scanning completed. Scanned {count} {type} in {chunks} loaded chunks")
                         .replace("{count}", String.valueOf(count)).replace("{chunks}", String.valueOf(chunks))
-                        .replace("{type}", type == null ? "total" : MobTypes.reverseTranslateTypeName(type));
+                        .replace("{type}", type == null ? "total" : type.name());
     }
 
     public String getDoneScanningItemMessage(Object color, int amount) {
@@ -143,9 +143,8 @@ public class Messages extends CustomConfigHandler {
         return getMessage("no-colormaps-enabled", "You currently have no color-schemes enabled in any world");
     }
 
-    public String getEnabledMobColorMapsHeaderMessage(EntityType type) {
-        return getMessage("info-mob-header", "Enabled color-schemes for {type}:").replace("{type}",
-                MobTypes.reverseTranslateTypeName(type));
+    public String getEnabledMobColorMapsHeaderMessage(MobType type) {
+        return getMessage("info-mob-header", "Enabled color-schemes for {type}:").replace("{type}", type.name());
     }
 
     public String getEnabledMobColorMapItemMessage(String name, List<String> worlds) {
@@ -171,9 +170,9 @@ public class Messages extends CustomConfigHandler {
                 .replace("{world}", world.getName());
     }
 
-    public String getWorldColorMapItemMessage(EntityType type, String name) {
-        return getMessage("info-colormap-in-world", "- {type}: {name}")
-                .replace("{type}", MobTypes.reverseTranslateTypeName(type)).replace("{name}", name);
+    public String getWorldColorMapItemMessage(MobType type, String name) {
+        return getMessage("info-colormap-in-world", "- {type}: {name}").replace("{type}", type.name()).replace("{name}",
+                name);
     }
 
     public String getScanDistanceTooBig(double maxDistance) {

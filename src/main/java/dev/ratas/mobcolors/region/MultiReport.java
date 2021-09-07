@@ -4,12 +4,12 @@ import java.util.EnumMap;
 import java.util.Map;
 
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 
+import dev.ratas.mobcolors.config.mob.MobType;
 import dev.ratas.mobcolors.config.mob.MobTypes;
 
 public class MultiReport extends ScanReport<Object> {
-    private final Map<EntityType, ScanReport<?>> typedReports = new EnumMap<>(EntityType.class);
+    private final Map<MobType, ScanReport<?>> typedReports = new EnumMap<>(MobType.class);
 
     public MultiReport() {
         super(null, null); // no function needed since the count method is overwritten
@@ -17,7 +17,10 @@ public class MultiReport extends ScanReport<Object> {
 
     @Override
     public void count(Entity entity) {
-        EntityType type = entity.getType();
+        MobType type = MobType.getType(entity.getType());
+        if (type == null) {
+            return; // TODO - show warning
+        }
         ScanReport<?> report = typedReports.computeIfAbsent(type, t -> {
             Class<?> clazz = MobTypes.getInterestingClass(entity);
             if (clazz == null) {
@@ -36,15 +39,17 @@ public class MultiReport extends ScanReport<Object> {
         }
     }
 
-    public Map<EntityType, ScanReport<?>> getAllReports() {
+    public Map<MobType, ScanReport<?>> getAllReports() {
         return typedReports;
     }
 
-    public EntityType getType() {
+    @Override
+    public MobType getType() {
         throw new IllegalStateException("Cannot directly get type from multi report. "
                 + "Use MultiReport#getAllReports and get the type from each one separately.");
     }
 
+    @Override
     public Map<Object, Integer> getColors() {
         throw new IllegalStateException("Cannot directly get colors from multi report. "
                 + "Use MultiReport#getAllReports and get the colors from each one separately.");

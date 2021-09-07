@@ -9,12 +9,12 @@ import java.util.stream.Collectors;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
 import dev.ratas.mobcolors.config.Messages;
 import dev.ratas.mobcolors.config.Settings;
+import dev.ratas.mobcolors.config.mob.MobType;
 import dev.ratas.mobcolors.config.mob.MobTypes;
 import dev.ratas.mobcolors.region.DistanceRegionInfo;
 import dev.ratas.mobcolors.region.RegionInfo;
@@ -78,7 +78,7 @@ public class ScanSubCommand extends AbstractRegionSubCommand {
                 return StringUtil.copyPartialMatches(args[args.length - 1], MobTypes.ENTITY_TYPE_NAMES, list);
             }
             List<String> curOptions;
-            if (getTargetType(args) != EntityType.LLAMA) {
+            if (getTargetType(args) != MobType.llama) {
                 curOptions = new ArrayList<>(OPTIONS);
             } else {
                 curOptions = new ArrayList<>(LLAMA_OPTIONS);
@@ -132,7 +132,7 @@ public class ScanSubCommand extends AbstractRegionSubCommand {
         boolean ignoredUngenerated = !options.contains("--ungenerated");
         boolean specifyMob = options.contains("--mob");
         boolean doTraders = options.contains("--all") || options.contains("--traders");
-        EntityType targetType;
+        MobType targetType;
         if (specifyMob) {
             targetType = getTargetType(args);
             if (targetType == null) {

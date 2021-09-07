@@ -8,17 +8,17 @@ import java.util.Map;
 import java.util.function.Function;
 
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 
+import dev.ratas.mobcolors.config.mob.MobType;
 import dev.ratas.mobcolors.config.mob.MobTypes;
 
 public class ScanReport<T> {
     private final Map<T, Integer> colors = new HashMap<>();
     private long countedChunks = 0;
     private final Function<Entity, T> colorProvider;
-    private final EntityType type;
+    private final MobType type;
 
-    public ScanReport(EntityType type, Function<Entity, T> provider) {
+    public ScanReport(MobType type, Function<Entity, T> provider) {
         this.type = type;
         this.colorProvider = provider;
     }
@@ -36,7 +36,7 @@ public class ScanReport<T> {
         countedChunks++;
     }
 
-    public EntityType getType() {
+    public MobType getType() {
         return type;
     }
 
