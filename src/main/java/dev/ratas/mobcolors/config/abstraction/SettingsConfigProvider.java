@@ -3,29 +3,15 @@ package dev.ratas.mobcolors.config.abstraction;
 import java.util.logging.Logger;
 
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.plugin.Plugin;
 
-public class SettingsConfigProvider {
-    private final Plugin plugin;
+public interface SettingsConfigProvider {
 
-    public SettingsConfigProvider(Plugin plugin) {
-        this.plugin = plugin;
-    }
+    ConfigurationSection getColorSchemesConfig();
 
-    public ConfigurationSection getColorSchemesConfig() {
-        return plugin.getConfig().getConfigurationSection("color-schemes");
-    }
+    ConfigurationSection getMobsConfig();
 
-    public ConfigurationSection getMobsConfig() {
-        return plugin.getConfig().getConfigurationSection("mobs");
-    }
+    ConfigurationSection getBaseSettingsConfig();
 
-    public ConfigurationSection getBaseSettingsConfig() {
-        return plugin.getConfig();
-    }
-
-    public Logger getLogger() {
-        return plugin.getLogger();
-    }
+    Logger getLogger();
 
 }

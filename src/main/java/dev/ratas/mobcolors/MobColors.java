@@ -8,6 +8,7 @@ import dev.ratas.mobcolors.commands.ParentCommand;
 import dev.ratas.mobcolors.config.abstraction.PluginResourceProvider;
 import dev.ratas.mobcolors.config.abstraction.ResourceProvider;
 import dev.ratas.mobcolors.config.abstraction.SettingsConfigProvider;
+import dev.ratas.mobcolors.config.abstraction.PluginSettingsConfigProvider;
 import dev.ratas.mobcolors.config.mob.MobSettings;
 import dev.ratas.mobcolors.config.mob.MobType;
 import dev.ratas.mobcolors.events.ListenerRegistrator;
@@ -23,7 +24,7 @@ public class MobColors extends JavaPlugin {
     public void onEnable() {
         Scheduler scheduler = new Scheduler(this, this.getServer().getScheduler());
         ResourceProvider resourceProvider = new PluginResourceProvider(this);
-        SettingsConfigProvider settingsProvider = new SettingsConfigProvider(this);
+        SettingsConfigProvider settingsProvider = new PluginSettingsConfigProvider(this);
         ListenerRegistrator listenerRegistrator = new ListenerRegistrator(this);
         VersionProvider versionProvider = new VersionProvider(this);
         WorldProvider worldProvider = new WorldProvider(this);
