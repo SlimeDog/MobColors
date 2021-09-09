@@ -1,4 +1,4 @@
-package dev.ratas.mobcolors.config;
+package dev.ratas.mobcolors.config.mock;
 
 import java.io.File;
 import java.io.InputStream;
@@ -10,7 +10,7 @@ public class DummyResourceProvider implements ResourceProvider {
     private final Logger logger;
     private final File dataFolder;
 
-    DummyResourceProvider(Logger logger) {
+    public DummyResourceProvider(Logger logger) {
         this.logger = logger;
         File srcFolder = new File("src");
         File testFolder = new File(srcFolder, "test");

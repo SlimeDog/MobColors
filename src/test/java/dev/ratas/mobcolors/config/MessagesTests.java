@@ -11,7 +11,6 @@ import org.bukkit.DyeColor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Axolotl;
 import org.bukkit.entity.Cat;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Fox;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Llama;
@@ -24,6 +23,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import dev.ratas.mobcolors.config.abstraction.ResourceProvider;
+import dev.ratas.mobcolors.config.mob.MobType;
+import dev.ratas.mobcolors.config.mock.DummyResourceProvider;
+import dev.ratas.mobcolors.config.mock.FileResourceProvider;
 import dev.ratas.mobcolors.utils.WorldDescriptor;
 
 public class MessagesTests {
@@ -110,14 +112,14 @@ public class MessagesTests {
         if (clazz == double.class) {
             return -0.5D;
         }
-        if (clazz == EntityType.class) {
-            return EntityType.AREA_EFFECT_CLOUD;
+        if (clazz == MobType.class) {
+            return MobType.mooshroom;
         }
         if (clazz == WorldDescriptor.class) {
             return new WorldDescriptor(UUID.randomUUID(), "<World Name Placeholder>");
         }
-        if (clazz == Object.class) {
-            return EntityType.BEE;
+        if (clazz == Object.class) { // expects enum or custom variant
+            return DyeColor.GREEN;
         }
         if (clazz == List.class) {
             List<String> list = new ArrayList<>();
