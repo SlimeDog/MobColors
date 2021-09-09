@@ -5,7 +5,7 @@ import org.bukkit.entity.Rabbit;
 public enum RabbitVariant implements MobTypeVariant<Rabbit.Type> {
     brown(Rabbit.Type.BROWN), white(Rabbit.Type.WHITE), black(Rabbit.Type.BLACK),
     black_and_white(Rabbit.Type.BLACK_AND_WHITE), gold(Rabbit.Type.GOLD), salt_and_pepper(Rabbit.Type.SALT_AND_PEPPER),
-    killer(Rabbit.Type.THE_KILLER_BUNNY);
+    the_killer_bunny(Rabbit.Type.THE_KILLER_BUNNY);
 
     private static final ReverseTranslator<Rabbit.Type, RabbitVariant> REVERSE_MAP = new ReverseTranslator<>(
             Rabbit.Type.class);
