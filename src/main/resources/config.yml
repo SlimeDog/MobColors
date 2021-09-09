@@ -8,8 +8,9 @@
 #
 # Minecraft version support: 1.13.2, 1.14.4, 1.15.2, 1.16.5, 1.17.x
 #
-# Enum constants per https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/DyeColor.html
-# For convenience, both uppercase and lowercase are accepted; for example WHITE or white.
+# Color-scheme values are listed according to the standard ENUM values for each mob-type.
+# The vanilla schemes are subject to change, and are listed here for reference only.
+# For convenience, both uppercase and lowercase values are accepted; for example "WHITE" or "white".
 
 # ========== CONFIGURATION FILE VERSION ============================================================
 # Do not edit the version string unless you know what you are dolng.
@@ -26,7 +27,7 @@ check-for-updates: true
 enable-metrics: true
 
 # ========== OVERVIEW ==============================================================================
-# Color/variant specifications are defined in the following sections.
+# Color-scheme specifications are defined in the following sections.
 #
 # Color-schemes for all mob-types are disabled by default, to avoid surprises and minimize impact.
 # Enable only those you wish to employ.
@@ -34,20 +35,20 @@ enable-metrics: true
 # Illegal specifications will produce console/log errors, and may cause MobColors to disable.
 
 # ========== INCLUDED CATEGORIES ===================================================================
-# The following categories may be included in coloration. As above, they are disabled by default, to
-# avoid surprises. They may always be included via command parameters: --leashed and --pets.
+# The following categories may be included in color-schems. They are disabled by default, to avoid
+# surprises. They may also be included via command flag parameters:
 # - include-leashed: true = include any mob on a leash
-# - include-pets: true    = include any mob tagged with "MyPet" metadata, which is controlled by the MyPet plugin
+# - include-pets: true    = include any mob tagged with "MyPet" metadata, which is set by the MyPet plugin
+# - include-traders: true = include trader llamas (valid only for mob-type llama)
 
 mobs:
 # ========== AXOLOTL ===============================================================================
-# Minecraft vanilla color probabilities when spawned, per https://minecraft.fandom.com/wiki/Axolotl.
-# The vanilla probabilities are subject to change upstream, and are listed here for reference only.
+# Vanilla axolotl variants, per hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/Axolotl.Variant.html
+#   blue: 0.00083
+#   cyan: 0.2497925
+#   gold: 0.2497925
 #   lucy (pink): 0.2497925
 #   wild (brown): 0.2497925
-#   gold: 0.2497925
-#   cyan: 0.2497925
-#   blue: 0.00083
 #
   axolotl:
     enabled: false
@@ -55,11 +56,11 @@ mobs:
     include-pets: false
     default:
       probabilities:
+        blue: 0.00083
+        cyan: 0.2497925
+        gold: 0.2497925
         lucy: 0.2497925
         wild: 0.2497925
-        gold: 0.2497925
-        cyan: 0.2497925
-        blue: 0.00083
     all-blue:
       probabilities:
         blue: 1.00
@@ -67,31 +68,31 @@ mobs:
         - example_world_with_only_blue_axolotl
     more-blue:
       probabilities:
+        blue: 0.05
+        cyan: 0.20
+        gold: 0.25
         lucy: 0.25
         wild: 0.25
-        gold: 0.25
-        cyan: 0.20
-        blue: 0.05
       enabled-worlds:
         - example_world_with_only_blue_axolotl
     lucy:
       probabilities:
-        lucy: 0.99917
         blue: 0.00083
+        lucy: 0.99917
       enabled-worlds:
         - example_world_with_mostly_pink_axolotl
     wild:
       probabilities:
-        wild: 0.99917
         blue: 0.00083
+        wild: 0.99917
       enabled-worlds:
         - example_world_with_mostly_brown_axolotl
 
 # ========== CAT ===================================================================================
-# Minecraft vanilla color probabilities when spawned, per https://minecraft.fandom.com/wiki/Cat.
-# The vanilla probabilities are subject to change upstream, and are listed here for reference only.
-#   black: 0.0910
-#   british-shorthair: 0.0909
+# Vanilla cat types, per hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/Cat.Type.html
+#   all_black: 0.0910             # common name: Tuxedo
+#   black: 0.0909
+#   british_shorthair: 0.0909
 #   calico: 0.0909
 #   jellie: 0.0909
 #   persian: 0.0909
@@ -99,7 +100,6 @@ mobs:
 #   red: 0.0909
 #   siamese: 0.0909
 #   tabby: 0.0909
-#   tuxedo: 0.0909
 #   white: 0.0909
 #
   cat:
@@ -108,8 +108,9 @@ mobs:
     include-pets: false
     default:
       probabilities:
-        black: 0.0910
-        british-shorthair: 0.0909
+        all_black: 0.0910
+        black: 0.0909
+        british_shorthair: 0.0909
         calico: 0.0909
         jellie: 0.0909
         persian: 0.0909
@@ -117,27 +118,26 @@ mobs:
         red: 0.0909
         siamese: 0.0909
         tabby: 0.0909
-        tuxedo: 0.0909
         white: 0.0909
     black:
       probabilities:
+        all_black: 0.50
         black: 0.50
-        tuxedo: 0.50
       enabled-worlds:
         - example_world_with_mostly_black_cats
     monochrome:
       probabilities:
+        all_black: 0.17
         black: 0.17
-        british-shorthair: 0.16
+        british_shorthair: 0.16
         ragdoll: 0.16
         siamese: 0.17
-        tuxedo: 0.17
         white: 0.17
       enabled-worlds:
         - example_world_with_only_monochrome_cats
     white:
       probabilities:
-        british-shorthair: 0.25
+        british_shorthair: 0.25
         ragdoll: 0.25
         siamese: 0.25
         white: 0.25
@@ -145,10 +145,9 @@ mobs:
         - example_world_with_mostly_white_cats
 
 # ========== FOX ===================================================================================
-# Minecraft vanilla color probabilities when spawned, per https://minecraft.fandom.com/wiki/Fox.
-# The vanilla probabilities are subject to change upstream, and are listed here for reference only.
+# Vanilla fox types, per hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/Fox.Type.html
 # snowy biomes:
-#     white: 1.00
+#     snow: 1.00
 # other biomes:
 #     red: 1.00
 #
@@ -160,55 +159,34 @@ mobs:
     include-pets: false
     snowy:
       probabilities:
-        white: 1.00
+        snow: 1.00
       enabled-worlds:
-        - example_world_snowy
+        - example_snowy_world
     other:
       probabilities:
         red: 1.00
       enabled-worlds:
-        - example_world_other
+        - example_other_world
 
 # ========== HORSE =================================================================================
-# Minecraft vanilla color variants when spawned, per https://minecraft.fandom.com/wiki/Horse.
-# The vanilla variants are subject to change upstream; the following are recognized as of MC 1.17.
-# variant = baseColor/markingColor
-# --------------------------------
-#   white/none
-#   creamy/none
-#   chestnut/none
-#   brown/none
-#   black/none
-#   gray/none
-#   darkbrown/none
-#   white/white
-#   creamy/white
-#   chestnut/white
-#   brown/white
-#   black/white
-#   gray/white
-#   darkbrown/white
-#   white/whitefield
-#   creamy/whitefield
-#   chestnut/whitefield
-#   brown/whitefield
-#   black/whitefield
-#   gray/whitefield
-#   darkbrown/whitefield
-#   white/whitedots
-#   creamy/whitedots
-#   chestnut/whitedots
-#   brown/whitedots
-#   black/whitedots
-#   gray/whitedots
-#   darkbrown/whitedots
-#   white/blackdots
-#   creamy/blackdots
-#   chestnut/blackdots
-#   brown/blackdots
-#   black/blackdots
-#   gray/blackdots
-#   darkbrown/blackdots
+# Vanilla horse color/style variants,
+# per hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/Horse.Color.html
+# and hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/Horse.Style.html
+# Variant = color/style
+# Color is one of:
+#   black
+#   brown
+#   chestnut
+#   creamy
+#   dark_brown
+#   gray
+#   white
+# Style is one of:
+#   black_dots
+#   none
+#   white
+#   white_dots
+#   whitefield
 #
 # A non-vanilla default color-scheme may be specified, if desired.
 #
@@ -219,15 +197,15 @@ mobs:
     brown:
       probabilities:
         brown/none: 0.10
-        darkbrown/none: 0.10
+        dark_brown/none: 0.10
         brown/white: 0.10
-        darkbrown/white: 0.10
+        dark_brown/white: 0.10
         brown/whitefield: 0.10
-        darkbrown/whitefield: 0.10
-        brown/whitedots: 0.10
-        darkbrown/whitedots: 0.10
-        brown/blackdots: 0.10
-        darkbrown/blackdots: 0.10
+        dark_brown/whitefield: 0.10
+        brown/white_dots: 0.10
+        dark_brown/white_dots: 0.10
+        brown/black_dots: 0.10
+        dark_brown/black_dots: 0.10
       enabled-worlds:
         - example_world_with_mostly_brown_horses
     black:
@@ -235,8 +213,8 @@ mobs:
         black/none: 0.20
         black/white: 0.20
         black/whitefield: 0.20
-        black/whitedots: 0.20
-        black/blackdots: 0.20
+        black/white_dots: 0.20
+        black/black_dots: 0.20
       enabled-worlds:
         - example_world_with_mostly_black_horses
     monochrome:
@@ -248,24 +226,23 @@ mobs:
         gray/white: 0.0909
         black/whitefield: 0.0909
         gray/whitefield: 0.0909
-        black/whitedots: 0.0909
-        gray/whitedots: 0.0909
-        white/blackdots: 0.0909
-        gray/blackdots: 0.0909
+        black/white_dots: 0.0909
+        gray/white_dots: 0.0909
+        white/black_dots: 0.0909
+        gray/black_dots: 0.0909
       enabled-worlds:
         - example_world_with_only_monochrome_horses
     white:
       probabilities:
         white/white: 0.25
         white/whitefield: 0.25
-        white/whitedots: 0.25
-        white/blackdots: 0.25
+        white/white_dots: 0.25
+        white/black_dots: 0.25
       enabled-worlds:
         - example_world_with_mostly_white_horses
 
 # ========== LLAMA =================================================================================
-# Minecraft vanilla color probabilities when spawned, per https://minecraft.fandom.com/wiki/Llama.
-# The vanilla probabilities are subject to change upstream, and are listed here for reference only.
+# Vanilla llama colors, per hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/Llama.Color.html
 #   brown: 0.25
 #   cream: 0.25
 #   gray: 0.25
@@ -307,11 +284,10 @@ mobs:
         - example_world_with_only_white_llamas
 
 # ========== MOOSHROOM =============================================================================
-# Minecraft vanilla color probabilities when spawned, per https://minecraft.fandom.com/wiki/Mooshroom.
+# Vanilla mooshroom variants, per hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/MushroomCow.Variant.html
 # At spawn, all mooshrooms are red. They can change to brown when struck by lightning.
-# The vanilla probabilities are subject to change upstream, and are listed here for reference only.
-#   red: 1.00
 #   brown: 0.00
+#   red: 1.00
 #
   mooshroom:
     enabled: false
@@ -319,24 +295,23 @@ mobs:
     include-pets: false
     default:
       probabilities:
-        red: 1.00
         brown: 0.00
+        red: 1.00
     brown:
       probabilities:
-        red: 0.00
         brown: 1.00
+        red: 0.00
       enabled-worlds:
         - example_world_with_only_brown_mooshrooms
     half-and-half:
       probabilities:
-        red: 0.50
         brown: 0.50
+        red: 0.50
       enabled-worlds:
         - example_world_with_only_half_brown_mooshrooms
 
 # ========== PARROT ================================================================================
-# Minecraft vanilla color probabilities when spawned, per https://minecraft.fandom.com/wiki/Parrot.
-# The vanilla probabilities are subject to change upstream, and are listed here for reference only.
+# Vanilla parrot variants, per hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/Parrot.Variant.html
 #   blue: 0.20
 #   cyan: 0.20
 #   gray: 0.20
@@ -367,19 +342,18 @@ mobs:
         - example_world_with_only_gray_parrots
 
 # ========== RABBIT ================================================================================
-# Minecraft vanilla color probabilities when spawned, per https://minecraft.fandom.com/wiki/Rabbit.
-# The vanilla probabilities are subject to change upstream, and are listed here for reference only.
+# Vanilla rabbit types, per hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/Rabbit.Type.html
 # snowy biomes:
+#     black_and_white: 0.20
 #     white: 0.80
-#     black-and-white: 0.20
 # desert biomes:
 #     gold: 1.00
 # other biomes:
-#     brown: 0.50
 #     black: 0.10
-#     salt-and-pepper: 0.40
+#     brown: 0.50
+#     salt_and_pepper: 0.40
 # extras:
-#     killer
+#     the_killer_bunny
 #     toast
 #
 # A non-vanilla default color-scheme may be specified, if desired.
@@ -390,8 +364,8 @@ mobs:
     include-pets: false
     snowy:
       probabilities:
+        black_and_white: 0.20
         white: 0.80
-        black-and-white: 0.20
       enabled-worlds:
         - example_world_snowy
     desert:
@@ -401,21 +375,20 @@ mobs:
         - example_world_desert
     other:
       probabilities:
-        brown: 0.50
         black: 0.10
-        salt-and-pepper: 0.40
+        brown: 0.50
+        salt_and_pepper: 0.40
       enabled-worlds:
         - example_world_other
 
 # ========== SHEEP =================================================================================
-# Minecraft vanilla color probabilities when spawned, per https://minecraft.fandom.com/wiki/Sheep.
-# The vanilla probabilities are subject to change upstream, and are listed here for reference only.
-#   white: 0.81836
-#   gray: 0.05
-#   light_gray: 0.05
+# Vanilla sheep colors, per hub.spigotmc.org/javadocs/spigot/org/bukkit/DyeColor.html
 #   black: 0.05
 #   brown: 0.03
+#   gray: 0.05
+#   light_gray: 0.05
 #   pink: 0.00164
+#   white: 0.81836
 # Any of the 16 standard dye colors may be used:
 #   black, red, green, brown, blue, purple, cyan, light_gray
 #   gray, pink, lime, yellow, light_blue, magenta, orange, white
@@ -426,36 +399,35 @@ mobs:
     include-pets: false
     default:
       probabilities:
-        white: 0.81836
-        gray: 0.05
-        light_gray: 0.05
         black: 0.05
         brown: 0.03
-        pink: 0.00164
-    black:
-      probabilities:
-        white: 0.05
         gray: 0.05
         light_gray: 0.05
+        pink: 0.00164
+        white: 0.81836
+    black:
+      probabilities:
         black: 0.81836
         brown: 0.03
+        gray: 0.05
+        light_gray: 0.05
         pink: 0.00164
+        white: 0.05
       enabled-worlds:
         - example_world_with_mostly_black_sheep
     monochrome:
       probabilities:
-        white: 0.55
+        black: 0.15
         gray: 0.15
         light_gray: 0.15
-        black: 0.15
+        white: 0.55
       enabled-worlds:
         - example_world_with_only_monochrome_sheep
 
 # ========== SHULKER ===============================================================================
-# Minecraft vanilla color probabilities when spawned, per https://minecraft.fandom.com/wiki/Shulker.
-# The vanilla probabilities are subject to change upstream, and are listed here for reference only.
+# Vanilla shulkers spawn in a unique "default" color, but may be dyed with the standard dye colors,
+# per hub.spigotmc.org/javadocs/spigot/org/bukkit/material/Colorable.html
 #   default: 1.00
-# Shulkers spawn in a unique lavender default color, but may be dyed with the standard dye colors.
 # Any of the 16 standard dye colors may be used:
 #    black, red, green, brown, blue, purple, cyan, light_gray
 #    gray, pink, lime, yellow, light_blue, magenta, orange, white
@@ -472,14 +444,15 @@ mobs:
         default: 1.00
     black-and-red:
       probabilities:
-        red: 0.50
         black: 0.50
+        red: 0.50
       enabled-worlds:
         - example_world_with_black_and_red_shulkers
 
 # ========== TROPICAL_FISH =========================================================================
-# Minecraft vanilla color/shape variants when spawned, per https://minecraft.fandom.com/wiki/Tropical_Fish.
-# The vanilla variants are subject to change upstream; the following are recognized as of MC 1.17.
+# Vanilla tropical_fish color/shape variants are determined by pattern/bodyColor/patternColor
+# per hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/TropicalFish.Pattern.html
+# and hub.spigotmc.org/javadocs/spigot/org/bukkit/DyeColor.html
 #
 # Large fish patterns:
 #   betty
@@ -504,32 +477,31 @@ mobs:
 # There are 22 common variants. 90% of spawned fish are of the common variants; the remaining 10%
 # are completely random. The common variants are used here, but you can be as creative as you like.
 #
-# variant = pattern/bodyColor/patternColor = common name
-# -----------------------------------------------------------
-# stripey/orange/gray                        Anemone
-# flopper/gray/gray                          Black Tang
-# flopper/gray/blue                          Blue Tang
-# clayfish/white/gray                        Butterflyfish
-# sunstreak/blue/gray                        Cichlid
-# kob/orange/white                           Clownfish
-# spotty/pink/light_blue                     Cotton Candy Betta
-# blockfish/purple/yellow                    Dottyback
-# clayfish/white/red                         Emperor Red Snapper
-# spotty/white/yellow                        Goatfish
-# glitter/white/gray                         Moorish Idol
-# clayfish/white/orange                      Ornate Butterflyfish
-# dasher/cyan/pink                           Parrotfish
-# brinely/lime/light_blue                    Queen Angelfish
-# betty/red/white                            Red Cichlid
-# snooper/gray/red                           Red-lipped Blenny
-# blockfish/red/white                        Red Snapper
-# flopper/white/yellow                       Threadfin
-# kob/red/white                              Tomato Clownfish
-# sunstreak/white/light_gray                 Triggerfish
-# dasher/cyan/yellow                         Yellow Parrotfish
-# flopper/yellow/yellow                      Yellow Tang
+# Variant                        common name
+# --------------------------     --------------------
+# stripey/orange/gray            Anemone
+# flopper/gray/gray              Black Tang
+# flopper/gray/blue              Blue Tang
+# clayfish/white/gray            Butterflyfish
+# sunstreak/blue/gray            Cichlid
+# kob/orange/white               Clownfish
+# spotty/pink/light_blue         Cotton Candy Betta
+# blockfish/purple/yellow        Dottyback
+# clayfish/white/red             Emperor Red Snapper
+# spotty/white/yellow            Goatfish
+# glitter/white/gray             Moorish Idol
+# clayfish/white/orange          Ornate Butterflyfish
+# dasher/cyan/pink               Parrotfish
+# brinely/lime/light_blue        Queen Angelfish
+# betty/red/white                Red Cichlid
+# snooper/gray/red               Red-lipped Blenny
+# blockfish/red/white            Red Snapper
+# flopper/white/yellow           Threadfin
+# kob/red/white                  Tomato Clownfish
+# sunstreak/white/light_gray     Triggerfish
+# dasher/cyan/yellow             Yellow Parrotfish
+# flopper/yellow/yellow          Yellow Tang
 #
-# ========== SHULKER ===============================================================================
 # The special "random" key supports random spawning; see the example in the multicolor color-scheme.
 # The "random" key is valid only for tropical_fish.
 #
@@ -541,8 +513,8 @@ mobs:
     include-pets: false
     blue:
       probabilities:
-        flopper/gray/blue: 0.25             # Blue Tang
         brinely/lime/light_blue: 0.25       # Queen Angelfish
+        flopper/gray/blue: 0.25             # Blue Tang
         spotty/pink/light_blue: 0.25        # Cotton Candy Betta
         sunstreak/blue/gray: 0.25           # Cichlid
       enabled-worlds:
@@ -559,27 +531,27 @@ mobs:
     yellow:
       probabilities:
         blockfish/purple/yellow: 0.20       # Dottyback
+        dasher/cyan/yellow: 0.20            # Yellow Parrotfish
         flopper/white/yellow: 0.20          # Threadfin
         flopper/yellow/yellow: 0.20         # Yellow Tang
-        dasher/cyan/yellow: 0.20            # Yellow Parrotfish
         spotty/white/yellow: 0.20           # Goatfish
       enabled-worlds:
         - example_world_with_only_yellow_fish
     multicolor:
       probabilities:
-        spotty/pink/light_blue: 0.18        # Cotton Candy Betta
         blockfish/purple/yellow: 0.18       # Dottyback
-        dasher/cyan/pink: 0.18              # Parrotfish
         brinely/lime/light_blue: 0.18       # Queen Angelfish
+        dasher/cyan/pink: 0.18              # Parrotfish
         dasher/cyan/yellow: 0.18            # Yellow Parrotfish
-        random: 0.10
+        random: 0.10                        # random
+        spotty/pink/light_blue: 0.18        # Cotton Candy Betta
       enabled-worlds:
         - example_world_with_only_multicolor_fish
     monochrome:
       probabilities:
+        clayfish/white/gray: 0.25           # Butterflyfish
         flopper/gray/gray: 0.25             # Black Tang
         glitter/white/gray: 0.25            # Moorish Idol
-        clayfish/white/gray: 0.25           # Butterflyfish
         sunstreak/white/light_gray: 0.25    # Triggerfish
       enabled-worlds:
         - example_world_with_only_monochrome_fish

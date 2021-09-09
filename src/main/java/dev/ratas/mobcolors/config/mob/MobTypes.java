@@ -2,7 +2,11 @@ package dev.ratas.mobcolors.config.mob;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -20,11 +24,33 @@ import org.bukkit.material.Colorable;
 
 import dev.ratas.mobcolors.config.HorseVariant;
 import dev.ratas.mobcolors.config.TropicalFishVariant;
+import dev.ratas.mobcolors.config.variants.AxolotlVariant;
+import dev.ratas.mobcolors.config.variants.CatVariant;
+import dev.ratas.mobcolors.config.variants.DyeVariant;
+import dev.ratas.mobcolors.config.variants.FoxVariant;
+import dev.ratas.mobcolors.config.variants.LlamaVariant;
+import dev.ratas.mobcolors.config.variants.MobTypeVariant;
+import dev.ratas.mobcolors.config.variants.MooshroomVariant;
+import dev.ratas.mobcolors.config.variants.ParrotVariant;
+import dev.ratas.mobcolors.config.variants.RabbitVariant;
 
 public final class MobTypes {
     private static final TranslationLayer TRANSLATION_LAYER = new TranslationLayer();
     public static final List<String> ENTITY_TYPE_NAMES = Collections
             .unmodifiableList(Arrays.stream(MobType.values()).map(Enum::name).collect(Collectors.toList()));
+    public static final Map<Class<? extends MobTypeVariant<?>>, Set<MobType>> VARIANT_MOB_TYPES;
+    static {
+        Map<Class<? extends MobTypeVariant<?>>, Set<MobType>> map = new HashMap<>();
+        map.put(DyeVariant.class, Collections.unmodifiableSet(EnumSet.of(MobType.sheep, MobType.shulker)));
+        map.put(CatVariant.class, Collections.unmodifiableSet(EnumSet.of(MobType.cat)));
+        map.put(AxolotlVariant.class, Collections.unmodifiableSet(EnumSet.of(MobType.axolotl)));
+        map.put(FoxVariant.class, Collections.unmodifiableSet(EnumSet.of(MobType.fox)));
+        map.put(LlamaVariant.class, Collections.unmodifiableSet(EnumSet.of(MobType.llama)));
+        map.put(MooshroomVariant.class, Collections.unmodifiableSet(EnumSet.of(MobType.mooshroom)));
+        map.put(ParrotVariant.class, Collections.unmodifiableSet(EnumSet.of(MobType.parrot)));
+        map.put(RabbitVariant.class, Collections.unmodifiableSet(EnumSet.of(MobType.rabbit)));
+        VARIANT_MOB_TYPES = Collections.unmodifiableMap(map);
+    }
 
     private MobTypes() {
         throw new IllegalStateException("Cannot be initialized");
