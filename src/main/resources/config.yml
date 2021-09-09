@@ -405,6 +405,16 @@ mobs:
         light_gray: 0.05
         pink: 0.00164
         white: 0.81836
+        blue: 0.0
+        cyan: 0.0
+        green: 0.0
+        light_blue: 0.0
+        lime: 0.0
+        magenta: 0.0
+        orange: 0.0
+        purple: 0.0
+        red: 0.0
+        yellow: 0.0
     black:
       probabilities:
         black: 0.81836
@@ -442,6 +452,22 @@ mobs:
     default:
       probabilities:
         default: 1.00
+        black: 0.0
+        blue: 0.0
+        brown: 0.0
+        cyan: 0.0
+        gray: 0.0
+        green: 0.0
+        light_blue: 0.0
+        light_gray: 0.0
+        lime: 0.0
+        magenta: 0.0
+        orange: 0.0
+        pink: 0.0
+        purple: 0.0
+        red: 0.0
+        white: 0.0
+        yellow: 0.0
     black-and-red:
       probabilities:
         black: 0.50
