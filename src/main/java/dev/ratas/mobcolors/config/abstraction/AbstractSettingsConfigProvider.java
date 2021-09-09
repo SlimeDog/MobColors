@@ -12,11 +12,6 @@ public abstract class AbstractSettingsConfigProvider implements SettingsConfigPr
     }
 
     @Override
-    public ConfigurationSection getColorSchemesConfig() {
-        return getBaseSettingsConfig().getConfigurationSection("color-schemes");
-    }
-
-    @Override
     public ConfigurationSection getMobsConfig() {
         return getBaseSettingsConfig().getConfigurationSection("mobs");
     }

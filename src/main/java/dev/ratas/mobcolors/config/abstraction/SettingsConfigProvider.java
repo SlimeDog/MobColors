@@ -6,8 +6,6 @@ import org.bukkit.configuration.ConfigurationSection;
 
 public interface SettingsConfigProvider {
 
-    ConfigurationSection getColorSchemesConfig();
-
     ConfigurationSection getMobsConfig();
 
     ConfigurationSection getBaseSettingsConfig();
