@@ -39,7 +39,7 @@ public class Triple<T1, T2, T3> {
             return false;
         }
         Triple<?, ?, ?> o = (Triple<?, ?, ?>) other;
-        return nullsOrEqual(o.t1, t1) && nullsOrEqual(o.t2, t2) || nullsOrEqual(o.t3, t3);
+        return nullsOrEqual(o.t1, t1) && nullsOrEqual(o.t2, t2) && nullsOrEqual(o.t3, t3);
     }
 
     private static boolean nullsOrEqual(Object o1, Object o2) {
