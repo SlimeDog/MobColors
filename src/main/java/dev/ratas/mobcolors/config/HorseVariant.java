@@ -1,22 +1,16 @@
 package dev.ratas.mobcolors.config;
 
-import java.util.EnumMap;
-import java.util.Map;
-
 import org.bukkit.entity.Horse;
 
-import dev.ratas.mobcolors.utils.Pair;
+import dev.ratas.mobcolors.config.variants.TwoTypeComplexVariant;
 
-public final class HorseVariant extends Pair<Horse.Color, Horse.Style> {
-    private static final InstanceTracker INSTANCE_TRACKER = new InstanceTracker();
+public final class HorseVariant extends TwoTypeComplexVariant<Horse.Color, Horse.Style> {
+    private static final InstanceTracker<Horse.Color, InstanceTracker<Horse.Style, HorseVariant>> INSTANCE_TRACKER = InstanceTracker
+            .getBiTracker((color, style) -> new HorseVariant(color, style));
     public static final String DELIMITER = "/";
 
     private HorseVariant(Horse.Color color, Horse.Style style) {
         super(color, style);
-    }
-
-    public String getName() {
-        return getOne().name() + "/" + getTwo().name();
     }
 
     @Override
@@ -31,7 +25,7 @@ public final class HorseVariant extends Pair<Horse.Color, Horse.Style> {
             throw new IllegalArgumentException(
                     "Wrong number of different types in key '" + name + "'. Expected " + 2 + " but got " + nr);
         }
-        return new HorseVariant(Horse.Color.valueOf(keys[0]), Horse.Style.valueOf(keys[1]));
+        return getVariant(Horse.Color.valueOf(keys[0]), Horse.Style.valueOf(keys[1]));
     }
 
     public static HorseVariant getVariant(Horse horse) {
@@ -39,17 +33,7 @@ public final class HorseVariant extends Pair<Horse.Color, Horse.Style> {
     }
 
     public static HorseVariant getVariant(Horse.Color color, Horse.Style style) {
-        return INSTANCE_TRACKER.get(color, style);
-    }
-
-    private static class InstanceTracker {
-        private final Map<Horse.Color, Map<Horse.Style, HorseVariant>> variantsMap = new EnumMap<>(Horse.Color.class);
-
-        private HorseVariant get(Horse.Color color, Horse.Style style) {
-            Map<Horse.Style, HorseVariant> map = variantsMap.computeIfAbsent(color,
-                    c -> new EnumMap<>(Horse.Style.class));
-            return map.computeIfAbsent(style, s -> new HorseVariant(color, style));
-        }
+        return INSTANCE_TRACKER.get(color).get(style);
     }
 
 }
