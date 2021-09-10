@@ -26,4 +26,9 @@ public class ThreeTypeComplexVariant<E1 extends Enum<E1>, E2 extends Enum<E2>, E
         return delimiter;
     }
 
+    @Override
+    public String toString() {
+        return getName();
+    }
+
 }
