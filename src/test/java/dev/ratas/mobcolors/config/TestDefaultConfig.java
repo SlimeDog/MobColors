@@ -23,7 +23,7 @@ public class TestDefaultConfig {
     public void test_DefaultConfigHasCorrectEnumNames() {
         // the assertion is done within the logger - whenever there's a warning, an
         // assertions is made
-        new Settings(provider, null);
+        new Settings(provider, null, true); // force enable all mob settings
     }
 
     private static class ThrowingLogger extends Logger {

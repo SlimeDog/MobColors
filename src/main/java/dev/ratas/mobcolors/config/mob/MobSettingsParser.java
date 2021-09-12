@@ -20,15 +20,18 @@ public class MobSettingsParser {
     private boolean includeLeashed;
     private boolean includePets;
     private boolean includeTaders;
+    private final boolean forceEnable;
 
-    public MobSettingsParser(ConfigurationSection section, Logger logger) throws IllegalMobSettingsException {
+    public MobSettingsParser(ConfigurationSection section, Logger logger, boolean forceEnable)
+            throws IllegalMobSettingsException {
         this.section = section;
         this.logger = logger;
+        this.forceEnable = forceEnable;
         parse();
     }
 
     private boolean parseEnabled() {
-        return section.getBoolean("enabled");
+        return section.getBoolean("enabled") || this.forceEnable;
     }
 
     private MobType parseType() throws IllegalMobSettingsException {

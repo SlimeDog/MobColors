@@ -23,15 +23,21 @@ import dev.ratas.mobcolors.scheduling.abstraction.Scheduler;
 public class Settings implements Reloadable {
     private final SettingsConfigProvider provider;
     private boolean isDebug;
+    private final boolean enableAll;
     private final Scheduler scheduler;
     private final Map<MobType, MobSettings> mobSettings = new EnumMap<>(MobType.class);
     private final WorldManager worldManager = new WorldManager();
     private final Logger logger;
 
     public Settings(SettingsConfigProvider provider, Scheduler scheduler) {
+        this(provider, scheduler, false);
+    }
+
+    public Settings(SettingsConfigProvider provider, Scheduler scheduler, boolean enableAll) {
         this.provider = provider;
         this.scheduler = scheduler;
         this.logger = provider.getLogger();
+        this.enableAll = enableAll; // for testing
         load();
     }
 
@@ -69,7 +75,7 @@ public class Settings implements Reloadable {
         }
         MobSettingsParser parser;
         try {
-            parser = new MobSettingsParser(section, logger);
+            parser = new MobSettingsParser(section, logger, enableAll);
         } catch (IllegalMobSettingsException e) {
             logger.warning("Problem with mob settings for " + mobName + ": " + e.getMessage());
             return;
