@@ -21,7 +21,7 @@ public class ColorSchemeParser<T> extends AbstractColorSchemeParser {
         Map<T, Double> initialMap = new HashMap<>();
         double total = 0;
         for (String key : probabilitiesSection.getKeys(false)) {
-            String variantName = key.equals("default") ? "DEFAULT" : key;
+            String variantName = key;
             T color;
             try {
                 color = getValueOf(clazz, variantName);

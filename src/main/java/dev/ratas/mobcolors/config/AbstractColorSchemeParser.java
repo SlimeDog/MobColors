@@ -41,6 +41,7 @@ public class AbstractColorSchemeParser {
 
         @SuppressWarnings("unchecked")
         public <V> V getValueOf(Class<V> clazz, String name) {
+            name = name.equals("default") ? "DEFAULT" : name;
             Method method = getOrCreateValueOfMethod(clazz);
             try {
                 return (V) method.invoke(clazz, name); // unchecked, but for Enum should be fine
@@ -67,5 +68,5 @@ public class AbstractColorSchemeParser {
         }
 
     }
-    
+
 }
