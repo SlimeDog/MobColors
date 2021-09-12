@@ -74,7 +74,7 @@ mobs:
         lucy: 0.25
         wild: 0.25
       enabled-worlds:
-        - example_world_with_only_blue_axolotl
+        - example_world_with_more_blue_axolotl
     lucy:
       probabilities:
         blue: 0.00083
