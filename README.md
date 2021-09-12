@@ -1,6 +1,6 @@
 ## MobColors
 
-⚠️ **MobColors** is under active development. It is not ready for prime time.
+⚠️ **MobColors** is under active development. It is not quite ready for prime time.
 
 ⚠️ Feel free to peruse the code, and to give us feedback based on test server usage.
 
