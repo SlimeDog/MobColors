@@ -28,10 +28,11 @@ public class MobColors extends JavaPlugin {
         ListenerRegistrator listenerRegistrator = new ListenerRegistrator(this);
         VersionProvider versionProvider = new VersionProvider(this);
         WorldProvider worldProvider = new WorldProvider(this);
+        PluginProvider pluginProvider = new PluginProvider.Implementation(this);
 
         // platform
         PluginPlatform platform = new PluginPlatform(scheduler, resourceProvider, settingsProvider, listenerRegistrator,
-                versionProvider, () -> reloadConfig(), getLogger());
+                versionProvider, pluginProvider, () -> reloadConfig(), getLogger());
 
         // commands
         getCommand("mobcolors").setExecutor(

@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 
+import dev.ratas.mobcolors.PluginProvider;
 import dev.ratas.mobcolors.coloring.settings.ColorMap;
 import dev.ratas.mobcolors.config.abstraction.SettingsConfigProvider;
 import dev.ratas.mobcolors.config.mob.IllegalMobSettingsException;
@@ -28,13 +28,16 @@ public class Settings implements Reloadable {
     private final Map<MobType, MobSettings> mobSettings = new EnumMap<>(MobType.class);
     private final WorldManager worldManager = new WorldManager();
     private final Logger logger;
+    private final PluginProvider pluginProvider;
 
-    public Settings(SettingsConfigProvider provider, Scheduler scheduler) {
-        this(provider, scheduler, false);
+    public Settings(SettingsConfigProvider provider, PluginProvider pluginProvider, Scheduler scheduler) {
+        this(provider, pluginProvider, scheduler, false);
     }
 
-    public Settings(SettingsConfigProvider provider, Scheduler scheduler, boolean enableAll) {
+    public Settings(SettingsConfigProvider provider, PluginProvider pluginProvider, Scheduler scheduler,
+            boolean enableAll) {
         this.provider = provider;
+        this.pluginProvider = pluginProvider;
         this.scheduler = scheduler;
         this.logger = provider.getLogger();
         this.enableAll = enableAll; // for testing
@@ -91,8 +94,7 @@ public class Settings implements Reloadable {
         if (settings == null) {
             return; // disabled
         }
-        if (settings.getEntityType() == MobType.sheep
-                && Bukkit.getPluginManager().isPluginEnabled("SheepSpawnColors")) {
+        if (settings.getEntityType() == MobType.sheep && pluginProvider.isPluginEnabled("SheepSpawnColors")) {
             logger.warning("Detected the SheepSpawnColors plugin. "
                     + "Disabling the sheep spawning functionality of MobColors "
                     + "since both plugins would otherwise attempt to do similar things.");

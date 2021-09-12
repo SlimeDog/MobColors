@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import dev.ratas.mobcolors.PluginProvider;
 import dev.ratas.mobcolors.SpawnListener;
 import dev.ratas.mobcolors.config.Messages;
 import dev.ratas.mobcolors.config.Settings;
@@ -31,14 +32,16 @@ public class PluginPlatform {
     private final TaskScheduler taskScheduler;
     private final RegionMapper mapper;
     private final RegionScanner scanner;
+    private final PluginProvider pluginProvider;
     private final Logger logger;
     private final Runnable pluginReloader;
 
     public PluginPlatform(Scheduler scheduler, ResourceProvider resourceProvider,
             SettingsConfigProvider settingsProvider, ListenerRegistrator lisenerRegistrator,
-            VersionProvider versionProvider, Runnable pluginReloader, Logger logger)
+            VersionProvider versionProvider, PluginProvider pluginProvider, Runnable pluginReloader, Logger logger)
             throws PlatformInitializationException {
         this.pluginReloader = pluginReloader;
+        this.pluginProvider = pluginProvider;
         this.logger = logger;
         // initialize and register reloadables
         try {
@@ -49,7 +52,7 @@ public class PluginPlatform {
         }
         reloadManager.register(config);
         try {
-            settings = new Settings(settingsProvider, scheduler);
+            settings = new Settings(settingsProvider, this.pluginProvider, scheduler);
         } catch (Exception e) {
             disableWith(e);
             throw new PlatformInitializationException("Settings issue");
