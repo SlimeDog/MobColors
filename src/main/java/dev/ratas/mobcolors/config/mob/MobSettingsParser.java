@@ -34,7 +34,7 @@ public class MobSettingsParser {
     private MobType parseType() throws IllegalMobSettingsException {
         String name = section.getName();
         try {
-            return MobType.valueOf(name.toUpperCase());
+            return MobType.valueOf(name);
         } catch (IllegalArgumentException e) {
             throw new IllegalMobSettingsException("Illegal entity type specified: " + name);
         }
