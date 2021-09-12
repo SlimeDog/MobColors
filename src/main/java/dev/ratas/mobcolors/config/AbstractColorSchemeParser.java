@@ -45,10 +45,8 @@ public class AbstractColorSchemeParser {
             Method method = getOrCreateValueOfMethod(clazz);
             try {
                 return (V) method.invoke(clazz, name); // unchecked, but for Enum should be fine
-            } catch (IllegalArgumentException e) {
-                throw e; // cought above
-            } catch (IllegalAccessException | InvocationTargetException e) {
-                throw new IllegalStateException(e);
+            } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
+                throw new IllegalStateException("No such " + clazz.getSimpleName() + ": " + name);
             }
         }
 
