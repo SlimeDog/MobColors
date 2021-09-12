@@ -24,7 +24,7 @@ public class ColorSchemeParser<T> extends AbstractColorSchemeParser {
             String variantName = key.equals("default") ? "DEFAULT" : key;
             T color;
             try {
-                color = ENUM_VALUE_OF_PROVIDER.getValueOf(clazz, variantName);
+                color = getValueOf(clazz, variantName);
             } catch (IllegalArgumentException e) {
                 logger.warning("Undefined color in config:" + key);
                 continue;
@@ -45,6 +45,10 @@ public class ColorSchemeParser<T> extends AbstractColorSchemeParser {
         if (colorMap.isEmpty()) {
             throw new IllegalArgumentException("No entries found");
         }
+    }
+
+    public static <T> T getValueOf(Class<T> clazz, String variantName) {
+        return ENUM_VALUE_OF_PROVIDER.getValueOf(clazz, variantName);
     }
 
     public Map<T, Double> getDyeColors() {
