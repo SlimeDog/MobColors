@@ -1,6 +1,5 @@
 package dev.ratas.mobcolors.config.world;
 
-import org.bukkit.DyeColor;
 import org.bukkit.entity.Axolotl;
 import org.bukkit.entity.Cat;
 import org.bukkit.entity.Fox;
@@ -18,6 +17,14 @@ import dev.ratas.mobcolors.coloring.settings.ColorMap;
 import dev.ratas.mobcolors.config.HorseVariant;
 import dev.ratas.mobcolors.config.TropicalFishVariant;
 import dev.ratas.mobcolors.config.mob.MobSettings;
+import dev.ratas.mobcolors.config.variants.AxolotlVariant;
+import dev.ratas.mobcolors.config.variants.CatVariant;
+import dev.ratas.mobcolors.config.variants.DyeVariant;
+import dev.ratas.mobcolors.config.variants.FoxVariant;
+import dev.ratas.mobcolors.config.variants.LlamaVariant;
+import dev.ratas.mobcolors.config.variants.MooshroomVariant;
+import dev.ratas.mobcolors.config.variants.ParrotVariant;
+import dev.ratas.mobcolors.config.variants.RabbitVariant;
 import dev.ratas.mobcolors.scheduling.abstraction.Scheduler;
 
 public class ColorerGenerator {
@@ -32,31 +39,37 @@ public class ColorerGenerator {
         switch (map.getApplicableEntityType()) {
             case sheep:
             case shulker:
-                return new DelegatingMobColorer<Colorable, DyeColor>(scheduler, settings, (ColorMap<DyeColor>) map,
-                        (ent, color) -> ent.setColor(color), ent -> ent.getColor());
+                return new DelegatingMobColorer<Colorable, DyeVariant>(scheduler, settings, (ColorMap<DyeVariant>) map,
+                        (ent, color) -> ent.setColor(color.getBukkitVariant()),
+                        ent -> DyeVariant.getType(ent.getColor()));
             case axolotl:
-                return new DelegatingMobColorer<Axolotl, Axolotl.Variant>(scheduler, settings,
-                        (ColorMap<Axolotl.Variant>) map, (ax, var) -> ax.setVariant(var), ax -> ax.getVariant());
+                return new DelegatingMobColorer<Axolotl, AxolotlVariant>(scheduler, settings,
+                        (ColorMap<AxolotlVariant>) map, (ax, var) -> ax.setVariant(var.getBukkitVariant()),
+                        ax -> AxolotlVariant.getType(ax.getVariant()));
             case cat:
-                return new DelegatingMobColorer<Cat, Cat.Type>(scheduler, settings, (ColorMap<Cat.Type>) map,
-                        (cat, type) -> cat.setCatType(type), cat -> cat.getCatType());
+                return new DelegatingMobColorer<Cat, CatVariant>(scheduler, settings, (ColorMap<CatVariant>) map,
+                        (cat, type) -> cat.setCatType(type.getBukkitVariant()),
+                        cat -> CatVariant.getType(cat.getCatType()));
             case fox:
-                return new DelegatingMobColorer<Fox, Fox.Type>(scheduler, settings, (ColorMap<Fox.Type>) map,
-                        (fox, type) -> fox.setFoxType(type), fox -> fox.getFoxType());
+                return new DelegatingMobColorer<Fox, FoxVariant>(scheduler, settings, (ColorMap<FoxVariant>) map,
+                        (fox, type) -> fox.setFoxType(type.getBukkitVariant()),
+                        fox -> FoxVariant.getType(fox.getFoxType()));
             case llama:
-                return new DelegatingMobColorer<Llama, Llama.Color>(scheduler, settings, (ColorMap<Llama.Color>) map,
-                        (llama, color) -> llama.setColor(color), llama -> llama.getColor());
+                return new DelegatingMobColorer<Llama, LlamaVariant>(scheduler, settings, (ColorMap<LlamaVariant>) map,
+                        (llama, color) -> llama.setColor(color.getBukkitVariant()),
+                        llama -> LlamaVariant.getType(llama.getColor()));
             case mooshroom:
-                return new DelegatingMobColorer<MushroomCow, MushroomCow.Variant>(scheduler, settings,
-                        (ColorMap<MushroomCow.Variant>) map, (cow, var) -> cow.setVariant(var),
-                        cow -> cow.getVariant());
+                return new DelegatingMobColorer<MushroomCow, MooshroomVariant>(scheduler, settings,
+                        (ColorMap<MooshroomVariant>) map, (cow, var) -> cow.setVariant(var.getBukkitVariant()),
+                        cow -> MooshroomVariant.getType(cow.getVariant()));
             case parrot:
-                return new DelegatingMobColorer<Parrot, Parrot.Variant>(scheduler, settings,
-                        (ColorMap<Parrot.Variant>) map, (parrot, var) -> parrot.setVariant(var),
-                        parrot -> parrot.getVariant());
+                return new DelegatingMobColorer<Parrot, ParrotVariant>(scheduler, settings,
+                        (ColorMap<ParrotVariant>) map, (parrot, var) -> parrot.setVariant(var.getBukkitVariant()),
+                        parrot -> ParrotVariant.getType(parrot.getVariant()));
             case rabbit:
-                return new DelegatingMobColorer<Rabbit, Rabbit.Type>(scheduler, settings, (ColorMap<Rabbit.Type>) map,
-                        (rabbit, type) -> rabbit.setRabbitType(type), rabbit -> rabbit.getRabbitType());
+                return new DelegatingMobColorer<Rabbit, RabbitVariant>(scheduler, settings,
+                        (ColorMap<RabbitVariant>) map, (rabbit, type) -> rabbit.setRabbitType(type.getBukkitVariant()),
+                        rabbit -> RabbitVariant.getType(rabbit.getRabbitType()));
             case horse:
                 return new DelegatingMobColorer<Horse, HorseVariant>(scheduler, settings, (ColorMap<HorseVariant>) map,
                         (horse, var) -> {
