@@ -7,9 +7,6 @@ import java.util.logging.Logger;
 
 import org.bukkit.configuration.ConfigurationSection;
 
-import dev.ratas.mobcolors.config.mob.MobTypes;
-import dev.ratas.mobcolors.config.mob.TranslationLayer;
-
 public class ColorSchemeParser<T> extends AbstractColorSchemeParser {
     private static final double TOLERANCE = 0.0000001D;
     private final Map<T, Double> colorMap;
@@ -24,17 +21,13 @@ public class ColorSchemeParser<T> extends AbstractColorSchemeParser {
         Map<T, Double> initialMap = new HashMap<>();
         double total = 0;
         for (String key : probabilitiesSection.getKeys(false)) {
-            String variantName = MobTypes.fixTypeNames(key, clazz);
+            String variantName = key;
             T color;
-            if (variantName == TranslationLayer.DEFAULT_SHULKER_TYPE_NAME) {
-                color = null; // special case for default shulker
-            } else {
-                try {
-                    color = ENUM_VALUE_OF_PROVIDER.getValueOf(clazz, variantName);
-                } catch (IllegalArgumentException e) {
-                    logger.warning("Undefined color in config:" + key);
-                    continue;
-                }
+            try {
+                color = ENUM_VALUE_OF_PROVIDER.getValueOf(clazz, variantName);
+            } catch (IllegalArgumentException e) {
+                logger.warning("Undefined color in config:" + key);
+                continue;
             }
             double val = probabilitiesSection.getDouble(key, 0.0D);
             if (val == 0.0D) {

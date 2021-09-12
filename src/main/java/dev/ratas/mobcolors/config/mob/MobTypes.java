@@ -35,7 +35,6 @@ import dev.ratas.mobcolors.config.variants.ParrotVariant;
 import dev.ratas.mobcolors.config.variants.RabbitVariant;
 
 public final class MobTypes {
-    private static final TranslationLayer TRANSLATION_LAYER = new TranslationLayer();
     public static final List<String> ENTITY_TYPE_NAMES = Collections
             .unmodifiableList(Arrays.stream(MobType.values()).map(Enum::name).collect(Collectors.toList()));
     public static final Map<Class<? extends MobTypeVariant<?>>, Set<MobType>> VARIANT_MOB_TYPES;
@@ -132,14 +131,6 @@ public final class MobTypes {
         } else {
             throw new IllegalArgumentException("Not a type of interest: " + type);
         }
-    }
-
-    public static String fixTypeNames(String name, Class<?> clazz) {
-        return TRANSLATION_LAYER.attemptTranslation(name, clazz);
-    }
-
-    public static String reverseTranslate(String name) {
-        return TRANSLATION_LAYER.reverseTranslate(name);
     }
 
 }

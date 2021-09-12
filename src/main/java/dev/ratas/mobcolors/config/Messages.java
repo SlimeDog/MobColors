@@ -8,7 +8,6 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import dev.ratas.mobcolors.config.abstraction.CustomConfigHandler;
 import dev.ratas.mobcolors.config.abstraction.ResourceProvider;
 import dev.ratas.mobcolors.config.mob.MobType;
-import dev.ratas.mobcolors.config.mob.MobTypes;
 import dev.ratas.mobcolors.utils.WorldDescriptor;
 
 public class Messages extends CustomConfigHandler {
@@ -124,7 +123,6 @@ public class Messages extends CustomConfigHandler {
                 String.valueOf(amount));
         if (color instanceof Enum) {
             String enumName = ((Enum<?>) color).name().toLowerCase();
-            enumName = MobTypes.reverseTranslate(enumName);
             return msg.replace("{color}", enumName);
         } else if (color == null) { // shulker special case with default
             return msg.replace("{color}", "default");
