@@ -83,21 +83,21 @@ public final class MobTypes {
 
     public static Function<Entity, ?> getFunctionFor(Entity ent) {
         if (ent instanceof Colorable) {
-            return e -> ((Colorable) e).getColor();
+            return e -> DyeVariant.getType(((Colorable) e).getColor());
         } else if (ent instanceof Axolotl) {
-            return e -> ((Axolotl) e).getVariant();
+            return e -> AxolotlVariant.getType(((Axolotl) e).getVariant());
         } else if (ent instanceof Cat) {
-            return e -> ((Cat) e).getCatType();
+            return e -> CatVariant.getType(((Cat) e).getCatType());
         } else if (ent instanceof Fox) {
-            return e -> ((Fox) e).getFoxType();
+            return e -> FoxVariant.getType(((Fox) e).getFoxType());
         } else if (ent instanceof Llama) {
-            return e -> ((Llama) e).getColor();
+            return e -> LlamaVariant.getType(((Llama) e).getColor());
         } else if (ent instanceof MushroomCow) {
-            return e -> ((MushroomCow) e).getVariant();
+            return e -> MooshroomVariant.getType(((MushroomCow) e).getVariant());
         } else if (ent instanceof Parrot) {
-            return e -> ((Parrot) e).getVariant();
+            return e -> ParrotVariant.getType(((Parrot) e).getVariant());
         } else if (ent instanceof Rabbit) {
-            return e -> ((Rabbit) e).getRabbitType();
+            return e -> RabbitVariant.getType(((Rabbit) e).getRabbitType());
         } else if (ent instanceof Horse) {
             return e -> HorseVariant.getVariant((Horse) e);
         } else if (ent instanceof TropicalFish) {
@@ -109,21 +109,21 @@ public final class MobTypes {
 
     public static Function<Entity, ?> getFunctionForType(MobType type) {
         if (type == MobType.sheep || type == MobType.sheep) {
-            return e -> ((Colorable) e).getColor();
+            return e -> DyeVariant.getType(((Colorable) e).getColor());
         } else if (type == MobType.axolotl) {
-            return e -> ((Axolotl) e).getVariant();
+            return e -> AxolotlVariant.getType(((Axolotl) e).getVariant());
         } else if (type == MobType.cat) {
-            return e -> ((Cat) e).getCatType();
+            return e -> CatVariant.getType(((Cat) e).getCatType());
         } else if (type == MobType.fox) {
-            return e -> ((Fox) e).getFoxType();
+            return e -> FoxVariant.getType(((Fox) e).getFoxType());
         } else if (type == MobType.llama) {
-            return e -> ((Llama) e).getColor();
+            return e -> LlamaVariant.getType(((Llama) e).getColor());
         } else if (type == MobType.mooshroom) {
-            return e -> ((MushroomCow) e).getVariant();
+            return e -> MooshroomVariant.getType(((MushroomCow) e).getVariant());
         } else if (type == MobType.parrot) {
-            return e -> ((Parrot) e).getVariant();
+            return e -> ParrotVariant.getType(((Parrot) e).getVariant());
         } else if (type == MobType.rabbit) {
-            return e -> ((Rabbit) e).getRabbitType();
+            return e -> RabbitVariant.getType(((Rabbit) e).getRabbitType());
         } else if (type == MobType.horse) {
             return e -> HorseVariant.getVariant((Horse) e);
         } else if (type == MobType.tropical_fish) {
