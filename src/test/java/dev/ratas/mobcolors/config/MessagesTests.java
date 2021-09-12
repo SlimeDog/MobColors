@@ -12,7 +12,6 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Axolotl;
 import org.bukkit.entity.Cat;
 import org.bukkit.entity.Fox;
-import org.bukkit.entity.Horse;
 import org.bukkit.entity.Llama;
 import org.bukkit.entity.MushroomCow;
 import org.bukkit.entity.Parrot;
@@ -26,6 +25,8 @@ import dev.ratas.mobcolors.config.mob.MobType;
 import dev.ratas.mobcolors.config.mock.DummyResourceProvider;
 import dev.ratas.mobcolors.config.mock.FileResourceProvider;
 import dev.ratas.mobcolors.config.variants.DyeVariant;
+import dev.ratas.mobcolors.config.variants.HorseColor;
+import dev.ratas.mobcolors.config.variants.HorseStyle;
 import dev.ratas.mobcolors.config.variants.TropicalFishPattern;
 import dev.ratas.mobcolors.utils.WorldDescriptor;
 
@@ -172,7 +173,7 @@ public class MessagesTests {
         messages.getDoneScanningItemMessage(color, 10);
         color = Fox.Type.RED;
         messages.getDoneScanningItemMessage(color, 10);
-        color = HorseVariant.getVariant(Horse.Color.BLACK, Horse.Style.BLACK_DOTS);
+        color = HorseVariant.getVariant(HorseColor.black, HorseStyle.black_dots);
         messages.getDoneScanningItemMessage(color, 10);
         color = Llama.Color.GRAY;
         messages.getDoneScanningItemMessage(color, 10);

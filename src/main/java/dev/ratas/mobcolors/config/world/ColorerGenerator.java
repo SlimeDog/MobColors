@@ -73,8 +73,8 @@ public class ColorerGenerator {
             case horse:
                 return new DelegatingMobColorer<Horse, HorseVariant>(scheduler, settings, (ColorMap<HorseVariant>) map,
                         (horse, var) -> {
-                            horse.setColor(var.getOne());
-                            horse.setStyle(var.getTwo());
+                            horse.setColor(var.getOne().getBukkitVariant());
+                            horse.setStyle(var.getTwo().getBukkitVariant());
                         }, horse -> HorseVariant.getVariant(horse));
             case tropical_fish:
                 return new DelegatingMobColorer<TropicalFish, TropicalFishVariant>(scheduler, settings,
