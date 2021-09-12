@@ -5,15 +5,16 @@ import java.util.concurrent.ThreadLocalRandom;
 import org.bukkit.DyeColor;
 import org.bukkit.entity.TropicalFish;
 
+import dev.ratas.mobcolors.config.variants.DyeVariant;
 import dev.ratas.mobcolors.config.variants.ThreeTypeComplexVariant;
 
-public class TropicalFishVariant extends ThreeTypeComplexVariant<TropicalFish.Pattern, DyeColor, DyeColor> {
+public class TropicalFishVariant extends ThreeTypeComplexVariant<TropicalFish.Pattern, DyeVariant, DyeVariant> {
     private static final String RANDOM_STATE = "random";
-    private static final InstanceTracker<TropicalFish.Pattern, InstanceTracker<DyeColor, InstanceTracker<DyeColor, TropicalFishVariant>>> INSTANCE_TRACKER = InstanceTracker
+    private static final InstanceTracker<TropicalFish.Pattern, InstanceTracker<DyeVariant, InstanceTracker<DyeVariant, TropicalFishVariant>>> INSTANCE_TRACKER = InstanceTracker
             .getTripleTracker((p, c1, c2) -> new TropicalFishVariant(p, c1, c2));
     public static final String DELIMITER = "/";
 
-    private TropicalFishVariant(TropicalFish.Pattern pattern, DyeColor color1, DyeColor color2) {
+    private TropicalFishVariant(TropicalFish.Pattern pattern, DyeVariant color1, DyeVariant color2) {
         super(pattern, color1, color2);
     }
 
@@ -27,7 +28,8 @@ public class TropicalFishVariant extends ThreeTypeComplexVariant<TropicalFish.Pa
             throw new IllegalArgumentException(
                     "Wrong number of different types in key '" + name + "'. Expected " + 3 + " but got " + nr);
         }
-        return getVariant(TropicalFish.Pattern.valueOf(keys[0]), DyeColor.valueOf(keys[1]), DyeColor.valueOf(keys[2]));
+        return getVariant(TropicalFish.Pattern.valueOf(keys[0]), DyeVariant.valueOf(keys[1]),
+                DyeVariant.valueOf(keys[2]));
     }
 
     public static TropicalFishVariant randomVariant() {
@@ -37,9 +39,9 @@ public class TropicalFishVariant extends ThreeTypeComplexVariant<TropicalFish.Pa
         TropicalFish.Pattern pattern = values[nr];
         DyeColor[] dyeValues = DyeColor.values();
         nr = random.nextInt(dyeValues.length);
-        DyeColor color1 = dyeValues[nr];
+        DyeVariant color1 = DyeVariant.getType(dyeValues[nr]);
         nr = random.nextInt(dyeValues.length);
-        DyeColor color2 = dyeValues[nr];
+        DyeVariant color2 = DyeVariant.getType(dyeValues[nr]);
         return getVariant(pattern, color1, color2);
     }
 
@@ -49,10 +51,11 @@ public class TropicalFishVariant extends ThreeTypeComplexVariant<TropicalFish.Pa
     }
 
     public static TropicalFishVariant getVariant(TropicalFish fish) {
-        return getVariant(fish.getPattern(), fish.getBodyColor(), fish.getPatternColor());
+        return getVariant(fish.getPattern(), DyeVariant.getType(fish.getBodyColor()),
+                DyeVariant.getType(fish.getPatternColor()));
     }
 
-    public static TropicalFishVariant getVariant(TropicalFish.Pattern pattern, DyeColor color1, DyeColor color2) {
+    public static TropicalFishVariant getVariant(TropicalFish.Pattern pattern, DyeVariant color1, DyeVariant color2) {
         return INSTANCE_TRACKER.get(pattern).get(color1).get(color2);
     }
 

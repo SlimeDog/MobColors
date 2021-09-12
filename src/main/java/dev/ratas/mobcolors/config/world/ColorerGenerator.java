@@ -80,8 +80,8 @@ public class ColorerGenerator {
                 return new DelegatingMobColorer<TropicalFish, TropicalFishVariant>(scheduler, settings,
                         (ColorMap<TropicalFishVariant>) map, (fish, var) -> {
                             fish.setPattern(var.getOne());
-                            fish.setBodyColor(var.getTwo());
-                            fish.setPatternColor(var.getThree());
+                            fish.setBodyColor(var.getTwo().getBukkitVariant());
+                            fish.setPatternColor(var.getThree().getBukkitVariant());
                         }, fish -> TropicalFishVariant.getVariant(fish));
             default:
                 throw new IllegalStateException("No colorer defined for " + map.getApplicableEntityType());
