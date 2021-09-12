@@ -17,7 +17,6 @@ import org.bukkit.entity.Llama;
 import org.bukkit.entity.MushroomCow;
 import org.bukkit.entity.Parrot;
 import org.bukkit.entity.Rabbit;
-import org.bukkit.entity.TropicalFish;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,6 +25,8 @@ import dev.ratas.mobcolors.config.abstraction.ResourceProvider;
 import dev.ratas.mobcolors.config.mob.MobType;
 import dev.ratas.mobcolors.config.mock.DummyResourceProvider;
 import dev.ratas.mobcolors.config.mock.FileResourceProvider;
+import dev.ratas.mobcolors.config.variants.DyeVariant;
+import dev.ratas.mobcolors.config.variants.TropicalFishPattern;
 import dev.ratas.mobcolors.utils.WorldDescriptor;
 
 public class MessagesTests {
@@ -181,7 +182,7 @@ public class MessagesTests {
         messages.getDoneScanningItemMessage(color, 10);
         color = Rabbit.Type.BROWN;
         messages.getDoneScanningItemMessage(color, 10);
-        color = TropicalFishVariant.getVariant(TropicalFish.Pattern.SNOOPER, DyeColor.BROWN, DyeColor.LIGHT_GRAY);
+        color = TropicalFishVariant.getVariant(TropicalFishPattern.snooper, DyeVariant.brown, DyeVariant.light_gray);
         messages.getDoneScanningItemMessage(color, 10);
         Assertions.assertThrows(IllegalArgumentException.class, () -> messages.getDoneScanningItemMessage("color", 10));
     }

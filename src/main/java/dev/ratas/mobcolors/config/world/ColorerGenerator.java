@@ -79,7 +79,7 @@ public class ColorerGenerator {
             case tropical_fish:
                 return new DelegatingMobColorer<TropicalFish, TropicalFishVariant>(scheduler, settings,
                         (ColorMap<TropicalFishVariant>) map, (fish, var) -> {
-                            fish.setPattern(var.getOne());
+                            fish.setPattern(var.getOne().getBukkitVariant());
                             fish.setBodyColor(var.getTwo().getBukkitVariant());
                             fish.setPatternColor(var.getThree().getBukkitVariant());
                         }, fish -> TropicalFishVariant.getVariant(fish));
