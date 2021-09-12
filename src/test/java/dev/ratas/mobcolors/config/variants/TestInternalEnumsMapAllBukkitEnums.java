@@ -17,15 +17,16 @@ public class TestInternalEnumsMapAllBukkitEnums {
     @MethodSource("provideArgumentsForTest")
     public void test_InternalEnumMapsAllBukkitEnumValues(Class<Enum<? extends MobTypeVariant<?>>> clazz) {
         Set<Object> usedBukkitVariants = new HashSet<>();
+        Class<?> bukkitEnumClass = null;
         for (Object internal : clazz.getEnumConstants()) {
             Object bukkitVariant = ((MobTypeVariant<?>) internal).getBukkitVariant();
             Assertions.assertTrue(usedBukkitVariants.add(bukkitVariant), "Multiple mappings for " + bukkitVariant);
             if (internal != DyeVariant.DEFAULT) { // hacky solution
                 Assertions.assertNotNull(bukkitVariant, "No bukkit mapping for " + internal);
+                bukkitEnumClass = bukkitVariant.getClass();
             }
         }
         Assertions.assertFalse(usedBukkitVariants.isEmpty(), "No mappings for " + clazz.getSimpleName());
-        Class<?> bukkitEnumClass = usedBukkitVariants.iterator().next().getClass();
         for (Object bukkit : bukkitEnumClass.getEnumConstants()) {
             Assertions.assertTrue(usedBukkitVariants.contains(bukkit), "No internal enum for " + bukkit);
         }
