@@ -2,7 +2,6 @@ package dev.ratas.mobcolors.config;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-import org.bukkit.DyeColor;
 import org.bukkit.entity.TropicalFish;
 
 import dev.ratas.mobcolors.config.variants.DyeVariant;
@@ -38,11 +37,11 @@ public class TropicalFishVariant extends ThreeTypeComplexVariant<TropicalFishPat
         TropicalFishPattern[] values = TropicalFishPattern.values();
         int nr = random.nextInt(values.length);
         TropicalFishPattern pattern = values[nr];
-        DyeColor[] dyeValues = DyeColor.values();
+        DyeVariant[] dyeValues = DyeVariant.values();
         nr = random.nextInt(dyeValues.length);
-        DyeVariant color1 = DyeVariant.getType(dyeValues[nr]);
+        DyeVariant color1 = dyeValues[nr];
         nr = random.nextInt(dyeValues.length);
-        DyeVariant color2 = DyeVariant.getType(dyeValues[nr]);
+        DyeVariant color2 = dyeValues[nr];
         return getVariant(pattern, color1, color2);
     }
 
