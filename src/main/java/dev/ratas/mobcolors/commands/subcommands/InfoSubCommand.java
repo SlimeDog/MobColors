@@ -41,7 +41,7 @@ public class InfoSubCommand extends SimpleSubCommand {
     public List<String> getTabComletions(CommandSender sender, String[] args) {
         List<String> list = new ArrayList<>();
         if (args.length == 1) {
-            if (args[1].startsWith("--")) {
+            if (args[0].startsWith("--")) {
                 return StringUtil.copyPartialMatches(args[0], OPTIONS, list);
             }
             return StringUtil.copyPartialMatches(args[0], worldProvider.getWorldNames(), list);
