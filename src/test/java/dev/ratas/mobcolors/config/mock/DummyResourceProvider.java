@@ -13,7 +13,7 @@ public class DummyResourceProvider implements ResourceProvider {
     public DummyResourceProvider(Logger logger) {
         this.logger = logger;
         File srcFolder = new File("src");
-        File testFolder = new File(srcFolder, "test");
+        File testFolder = new File(srcFolder, "main");
         dataFolder = new File(testFolder, "resources");
     }
 
