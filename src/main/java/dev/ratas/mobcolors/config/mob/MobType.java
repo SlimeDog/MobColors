@@ -17,7 +17,7 @@ import dev.ratas.mobcolors.config.variants.ParrotVariant;
 import dev.ratas.mobcolors.config.variants.RabbitVariant;
 
 public enum MobType {
-    axolotl(EntityType.AXOLOTL, AxolotlVariant.class), cat(EntityType.CAT, CatVariant.class),
+    axolotl("AXOLOTL", AxolotlVariant.class), cat(EntityType.CAT, CatVariant.class),
     fox(EntityType.FOX, FoxVariant.class), horse(EntityType.HORSE, HorseVariant.class),
     llama(EntityType.LLAMA, LlamaVariant.class), mooshroom(EntityType.MUSHROOM_COW, MooshroomVariant.class),
     parrot(EntityType.PARROT, ParrotVariant.class), rabbit(EntityType.RABBIT, RabbitVariant.class),
@@ -29,9 +29,24 @@ public enum MobType {
     private final EntityType delegate;
     private final Class<?> typeClass;
 
+    private MobType(String enumName, Class<?> typeClass) {
+        EntityType type;
+        try {
+            type = EntityType.valueOf(enumName);
+        } catch (IllegalArgumentException e) {
+            type = null;
+        }
+        this.delegate = type;
+        this.typeClass = typeClass;
+    }
+
     private MobType(EntityType delegate, Class<?> typeClass) {
         this.delegate = delegate;
         this.typeClass = typeClass;
+    }
+
+    public boolean isValid() {
+        return delegate != null;
     }
 
     public EntityType getEntityType() {

@@ -36,11 +36,16 @@ public class MobSettingsParser {
 
     private MobType parseType() throws IllegalMobSettingsException {
         String name = section.getName();
+        MobType type;
         try {
-            return MobType.valueOf(name);
+            type = MobType.valueOf(name);
         } catch (IllegalArgumentException e) {
             throw new IllegalMobSettingsException("Illegal entity type specified: " + name);
         }
+        if (!type.isValid()) {
+            throw new IllegalMobSettingsException("Mob type " + type.name() + " is not valid (in this version of MC)");
+        }
+        return type;
     }
 
     private Map<String, ColorMap<?>> parseMaps() {
