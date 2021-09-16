@@ -48,7 +48,7 @@ public class RegionScanner extends AbstractRegionHandler {
 
     private void checkChunk(RegionInfo info, Chunk chunk, ScanReport<?> report, RegionOptions options) {
         report.countAChunk();
-        if (eventLoadHandler != null) {
+        if (eventLoadHandler != null && !chunk.getWorld().isChunkLoaded(chunk)) {
             eventLoadHandler.addChunk(ChunkInfo.wrap(chunk), (entity) -> dealWithEntity(entity, options, info, report));
             return;
         } else {
