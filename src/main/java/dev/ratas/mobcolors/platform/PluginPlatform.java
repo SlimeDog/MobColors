@@ -69,7 +69,7 @@ public class PluginPlatform {
         // scheduling, scanning, mapping
         this.taskScheduler = new SimpleTaskScheduler(settings.maxMsPerTickInScheduler());
         scheduler.scheduleRepeating((Runnable) this.taskScheduler, 1L, 1L);
-        scanner = new RegionScanner(this.taskScheduler);
+        scanner = new RegionScanner(this.taskScheduler, lisenerRegistrator);
         mapper = new RegionMapper(this.taskScheduler, spawnListener, scanner);
 
         lisenerRegistrator.register(spawnListener);

@@ -7,14 +7,25 @@ import org.bukkit.Chunk;
 import org.bukkit.entity.Entity;
 
 import dev.ratas.mobcolors.config.mob.MobTypes;
+import dev.ratas.mobcolors.events.ListenerRegistrator;
+import dev.ratas.mobcolors.region.version.ChunkInfo;
+import dev.ratas.mobcolors.region.version.One17PlusHandler;
+import dev.ratas.mobcolors.region.version.Version;
 import dev.ratas.mobcolors.scheduling.SimpleRegionTaskDelegator;
 import dev.ratas.mobcolors.scheduling.TaskScheduler;
 
 public class RegionScanner extends AbstractRegionHandler {
     private final TaskScheduler scheduler;
+    private final One17PlusHandler eventLoadHandler;
 
-    public RegionScanner(TaskScheduler scheduler) {
+    public RegionScanner(TaskScheduler scheduler, ListenerRegistrator registrator) {
         this.scheduler = scheduler;
+        if (Version.hasEntitiesLoadEvent()) {
+            eventLoadHandler = new One17PlusHandler();
+            registrator.register(eventLoadHandler);
+        } else {
+            eventLoadHandler = null;
+        }
     }
 
     public boolean isBusy() {
@@ -37,8 +48,13 @@ public class RegionScanner extends AbstractRegionHandler {
 
     private void checkChunk(RegionInfo info, Chunk chunk, ScanReport<?> report, RegionOptions options) {
         report.countAChunk();
-        for (Entity entity : chunk.getEntities()) {
-            dealWithEntity(entity, options, info, report);
+        if (eventLoadHandler != null) {
+            eventLoadHandler.addChunk(ChunkInfo.wrap(chunk), (entity) -> dealWithEntity(entity, options, info, report));
+            return;
+        } else {
+            for (Entity entity : chunk.getEntities()) {
+                dealWithEntity(entity, options, info, report);
+            }
         }
     }
 
