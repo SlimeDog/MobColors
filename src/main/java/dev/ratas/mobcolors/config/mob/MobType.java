@@ -61,6 +61,9 @@ public enum MobType {
     // initialization
     private static void fillReverseMap() {
         for (MobType type : values()) {
+            if (type.delegate == null) {
+                continue; // unsupported mob types
+            }
             REVERSE_MAP.put(type.delegate, type);
         }
     }
