@@ -38,6 +38,7 @@ public class MultiReport extends ScanReport<Object> {
         report.count(entity);
     }
 
+    @Override
     public void countAChunk() {
         super.countAChunk();
         for (ScanReport<?> report : typedReports.values()) {

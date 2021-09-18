@@ -50,6 +50,7 @@ public class RegionScanner extends AbstractRegionHandler {
         report.countAChunk();
         if (eventLoadHandler != null && !chunk.getWorld().isChunkLoaded(chunk)) {
             eventLoadHandler.addChunk(ChunkInfo.wrap(chunk), (entity) -> dealWithEntity(entity, options, info, report));
+            chunk.load();
             return;
         } else {
             for (Entity entity : chunk.getEntities()) {
