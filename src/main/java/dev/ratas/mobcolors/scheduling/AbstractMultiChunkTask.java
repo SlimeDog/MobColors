@@ -26,7 +26,7 @@ public abstract class AbstractMultiChunkTask implements LongTask {
 
     private void advance() {
         advanceOnce();
-        while (!isCurrentChunkGenerated()) {
+        while (!isCurrentChunkGenerated() && !isDone()) {
             chunksDone++;
             advanceOnce(); // avoid generating new chunks
         }
