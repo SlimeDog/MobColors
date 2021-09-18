@@ -21,7 +21,11 @@ public interface MobTypeVariant<T extends Enum<T>> {
         @SuppressWarnings("unchecked")
         protected void fill(V... values) {
             for (V val : values) {
-                map.put((U) val.getBukkitVariant(), val);
+                U bv = (U) val.getBukkitVariant();
+                if (bv == null) {
+                    continue; // unsupported mob tyeps
+                }
+                map.put(bv, val);
             }
         }
 
