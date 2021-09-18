@@ -35,6 +35,8 @@ import dev.ratas.mobcolors.config.variants.ParrotVariant;
 import dev.ratas.mobcolors.config.variants.RabbitVariant;
 
 public final class MobTypes {
+    // for 1.16.5 support
+    private static final Class<? extends Entity> AXOLOTL_CLASS;
     public static final List<String> ENTITY_TYPE_NAMES = Collections
             .unmodifiableList(Arrays.stream(MobType.values()).map(Enum::name).collect(Collectors.toList()));
     public static final Map<Class<? extends MobTypeVariant<?>>, Set<MobType>> VARIANT_MOB_TYPES;
@@ -49,6 +51,15 @@ public final class MobTypes {
         map.put(ParrotVariant.class, Collections.unmodifiableSet(EnumSet.of(MobType.parrot)));
         map.put(RabbitVariant.class, Collections.unmodifiableSet(EnumSet.of(MobType.rabbit)));
         VARIANT_MOB_TYPES = Collections.unmodifiableMap(map);
+        Class<? extends Entity> clazz;
+        try {
+            @SuppressWarnings("unchecked")
+            Class<? extends Entity> clazz1 = (Class<? extends Entity>) Class.forName("org.bukkit.entity.Axolotl");
+            clazz = clazz1;
+        } catch (ClassNotFoundException e) {
+            clazz = null;
+        }
+        AXOLOTL_CLASS = clazz;
     }
 
     private MobTypes() {
@@ -58,8 +69,8 @@ public final class MobTypes {
     public static Class<?> getInterestingClass(Entity ent) {
         if (ent instanceof Colorable) {
             return Colorable.class;
-        } else if (ent instanceof Axolotl) {
-            return Axolotl.class;
+        } else if (AXOLOTL_CLASS != null && AXOLOTL_CLASS.isAssignableFrom(ent.getClass())) {
+            return AXOLOTL_CLASS;
         } else if (ent instanceof Cat) {
             return Cat.class;
         } else if (ent instanceof Fox) {
@@ -84,7 +95,7 @@ public final class MobTypes {
     public static Function<Entity, ?> getFunctionFor(Entity ent) {
         if (ent instanceof Colorable) {
             return e -> DyeVariant.getType(((Colorable) e).getColor());
-        } else if (ent instanceof Axolotl) {
+        } else if (AXOLOTL_CLASS != null && AXOLOTL_CLASS.isAssignableFrom(ent.getClass())) {
             return e -> AxolotlVariant.getType(((Axolotl) e).getVariant());
         } else if (ent instanceof Cat) {
             return e -> CatVariant.getType(((Cat) e).getCatType());
