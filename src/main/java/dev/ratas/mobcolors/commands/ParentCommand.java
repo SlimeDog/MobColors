@@ -15,7 +15,7 @@ public class ParentCommand extends AbstractParentCommand {
     public ParentCommand(PluginPlatform platform, WorldProvider worldProvider, Messages messages, Settings settings) {
         addSubCommand(new ReloadSubCommand(platform, messages));
         addSubCommand(new ColorSubCommand(platform.getMapper(), worldProvider, settings, messages));
-        addSubCommand(new ScanSubCommand(platform.getScanner(), settings, messages));
+        addSubCommand(new ScanSubCommand(platform.getScanner(), worldProvider, settings, messages));
         addSubCommand(new SchedulerInfoSubCommand(platform.getScheduler(), settings.isOnDebug()));
         addSubCommand(new InfoSubCommand(settings, worldProvider, messages));
     }
