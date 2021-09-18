@@ -28,10 +28,8 @@ public class MultiReport extends ScanReport<Object> {
                         "Entiy of type " + t + " is not colorable (yet is attempted to be counted)");
             }
             ScanReport<?> sr = new ScanReport<>(t, MobTypes.getFunctionFor(entity));
-            if (!typedReports.isEmpty()) {
-                for (int i = 0; i < getChunksCounted(); i++) {
-                    sr.countAChunk();
-                }
+            for (int i = 0; i < getChunksCounted(); i++) {
+                sr.countAChunk();
             }
             return sr;
         });
