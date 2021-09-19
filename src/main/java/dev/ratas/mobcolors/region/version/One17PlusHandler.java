@@ -12,10 +12,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.world.EntitiesLoadEvent;
 
 public class One17PlusHandler implements Listener {
-    private final Map<ChunkInfo, Consumer<Entity>> chunksToCount = new HashMap<>();
+    private final Map<ChunkInfo, ChunkCallbacks> chunksToCount = new HashMap<>();
 
-    public void addChunk(ChunkInfo chunk, Consumer<Entity> consumer) {
-        Consumer<Entity> prev = chunksToCount.put(chunk, consumer);
+    public void addChunk(ChunkInfo chunk, Consumer<Entity> consumer, Runnable chunkCounter) {
+        ChunkCallbacks prev = chunksToCount.put(chunk, new ChunkCallbacks(consumer, chunkCounter));
         if (prev != null) {
             chunksToCount.put(chunk, prev);
             throw new IllegalStateException("Chunk " + chunk.getChunkX() + ", " + chunk.getChunkZ() + " in "
@@ -27,12 +27,23 @@ public class One17PlusHandler implements Listener {
     public void onEntityLoad(EntitiesLoadEvent event) {
         Chunk bukkitChunk = event.getChunk();
         ChunkInfo chunk = ChunkInfo.wrap(bukkitChunk);
-        Consumer<Entity> consumer = chunksToCount.remove(chunk);
-        if (consumer == null) {
+        ChunkCallbacks callback = chunksToCount.remove(chunk);
+        if (callback == null) {
             return;
         }
+        callback.chunkCounter.run(); // count chunk
         for (Entity e : bukkitChunk.getEntities()) {
-            consumer.accept(e);
+            callback.consumer.accept(e);
+        }
+    }
+
+    private class ChunkCallbacks {
+        private final Consumer<Entity> consumer;
+        private final Runnable chunkCounter;
+
+        private ChunkCallbacks(Consumer<Entity> consumer, Runnable chunkCounter) {
+            this.consumer = consumer;
+            this.chunkCounter = chunkCounter;
         }
     }
 

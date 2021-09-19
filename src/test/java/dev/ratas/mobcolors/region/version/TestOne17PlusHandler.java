@@ -28,6 +28,7 @@ public class TestOne17PlusHandler {
     public void test_HandlerDoesNotFindUnknownChunk() {
         Assertions.assertAll("Add Chunk method was exceptional",
                 () -> handler.addChunk(new ChunkInfo(UUID.randomUUID(), -1, 1), e -> {
+                }, () -> {
                 }));
     }
 
@@ -47,6 +48,7 @@ public class TestOne17PlusHandler {
                 new MockEntity(UUID.randomUUID(), "mobName", new Location(world, -1, 25, 4), 24, EntityType.SHEEP));
         handler.addChunk(chunk, e -> {
             this.counter++;
+        }, () -> {
         });
         EntitiesLoadEvent event = new EntitiesLoadEvent(chunk, Arrays.asList(chunk.getEntities()));
         handler.onEntityLoad(event);
@@ -62,6 +64,7 @@ public class TestOne17PlusHandler {
                 new MockEntity(UUID.randomUUID(), "mobName", new Location(world, -1, 25, 4), 24, EntityType.SHEEP));
         handler.addChunk(chunk, e -> {
             this.counter++;
+        }, () -> {
         });
         EntitiesLoadEvent event = new EntitiesLoadEvent(chunk, Arrays.asList(chunk.getEntities()));
         handler.onEntityLoad(event);
@@ -82,6 +85,7 @@ public class TestOne17PlusHandler {
                 EntityType.SHULKER));
         handler.addChunk(chunk, e -> {
             this.counter++;
+        }, () -> {
         });
         EntitiesLoadEvent event = new EntitiesLoadEvent(chunk, Arrays.asList(chunk.getEntities()));
         handler.onEntityLoad(event);
