@@ -2,6 +2,7 @@ package dev.ratas.mobcolors.region.version;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 import org.bukkit.Chunk;
@@ -13,6 +14,7 @@ import org.bukkit.event.world.EntitiesLoadEvent;
 
 public class One17PlusHandler implements Listener {
     private final Map<ChunkInfo, ChunkCallbacks> chunksToCount = new HashMap<>();
+    private CompletableFuture<Void> future = null;
 
     public void addChunk(ChunkInfo chunk, Consumer<Entity> consumer, Runnable chunkCounter) {
         ChunkCallbacks prev = chunksToCount.put(chunk, new ChunkCallbacks(consumer, chunkCounter));
@@ -21,6 +23,27 @@ public class One17PlusHandler implements Listener {
             throw new IllegalStateException("Chunk " + chunk.getChunkX() + ", " + chunk.getChunkZ() + " in "
                     + chunk.getWorldName() + " already listed to be counted");
         }
+    }
+
+    public boolean hasPendingChunks() {
+        return !chunksToCount.isEmpty();
+    }
+
+    public CompletableFuture<Void> reportWhenPendingChunksDone() {
+        if (this.future != null) {
+            throw new IllegalStateException("There is already a future");
+        }
+        this.future = new CompletableFuture<>();
+        return this.future;
+    }
+
+    private boolean shouldReportPendingChunksDone() {
+        return this.future != null;
+    }
+
+    private void reportPendingChunksDone() {
+        this.future.complete(null);
+        this.future = null;
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
@@ -34,6 +57,9 @@ public class One17PlusHandler implements Listener {
         callback.chunkCounter.run(); // count chunk
         for (Entity e : bukkitChunk.getEntities()) {
             callback.consumer.accept(e);
+        }
+        if (!hasPendingChunks() && shouldReportPendingChunksDone()) { // is done
+            reportPendingChunksDone();
         }
     }
 

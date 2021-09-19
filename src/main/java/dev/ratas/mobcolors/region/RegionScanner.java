@@ -41,8 +41,14 @@ public class RegionScanner extends AbstractRegionHandler {
         } else {
             report = new ScanReport<>(options.getTargetType(), MobTypes.getFunctionForType(options.getTargetType()));
         }
-        scheduler.scheduleTask(new SimpleRegionTaskDelegator(info, (chunk) -> checkChunk(info, chunk, report, options),
-                () -> future.complete(report), updateProgress, updaterConsumer));
+        scheduler.scheduleTask(
+                new SimpleRegionTaskDelegator(info, (chunk) -> checkChunk(info, chunk, report, options), () -> {
+                    if (eventLoadHandler == null || !eventLoadHandler.hasPendingChunks()) {
+                        future.complete(report);
+                    } else {
+                        eventLoadHandler.reportWhenPendingChunksDone().whenComplete((v, e) -> future.complete(report));
+                    }
+                }, updateProgress, updaterConsumer));
         return future;
     }
 
