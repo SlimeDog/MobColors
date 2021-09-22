@@ -32,7 +32,7 @@ public class MobColors extends JavaPlugin {
 
         // platform
         PluginPlatform platform = new PluginPlatform(scheduler, resourceProvider, settingsProvider, listenerRegistrator,
-                versionProvider, pluginProvider, () -> reloadConfig(), getLogger());
+                versionProvider, pluginProvider, worldProvider, () -> reloadConfig(), getLogger());
 
         // commands
         getCommand("mobcolors").setExecutor(

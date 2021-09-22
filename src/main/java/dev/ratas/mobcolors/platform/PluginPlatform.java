@@ -22,6 +22,7 @@ import dev.ratas.mobcolors.scheduling.TaskScheduler;
 import dev.ratas.mobcolors.scheduling.abstraction.Scheduler;
 import dev.ratas.mobcolors.utils.UpdateChecker;
 import dev.ratas.mobcolors.utils.VersionProvider;
+import dev.ratas.mobcolors.utils.WorldProvider;
 
 public class PluginPlatform {
     private final ReloadManager reloadManager = new ReloadManager();
@@ -38,8 +39,8 @@ public class PluginPlatform {
 
     public PluginPlatform(Scheduler scheduler, ResourceProvider resourceProvider,
             SettingsConfigProvider settingsProvider, ListenerRegistrator lisenerRegistrator,
-            VersionProvider versionProvider, PluginProvider pluginProvider, Runnable pluginReloader, Logger logger)
-            throws PlatformInitializationException {
+            VersionProvider versionProvider, PluginProvider pluginProvider, WorldProvider worldProvider,
+            Runnable pluginReloader, Logger logger) throws PlatformInitializationException {
         this.pluginReloader = pluginReloader;
         this.pluginProvider = pluginProvider;
         this.logger = logger;
@@ -69,8 +70,9 @@ public class PluginPlatform {
         // scheduling, scanning, mapping
         this.taskScheduler = new SimpleTaskScheduler(settings.maxMsPerTickInScheduler());
         scheduler.scheduleRepeating((Runnable) this.taskScheduler, 1L, 1L);
-        scanner = new RegionScanner(this.taskScheduler, lisenerRegistrator);
-        mapper = new RegionMapper(this.taskScheduler, spawnListener, scanner, lisenerRegistrator);
+        scanner = new RegionScanner(scheduler, this.taskScheduler, lisenerRegistrator, worldProvider);
+        mapper = new RegionMapper(scheduler, this.taskScheduler, spawnListener, scanner, lisenerRegistrator,
+                worldProvider);
 
         lisenerRegistrator.register(spawnListener);
 

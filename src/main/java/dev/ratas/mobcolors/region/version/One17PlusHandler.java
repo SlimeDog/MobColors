@@ -1,9 +1,10 @@
 package dev.ratas.mobcolors.region.version;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 import org.bukkit.Chunk;
@@ -13,10 +14,18 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.EntitiesLoadEvent;
 
+import dev.ratas.mobcolors.scheduling.abstraction.Scheduler;
+import dev.ratas.mobcolors.utils.WorldProvider;
+
 public class One17PlusHandler implements Listener {
-    private static final long COMPLETION_TIMEOUT_MS = 4000L;
+    private static final long COMPLETION_TIMEOUT_TICKS = 80L;
+    private final WorldProvider worldProvider;
     private final Map<ChunkInfo, ChunkCallbacks> chunksToCount = new HashMap<>();
     private CompletableFuture<Void> future = null;
+
+    public One17PlusHandler(WorldProvider worldProvider) {
+        this.worldProvider = worldProvider;
+    }
 
     public void addChunk(ChunkInfo chunk, Consumer<Entity> consumer, Runnable chunkCounter) {
         ChunkCallbacks prev = chunksToCount.put(chunk, new ChunkCallbacks(consumer, chunkCounter));
@@ -31,13 +40,41 @@ public class One17PlusHandler implements Listener {
         return !chunksToCount.isEmpty();
     }
 
-    public CompletableFuture<Void> reportWhenPendingChunksDone() {
+    public CompletableFuture<Void> reportWhenPendingChunksDone(Scheduler scheduler) {
         if (this.future != null) {
             throw new IllegalStateException("There is already a future");
         }
         this.future = new CompletableFuture<>();
-        this.future.orTimeout(COMPLETION_TIMEOUT_MS, TimeUnit.MILLISECONDS);
+        // timeout
+        scheduler.schedule(() -> {
+            if (this.future != null && !this.future.isDone()) {
+                Throwable exception = new PendingChunkTimeoutException(new HashSet<>(chunksToCount.keySet()));
+                countPendingChunks();
+                chunksToCount.clear();
+                this.future.completeExceptionally(exception);
+                this.future = null;
+            }
+        }, COMPLETION_TIMEOUT_TICKS);
         return this.future;
+    }
+
+    // failsafe for when the EntitiesLoadEvent approach doesn't work for some reason
+    private void countPendingChunks() {
+        for (Map.Entry<ChunkInfo, ChunkCallbacks> entry : chunksToCount.entrySet()) {
+            ChunkInfo chunkInfo = entry.getKey();
+            try {
+                Chunk bukkitChunk = worldProvider.getWorld(chunkInfo.getWorldName()).getChunkAt(chunkInfo.getChunkX(),
+                        chunkInfo.getChunkZ());
+                ChunkCallbacks callback = entry.getValue();
+                callback.chunkCounter.run(); // count chunk
+                for (Entity e : bukkitChunk.getEntities()) {
+                    callback.consumer.accept(e);
+                }
+            } catch (Exception e) {
+                // TODO - better exception handling
+                e.printStackTrace();
+            }
+        }
     }
 
     private boolean shouldReportPendingChunksDone() {
@@ -74,6 +111,21 @@ public class One17PlusHandler implements Listener {
             this.consumer = consumer;
             this.chunkCounter = chunkCounter;
         }
+    }
+
+    public class PendingChunkTimeoutException extends IllegalStateException {
+        private final Set<ChunkInfo> chunksToCheck;
+
+        private PendingChunkTimeoutException(Set<ChunkInfo> chunksToCheck) {
+            super("Had chunks left to check after a timeout of " + COMPLETION_TIMEOUT_TICKS + " ticks :"
+                    + chunksToCheck);
+            this.chunksToCheck = chunksToCheck;
+        }
+
+        public Set<ChunkInfo> getChunksToCheck() {
+            return chunksToCheck;
+        }
+
     }
 
 }

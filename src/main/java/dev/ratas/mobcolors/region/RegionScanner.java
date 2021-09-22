@@ -13,15 +13,20 @@ import dev.ratas.mobcolors.region.version.One17PlusHandler;
 import dev.ratas.mobcolors.region.version.Version;
 import dev.ratas.mobcolors.scheduling.SimpleRegionTaskDelegator;
 import dev.ratas.mobcolors.scheduling.TaskScheduler;
+import dev.ratas.mobcolors.scheduling.abstraction.Scheduler;
+import dev.ratas.mobcolors.utils.WorldProvider;
 
 public class RegionScanner extends AbstractRegionHandler {
+    private final Scheduler bukkitScheduler;
     private final TaskScheduler scheduler;
     private final One17PlusHandler eventLoadHandler;
 
-    public RegionScanner(TaskScheduler scheduler, ListenerRegistrator registrator) {
+    public RegionScanner(Scheduler bukkitScheduler, TaskScheduler scheduler, ListenerRegistrator registrator,
+            WorldProvider worldProvider) {
+        this.bukkitScheduler = bukkitScheduler;
         this.scheduler = scheduler;
         if (Version.hasEntitiesLoadEvent()) {
-            eventLoadHandler = new One17PlusHandler();
+            eventLoadHandler = new One17PlusHandler(worldProvider);
             registrator.register(eventLoadHandler);
         } else {
             eventLoadHandler = null;
@@ -46,7 +51,12 @@ public class RegionScanner extends AbstractRegionHandler {
                     if (eventLoadHandler == null || !eventLoadHandler.hasPendingChunks()) {
                         future.complete(report);
                     } else {
-                        eventLoadHandler.reportWhenPendingChunksDone().whenComplete((v, e) -> future.complete(report));
+                        eventLoadHandler.reportWhenPendingChunksDone(bukkitScheduler).whenComplete((v, e) -> {
+                            if (e != null) {
+                                e.printStackTrace();
+                            }
+                            future.complete(report);
+                        });
                     }
                 }, updateProgress, updaterConsumer));
         return future;

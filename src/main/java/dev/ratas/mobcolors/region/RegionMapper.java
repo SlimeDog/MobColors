@@ -15,20 +15,24 @@ import dev.ratas.mobcolors.region.version.One17PlusHandler;
 import dev.ratas.mobcolors.region.version.Version;
 import dev.ratas.mobcolors.scheduling.SimpleRegionTaskDelegator;
 import dev.ratas.mobcolors.scheduling.TaskScheduler;
+import dev.ratas.mobcolors.scheduling.abstraction.Scheduler;
+import dev.ratas.mobcolors.utils.WorldProvider;
 
 public class RegionMapper extends AbstractRegionHandler {
+    private final Scheduler bukkitScheduler;
     private final TaskScheduler scheduler;
     private final SpawnListener spawnListener;
     private final RegionScanner scanner;
     private final One17PlusHandler eventLoadHandler;
 
-    public RegionMapper(TaskScheduler scheduler, SpawnListener spawnListener, RegionScanner scanner,
-            ListenerRegistrator registrator) {
+    public RegionMapper(Scheduler bukkitScheduler, TaskScheduler scheduler, SpawnListener spawnListener,
+            RegionScanner scanner, ListenerRegistrator registrator, WorldProvider worldProvider) {
+        this.bukkitScheduler = bukkitScheduler;
         this.scheduler = scheduler;
         this.spawnListener = spawnListener;
         this.scanner = scanner;
         if (Version.hasEntitiesLoadEvent()) {
-            eventLoadHandler = new One17PlusHandler();
+            eventLoadHandler = new One17PlusHandler(worldProvider);
             registrator.register(eventLoadHandler);
         } else {
             eventLoadHandler = null;
@@ -46,11 +50,17 @@ public class RegionMapper extends AbstractRegionHandler {
         ScanReport<?> scanReport = showScan ? new MultiReport() : null;
         ColoringResults results = new ColoringResults(coloringReport, scanReport);
         scheduler.scheduleTask(new SimpleRegionTaskDelegator(info,
-                (chunk, wasLoaded) -> dyeMobInChunk(info, chunk, coloringReport, options, scanReport, wasLoaded), () -> {
+                (chunk, wasLoaded) -> dyeMobInChunk(info, chunk, coloringReport, options, scanReport, wasLoaded),
+                () -> {
                     if (eventLoadHandler == null || !eventLoadHandler.hasPendingChunks()) {
                         future.complete(results);
                     } else {
-                        eventLoadHandler.reportWhenPendingChunksDone().whenComplete((v, e) -> future.complete(results));
+                        eventLoadHandler.reportWhenPendingChunksDone(bukkitScheduler).whenComplete((v, e) -> {
+                            if (e != null) {
+                                e.printStackTrace();
+                            }
+                            future.complete(results);
+                        });
                     }
                 }, updateProgress, updaterConsumer));
         return future;
