@@ -117,8 +117,10 @@ public class One17PlusHandler implements Listener {
         private final Set<ChunkInfo> chunksToCheck;
 
         private PendingChunkTimeoutException(Set<ChunkInfo> chunksToCheck) {
-            super("Had chunks left to check after a timeout of " + COMPLETION_TIMEOUT_TICKS + " ticks :"
-                    + chunksToCheck);
+            super("Had chunks left to check after a timeout of " + COMPLETION_TIMEOUT_TICKS + " ticks.\n "
+                    + "This is likely due to the server still starting up and some of the chunks "
+                    + " listed might have fired the EntitiesLoadEvent at an inconvenient time."
+                    + "There has been an attempt to load the entities within the chunks in question:" + chunksToCheck);
             this.chunksToCheck = chunksToCheck;
         }
 
