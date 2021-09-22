@@ -3,6 +3,7 @@ package dev.ratas.mobcolors.region.version;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 import org.bukkit.Chunk;
@@ -13,6 +14,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.world.EntitiesLoadEvent;
 
 public class One17PlusHandler implements Listener {
+    private static final long COMPLETION_TIMEOUT_MS = 4000L;
     private final Map<ChunkInfo, ChunkCallbacks> chunksToCount = new HashMap<>();
     private CompletableFuture<Void> future = null;
 
@@ -34,6 +36,7 @@ public class One17PlusHandler implements Listener {
             throw new IllegalStateException("There is already a future");
         }
         this.future = new CompletableFuture<>();
+        this.future.orTimeout(COMPLETION_TIMEOUT_MS, TimeUnit.MILLISECONDS);
         return this.future;
     }
 
