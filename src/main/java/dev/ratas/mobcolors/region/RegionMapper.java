@@ -46,7 +46,7 @@ public class RegionMapper extends AbstractRegionHandler {
         ScanReport<?> scanReport = showScan ? new MultiReport() : null;
         ColoringResults results = new ColoringResults(coloringReport, scanReport);
         scheduler.scheduleTask(new SimpleRegionTaskDelegator(info,
-                (chunk) -> dyeMobInChunk(info, chunk, coloringReport, options, scanReport), () -> {
+                (chunk, wasLoaded) -> dyeMobInChunk(info, chunk, coloringReport, options, scanReport, wasLoaded), () -> {
                     if (eventLoadHandler == null || !eventLoadHandler.hasPendingChunks()) {
                         future.complete(results);
                     } else {
@@ -57,9 +57,8 @@ public class RegionMapper extends AbstractRegionHandler {
     }
 
     private void dyeMobInChunk(RegionInfo info, Chunk chunk, ScanReport<?> coloringReport, RegionOptions options,
-            ScanReport<?> scanReport) {
-
-        if (eventLoadHandler != null && !chunk.getWorld().isChunkLoaded(chunk)) {
+            ScanReport<?> scanReport, boolean wasLoaded) {
+        if (eventLoadHandler != null && !wasLoaded) {
             eventLoadHandler.addChunk(ChunkInfo.wrap(chunk),
                     (entity) -> dealWithEntity(entity, options, info, coloringReport, scanReport), () -> {
                         coloringReport.countAChunk();

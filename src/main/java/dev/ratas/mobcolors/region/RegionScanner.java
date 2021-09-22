@@ -41,8 +41,8 @@ public class RegionScanner extends AbstractRegionHandler {
         } else {
             report = new ScanReport<>(options.getTargetType(), MobTypes.getFunctionForType(options.getTargetType()));
         }
-        scheduler.scheduleTask(
-                new SimpleRegionTaskDelegator(info, (chunk) -> checkChunk(info, chunk, report, options), () -> {
+        scheduler.scheduleTask(new SimpleRegionTaskDelegator(info,
+                (chunk, wasLoaded) -> checkChunk(info, chunk, report, options, wasLoaded), () -> {
                     if (eventLoadHandler == null || !eventLoadHandler.hasPendingChunks()) {
                         future.complete(report);
                     } else {
@@ -52,8 +52,9 @@ public class RegionScanner extends AbstractRegionHandler {
         return future;
     }
 
-    private void checkChunk(RegionInfo info, Chunk chunk, ScanReport<?> report, RegionOptions options) {
-        if (eventLoadHandler != null && !chunk.getWorld().isChunkLoaded(chunk)) {
+    private void checkChunk(RegionInfo info, Chunk chunk, ScanReport<?> report, RegionOptions options,
+            boolean wasLoaded) {
+        if (eventLoadHandler != null && !wasLoaded) {
             eventLoadHandler.addChunk(ChunkInfo.wrap(chunk), (entity) -> dealWithEntity(entity, options, info, report),
                     () -> report.countAChunk());
             chunk.load();

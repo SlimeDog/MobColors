@@ -40,8 +40,9 @@ public abstract class AbstractMultiChunkTask implements LongTask {
     @Override
     public void performAtomicPart() {
         // ungenerated ignoring will be handled in region info
+        boolean wasLoadedPreviously = regionInfo.getWorld().isChunkLoaded(curX, curZ);
         Chunk chunk = getCurrentChunk();
-        processChunk(chunk);
+        processChunk(chunk, wasLoadedPreviously);
         chunksDone++;
         if (!isDone()) {
             advance();
@@ -76,6 +77,6 @@ public abstract class AbstractMultiChunkTask implements LongTask {
         }
     }
 
-    public abstract void processChunk(Chunk chunk);
+    public abstract void processChunk(Chunk chunk, boolean wasLoadedPreviously);
 
 }
