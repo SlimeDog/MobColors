@@ -60,4 +60,9 @@ public class ChunkInfo {
         return o.worldId.equals(worldId) && o.chunkX == chunkX && o.chunkZ == chunkZ;
     }
 
+    @Override
+    public String toString() {
+        return String.format("%s (%d, %d)", worldName, chunkX, chunkZ);
+    }
+
 }
