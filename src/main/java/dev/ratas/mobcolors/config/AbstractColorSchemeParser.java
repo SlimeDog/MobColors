@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -15,7 +14,7 @@ public class AbstractColorSchemeParser {
     private final String name;
     private final List<String> enabledWorlds = new ArrayList<>();
 
-    protected AbstractColorSchemeParser(ConfigurationSection section, Logger logger) {
+    protected AbstractColorSchemeParser(ConfigurationSection section) {
         if (section == null) {
             throw new IllegalStateException("Color scheme settings cannot have an empty section");
         }

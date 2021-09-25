@@ -67,7 +67,7 @@ public class Settings implements Reloadable {
         // this makes sure tha the defaults get added to all worlds correctly
         worldManager.setAllUsedWorlds(namedWorlds);
         for (MobSettings settings : mobSettings.values()) {
-            worldManager.addMobSettings(settings, scheduler, logger);
+            worldManager.addMobSettings(settings, scheduler);
         }
     }
 
@@ -78,7 +78,7 @@ public class Settings implements Reloadable {
         }
         MobSettingsParser parser;
         try {
-            parser = new MobSettingsParser(section, logger, enableAll);
+            parser = new MobSettingsParser(section, enableAll);
         } catch (IllegalMobSettingsException e) {
             logger.warning("Problem with mob settings for " + mobName + ": " + e.getMessage());
             return;

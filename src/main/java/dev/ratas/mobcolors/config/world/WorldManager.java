@@ -5,13 +5,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Logger;
 
 import org.bukkit.World;
 
 import dev.ratas.mobcolors.coloring.settings.ColorMap;
 import dev.ratas.mobcolors.config.mob.MobSettings;
 import dev.ratas.mobcolors.scheduling.abstraction.Scheduler;
+import dev.ratas.mobcolors.utils.LogUtils;
 import dev.ratas.mobcolors.utils.WorldDescriptor;
 
 public class WorldManager {
@@ -24,7 +24,7 @@ public class WorldManager {
         }
     }
 
-    public void addMobSettings(MobSettings settings, Scheduler scheduler, Logger logger) {
+    public void addMobSettings(MobSettings settings, Scheduler scheduler) {
         Set<String> allWorlds = new HashSet<>(worldSettings.keySet());
         for (ColorMap<?> map : settings.getAllColorMaps()) {
             for (String worldName : map.getApplicableWorlds()) {
@@ -32,7 +32,8 @@ public class WorldManager {
                 try {
                     ws.addScheme(map, settings, scheduler);
                 } catch (IllegalArgumentException e) {
-                    logger.warning("Problem setting color scheme for world " + worldName + " : " + e.getMessage());
+                    LogUtils.getLogger()
+                            .warning("Problem setting color scheme for world " + worldName + " : " + e.getMessage());
                     continue;
                 }
                 allWorlds.remove(worldName.toLowerCase());

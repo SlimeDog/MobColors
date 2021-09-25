@@ -20,6 +20,7 @@ import dev.ratas.mobcolors.reload.ReloadManager;
 import dev.ratas.mobcolors.scheduling.SimpleTaskScheduler;
 import dev.ratas.mobcolors.scheduling.TaskScheduler;
 import dev.ratas.mobcolors.scheduling.abstraction.Scheduler;
+import dev.ratas.mobcolors.utils.LogUtils;
 import dev.ratas.mobcolors.utils.UpdateChecker;
 import dev.ratas.mobcolors.utils.VersionProvider;
 import dev.ratas.mobcolors.utils.WorldProvider;
@@ -40,10 +41,10 @@ public class PluginPlatform {
     public PluginPlatform(Scheduler scheduler, ResourceProvider resourceProvider,
             SettingsConfigProvider settingsProvider, ListenerRegistrator lisenerRegistrator,
             VersionProvider versionProvider, PluginProvider pluginProvider, WorldProvider worldProvider,
-            Runnable pluginReloader, Logger logger) throws PlatformInitializationException {
+            Runnable pluginReloader) throws PlatformInitializationException {
         this.pluginReloader = pluginReloader;
         this.pluginProvider = pluginProvider;
-        this.logger = logger;
+        this.logger = LogUtils.getLogger();
         // initialize and register reloadables
         try {
             config = new CustomConfigHandler(resourceProvider, "config.yml");

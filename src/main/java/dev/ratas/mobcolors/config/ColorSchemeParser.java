@@ -3,16 +3,17 @@ package dev.ratas.mobcolors.config;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.logging.Logger;
 
 import org.bukkit.configuration.ConfigurationSection;
+
+import dev.ratas.mobcolors.utils.LogUtils;
 
 public class ColorSchemeParser<T> extends AbstractColorSchemeParser {
     private static final double TOLERANCE = 0.0000001D;
     private final Map<T, Double> colorMap;
 
-    public ColorSchemeParser(Class<T> clazz, ConfigurationSection section, Logger logger) {
-        super(section, logger);
+    public ColorSchemeParser(Class<T> clazz, ConfigurationSection section) {
+        super(section);
         colorMap = new HashMap<>();
         ConfigurationSection probabilitiesSection = section.getConfigurationSection("probabilities");
         if (probabilitiesSection == null) {
@@ -26,7 +27,7 @@ public class ColorSchemeParser<T> extends AbstractColorSchemeParser {
             try {
                 color = getValueOf(clazz, variantName);
             } catch (IllegalArgumentException e) {
-                logger.warning("Undefined color in config:" + key);
+                LogUtils.getLogger().warning("Undefined color in config:" + key);
                 continue;
             }
             double val = probabilitiesSection.getDouble(key, 0.0D);

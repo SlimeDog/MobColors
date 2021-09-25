@@ -6,6 +6,8 @@ import java.util.logging.Logger;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
+import dev.ratas.mobcolors.utils.LogUtils;
+
 public class PluginResourceProvider implements ResourceProvider {
     private final JavaPlugin plugin;
 
@@ -26,6 +28,6 @@ public class PluginResourceProvider implements ResourceProvider {
     }
 
     public Logger getLogger() {
-        return plugin.getLogger();
+        return LogUtils.getLogger();
     }
 }

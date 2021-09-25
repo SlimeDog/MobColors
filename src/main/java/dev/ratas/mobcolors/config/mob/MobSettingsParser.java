@@ -2,17 +2,16 @@ package dev.ratas.mobcolors.config.mob;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import org.bukkit.configuration.ConfigurationSection;
 
 import dev.ratas.mobcolors.coloring.settings.AbstractColorMap;
 import dev.ratas.mobcolors.coloring.settings.ColorMap;
 import dev.ratas.mobcolors.config.ColorSchemeParser;
+import dev.ratas.mobcolors.utils.LogUtils;
 
 public class MobSettingsParser {
     private final ConfigurationSection section;
-    private final Logger logger;
     private boolean hasParsed = false;
     private boolean enabled;
     private MobType type;
@@ -22,10 +21,8 @@ public class MobSettingsParser {
     private boolean includeTaders;
     private final boolean forceEnable;
 
-    public MobSettingsParser(ConfigurationSection section, Logger logger, boolean forceEnable)
-            throws IllegalMobSettingsException {
+    public MobSettingsParser(ConfigurationSection section, boolean forceEnable) throws IllegalMobSettingsException {
         this.section = section;
-        this.logger = logger;
         this.forceEnable = forceEnable;
         parse();
     }
@@ -57,9 +54,10 @@ public class MobSettingsParser {
             }
             ColorSchemeParser<?> parser;
             try {
-                parser = new ColorSchemeParser<>(clazz, section.getConfigurationSection(name), logger);
+                parser = new ColorSchemeParser<>(clazz, section.getConfigurationSection(name));
             } catch (IllegalStateException e) {
-                logger.warning("Unable to parse color map " + name + " for " + type + ": " + e.getMessage());
+                LogUtils.getLogger()
+                        .warning("Unable to parse color map " + name + " for " + type + ": " + e.getMessage());
                 continue;
             }
             ColorMap<?> colorMap = new AbstractColorMap<>(type, parser.getName(), parser.getDyeColors(),
