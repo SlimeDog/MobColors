@@ -16,6 +16,7 @@ import dev.ratas.mobcolors.region.version.Version;
 import dev.ratas.mobcolors.scheduling.SimpleRegionTaskDelegator;
 import dev.ratas.mobcolors.scheduling.TaskScheduler;
 import dev.ratas.mobcolors.scheduling.abstraction.Scheduler;
+import dev.ratas.mobcolors.utils.LogUtils;
 import dev.ratas.mobcolors.utils.WorldProvider;
 
 public class RegionMapper extends AbstractRegionHandler {
@@ -57,7 +58,7 @@ public class RegionMapper extends AbstractRegionHandler {
                     } else {
                         eventLoadHandler.reportWhenPendingChunksDone(bukkitScheduler).whenComplete((v, e) -> {
                             if (e != null) {
-                                e.printStackTrace();
+                                LogUtils.getLogger().warning(e.getMessage());
                             }
                             future.complete(results);
                         });
