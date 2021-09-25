@@ -39,7 +39,7 @@ public class One17PlusHandler implements Listener {
         // whatever isn't available now, will be counted once the chunk li properly
         // loaded along all its entities
         countChunk(worldProvider.getWorld(chunk.getWorldName()).getChunkAt(chunk.getChunkX(), chunk.getChunkZ()),
-                callback);
+                callback, false);
     }
 
     public boolean hasPendingChunks() {
@@ -71,7 +71,7 @@ public class One17PlusHandler implements Listener {
             try {
                 Chunk bukkitChunk = worldProvider.getWorld(chunkInfo.getWorldName()).getChunkAt(chunkInfo.getChunkX(),
                         chunkInfo.getChunkZ());
-                countChunk(bukkitChunk, entry.getValue());
+                countChunk(bukkitChunk, entry.getValue(), true);
             } catch (Exception e) {
                 // TODO - better exception handling
                 e.printStackTrace();
@@ -96,11 +96,13 @@ public class One17PlusHandler implements Listener {
         if (callback == null) {
             return;
         }
-        countChunk(bukkitChunk, callback);
+        countChunk(bukkitChunk, callback, true);
     }
 
-    private void countChunk(Chunk bukkitChunk, ChunkCallbacks callback) {
-        callback.chunkCounter.run(); // count chunk
+    private void countChunk(Chunk bukkitChunk, ChunkCallbacks callback, boolean runChunkCounter) {
+        if (runChunkCounter) {
+            callback.chunkCounter.run(); // count chunk
+        }
         for (Entity e : bukkitChunk.getEntities()) {
             callback.countEntity(e); // does not count double
         }
