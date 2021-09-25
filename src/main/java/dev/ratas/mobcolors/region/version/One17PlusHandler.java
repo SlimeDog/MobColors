@@ -54,10 +54,15 @@ public class One17PlusHandler implements Listener {
         // timeout
         scheduler.schedule(() -> {
             if (this.future != null && !this.future.isDone()) {
-                Throwable exception = new PendingChunkTimeoutException(new HashSet<>(chunksToCount.keySet()));
-                countPendingChunks();
+                Map<ChunkInfo, Integer> newEntitiesInChunks = getNrOfNewEntitiesInPendingChunks();
                 chunksToCount.clear();
-                this.future.completeExceptionally(exception);
+                // in my experience, if there's nothing new to load, then that's about it
+                if (newEntitiesInChunks.isEmpty()) {
+                    this.future.complete(null);
+                } else {
+                    Throwable exception = new PendingChunkTimeoutException(newEntitiesInChunks);
+                    this.future.completeExceptionally(exception);
+                }
                 this.future = null;
             }
         }, COMPLETION_TIMEOUT_TICKS);
@@ -65,18 +70,26 @@ public class One17PlusHandler implements Listener {
     }
 
     // failsafe for when the EntitiesLoadEvent approach doesn't work for some reason
-    private void countPendingChunks() {
+    private Map<ChunkInfo, Integer> getNrOfNewEntitiesInPendingChunks() {
+        Map<ChunkInfo, Integer> map = new HashMap<>();
         for (Map.Entry<ChunkInfo, ChunkCallbacks> entry : chunksToCount.entrySet()) {
             ChunkInfo chunkInfo = entry.getKey();
             try {
                 Chunk bukkitChunk = worldProvider.getWorld(chunkInfo.getWorldName()).getChunkAt(chunkInfo.getChunkX(),
                         chunkInfo.getChunkZ());
-                countChunk(bukkitChunk, entry.getValue(), true);
+                ChunkCallbacks callback = entry.getValue();
+                int before = callback.alreadyCounted.size();
+                countChunk(bukkitChunk, callback, true);
+                int diff = callback.alreadyCounted.size() - before;
+                if (diff > 0) {
+                    map.put(chunkInfo, diff);
+                }
             } catch (Exception e) {
                 // TODO - better exception handling
                 e.printStackTrace();
             }
         }
+        return map;
     }
 
     private boolean shouldReportPendingChunksDone() {
@@ -131,17 +144,19 @@ public class One17PlusHandler implements Listener {
     }
 
     public class PendingChunkTimeoutException extends IllegalStateException {
-        private final Set<ChunkInfo> chunksToCheck;
+        private final Map<ChunkInfo, Integer> chunksToCheck;
 
-        private PendingChunkTimeoutException(Set<ChunkInfo> chunksToCheck) {
+        private PendingChunkTimeoutException(Map<ChunkInfo, Integer> chunksToCheck) {
             super("Had chunks left to check after a timeout of " + COMPLETION_TIMEOUT_TICKS + " ticks.\n "
                     + "This is likely due to the server still starting up and some of the chunks "
                     + "listed might have fired the EntitiesLoadEvent at an inconvenient time."
-                    + "There has been an attempt to load the entities within the chunks in question:" + chunksToCheck);
+                    + "There has been an attempt to load the entities within the chunks in question. "
+                    + "Some entities were laoded in addition for some of these chunks, these are also given: "
+                    + chunksToCheck);
             this.chunksToCheck = chunksToCheck;
         }
 
-        public Set<ChunkInfo> getChunksToCheck() {
+        public Map<ChunkInfo, Integer> getChunksToCheck() {
             return chunksToCheck;
         }
 
