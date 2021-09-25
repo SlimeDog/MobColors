@@ -65,11 +65,7 @@ public class One17PlusHandler implements Listener {
             try {
                 Chunk bukkitChunk = worldProvider.getWorld(chunkInfo.getWorldName()).getChunkAt(chunkInfo.getChunkX(),
                         chunkInfo.getChunkZ());
-                ChunkCallbacks callback = entry.getValue();
-                callback.chunkCounter.run(); // count chunk
-                for (Entity e : bukkitChunk.getEntities()) {
-                    callback.consumer.accept(e);
-                }
+                countChunk(bukkitChunk, entry.getValue());
             } catch (Exception e) {
                 // TODO - better exception handling
                 e.printStackTrace();
@@ -94,6 +90,10 @@ public class One17PlusHandler implements Listener {
         if (callback == null) {
             return;
         }
+        countChunk(bukkitChunk, callback);
+    }
+
+    private void countChunk(Chunk bukkitChunk, ChunkCallbacks callback) {
         callback.chunkCounter.run(); // count chunk
         for (Entity e : bukkitChunk.getEntities()) {
             callback.consumer.accept(e);
