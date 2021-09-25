@@ -1,6 +1,6 @@
 package dev.ratas.mobcolors.region.version.mock;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 import org.bukkit.World;
@@ -8,17 +8,19 @@ import org.bukkit.World;
 import dev.ratas.mobcolors.utils.WorldProvider;
 
 public class MockWorldProvider extends WorldProvider {
+    private final MockWorld world;
 
-    public MockWorldProvider() {
+    public MockWorldProvider(MockWorld world) {
         super(null);
+        this.world = world;
     }
 
     public World getWorld(String name) {
-        return null;
+        return world;
     }
 
     public Collection<String> getWorldNames() {
-        return new ArrayList<>();
+        return Arrays.asList(world.getName());
     }
 
 }

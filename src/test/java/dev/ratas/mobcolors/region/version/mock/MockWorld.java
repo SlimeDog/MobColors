@@ -281,9 +281,15 @@ public class MockWorld implements World {
         throw new IllegalStateException("Not implemented yet");
     }
 
+    private MockChunk chunk;
+
+    public void setChunk(MockChunk chunk) {
+        this.chunk = chunk;
+    }
+
     @Override
     public Chunk getChunkAt(int x, int z) {
-        throw new IllegalStateException("Not implemented yet");
+        return chunk;
     }
 
     @Override

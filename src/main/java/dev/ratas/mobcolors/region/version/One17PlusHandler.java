@@ -28,12 +28,18 @@ public class One17PlusHandler implements Listener {
     }
 
     public void addChunk(ChunkInfo chunk, Consumer<Entity> consumer, Runnable chunkCounter) {
-        ChunkCallbacks prev = chunksToCount.put(chunk, new ChunkCallbacks(consumer, chunkCounter));
+        ChunkCallbacks callback;
+        ChunkCallbacks prev = chunksToCount.put(chunk, callback = new ChunkCallbacks(consumer, chunkCounter));
         if (prev != null) {
             chunksToCount.put(chunk, prev);
             throw new IllegalStateException("Chunk " + chunk.getChunkX() + ", " + chunk.getChunkZ() + " in "
                     + chunk.getWorldName() + " already listed to be counted");
         }
+        // count what is available now
+        // whatever isn't available now, will be counted once the chunk li properly
+        // loaded along all its entities
+        countChunk(worldProvider.getWorld(chunk.getWorldName()).getChunkAt(chunk.getChunkX(), chunk.getChunkZ()),
+                callback);
     }
 
     public boolean hasPendingChunks() {
@@ -96,7 +102,7 @@ public class One17PlusHandler implements Listener {
     private void countChunk(Chunk bukkitChunk, ChunkCallbacks callback) {
         callback.chunkCounter.run(); // count chunk
         for (Entity e : bukkitChunk.getEntities()) {
-            callback.consumer.accept(e);
+            callback.countEntity(e); // does not count double
         }
         if (!hasPendingChunks() && shouldReportPendingChunksDone()) { // is done
             reportPendingChunksDone();
@@ -106,10 +112,19 @@ public class One17PlusHandler implements Listener {
     private class ChunkCallbacks {
         private final Consumer<Entity> consumer;
         private final Runnable chunkCounter;
+        private final Set<Entity> alreadyCounted = new HashSet<>();
 
         private ChunkCallbacks(Consumer<Entity> consumer, Runnable chunkCounter) {
             this.consumer = consumer;
             this.chunkCounter = chunkCounter;
+        }
+
+        private void countEntity(Entity entity) {
+            if (alreadyCounted.contains(entity)) {
+                return;
+            }
+            consumer.accept(entity);
+            alreadyCounted.add(entity);
         }
     }
 

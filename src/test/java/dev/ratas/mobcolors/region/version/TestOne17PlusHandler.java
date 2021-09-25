@@ -14,41 +14,46 @@ import dev.ratas.mobcolors.region.version.mock.MockChunk;
 import dev.ratas.mobcolors.region.version.mock.MockEntity;
 import dev.ratas.mobcolors.region.version.mock.MockWorld;
 import dev.ratas.mobcolors.region.version.mock.MockWorldProvider;
-import dev.ratas.mobcolors.utils.WorldProvider;
 
 public class TestOne17PlusHandler {
+    private MockWorldProvider wp;
+    private MockWorld mw;
     private One17PlusHandler handler;
     private int counter;
 
     @BeforeEach
     public void setup() {
-        WorldProvider wp = new MockWorldProvider();
+        wp = new MockWorldProvider(mw = new MockWorld(UUID.randomUUID(), "worldName#132"));
         handler = new One17PlusHandler(wp);
         counter = 0;
     }
 
     @Test
     public void test_HandlerDoesNotFindUnknownChunk() {
+        int chunkX = -1;
+        int chunkZ = -1;
+        MockChunk chunk = new MockChunk(mw, chunkX, chunkZ);
+        mw.setChunk(chunk);
         Assertions.assertAll("Add Chunk method was exceptional",
-                () -> handler.addChunk(new ChunkInfo(UUID.randomUUID(), -1, 1), e -> {
+                () -> handler.addChunk(new ChunkInfo(UUID.randomUUID(), chunkX, chunkZ), e -> {
                 }, () -> {
                 }));
     }
 
     @Test
     public void test_HandlerCanHandleUnregisteredChunkEvent() {
-        MockWorld world = new MockWorld(UUID.randomUUID(), "worldName#132");
-        MockChunk chunk = new MockChunk(world, -1, 1);
+        MockChunk chunk = new MockChunk(mw, -1, 1);
+        mw.setChunk(chunk);
         EntitiesLoadEvent event = new EntitiesLoadEvent(chunk, Arrays.asList(chunk.getEntities()));
         handler.onEntityLoad(event);
     }
 
     @Test
     public void test_HandlerCallsRunnableOnEvent() {
-        MockWorld world = new MockWorld(UUID.randomUUID(), "worldName#132");
-        MockChunk chunk = new MockChunk(world, -1, 1);
+        MockChunk chunk = new MockChunk(mw, -1, 1);
+        mw.setChunk(chunk);
         chunk.addEntity(
-                new MockEntity(UUID.randomUUID(), "mobName", new Location(world, -1, 25, 4), 24, EntityType.SHEEP));
+                new MockEntity(UUID.randomUUID(), "mobName", new Location(mw, -1, 25, 4), 24, EntityType.SHEEP));
         handler.addChunk(chunk, e -> {
             this.counter++;
         }, () -> {
@@ -61,10 +66,10 @@ public class TestOne17PlusHandler {
 
     @Test
     public void test_HandlerDoesntCallRunnableOnSecondEvent() {
-        MockWorld world = new MockWorld(UUID.randomUUID(), "worldName#132");
-        MockChunk chunk = new MockChunk(world, -1, 1);
+        MockChunk chunk = new MockChunk(mw, -1, 1);
+        mw.setChunk(chunk);
         chunk.addEntity(
-                new MockEntity(UUID.randomUUID(), "mobName", new Location(world, -1, 25, 4), 24, EntityType.SHEEP));
+                new MockEntity(UUID.randomUUID(), "mobName", new Location(mw, -1, 25, 4), 24, EntityType.SHEEP));
         handler.addChunk(chunk, e -> {
             this.counter++;
         }, () -> {
@@ -78,14 +83,13 @@ public class TestOne17PlusHandler {
 
     @Test
     public void test_HandlerCallsRunnableForEachOnEvent() {
-        MockWorld world = new MockWorld(UUID.randomUUID(), "worldName#132");
-        MockChunk chunk = new MockChunk(world, -1, 1);
+        MockChunk chunk = new MockChunk(mw, -1, 1);
+        mw.setChunk(chunk);
+        chunk.addEntity(new MockEntity(UUID.randomUUID(), "mobName", new Location(mw, 1, 25, -4), 24, EntityType.FOX));
         chunk.addEntity(
-                new MockEntity(UUID.randomUUID(), "mobName", new Location(world, 1, 25, -4), 24, EntityType.FOX));
+                new MockEntity(UUID.randomUUID(), "mobName2", new Location(mw, 11, 5, 4), 24, EntityType.AXOLOTL));
         chunk.addEntity(
-                new MockEntity(UUID.randomUUID(), "mobName2", new Location(world, 11, 5, 4), 24, EntityType.AXOLOTL));
-        chunk.addEntity(new MockEntity(UUID.randomUUID(), "mobName3", new Location(world, -11, 252, -4), 24,
-                EntityType.SHULKER));
+                new MockEntity(UUID.randomUUID(), "mobName3", new Location(mw, -11, 252, -4), 24, EntityType.SHULKER));
         handler.addChunk(chunk, e -> {
             this.counter++;
         }, () -> {
