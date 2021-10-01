@@ -6,7 +6,7 @@
 # Implementation: drives_a_ford
 # Testing: SlimeDog
 #
-# Minecraft version support: 1.13.2, 1.14.4, 1.15.2, 1.16.5, 1.17.x
+# Minecraft version support: 1.14.4, 1.15.2, 1.16.5, 1.17.x
 #
 # Color-scheme values are listed according to the standard ENUM values for each mob-type.
 # The vanilla schemes are subject to change, and are listed here for reference only.
