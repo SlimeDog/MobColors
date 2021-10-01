@@ -26,6 +26,7 @@ info-colormap-in-world: "- {type}: {name}"
 scan-distance-too-big: "You are trying to scan an area that is too large. The maximum distance allowed is {max-distance}."
 color-distance-too-big: "You are trying to color an area that is too large. The maximum distance allowed is {max-distance}."
 scheduler-busy: "The task scheduler is busy right now. Please try again later."
+mob-type-not-available: "Mob type {type} is not valid in this version of Minecraft. It should be disabled in the configuration."
 
 updater-current-version: "You are running the latest version"
 updater-new-version: "A new version {version} is available for download"

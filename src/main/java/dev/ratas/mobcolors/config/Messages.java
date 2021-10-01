@@ -189,6 +189,12 @@ public class Messages extends CustomConfigHandler {
         return getMessage("scheduler-busy", "The task scheduler is busy right now. Please try again later.");
     }
 
+    public String getMobTypeNotAvailable(String typeName) {
+        return getMessage("mob-type-not-available",
+                "Mob type {type} is not valid in this version of Minecraft. It should be disabled in the configuration.")
+                        .replace("{type", typeName);
+    }
+
     public String updateCurrentVersion() {
         return getMessage("updater-current-version", "You are running the latest version");
     }
