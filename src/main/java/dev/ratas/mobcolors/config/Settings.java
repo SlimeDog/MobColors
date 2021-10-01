@@ -16,12 +16,14 @@ import dev.ratas.mobcolors.config.mob.IllegalMobSettingsException;
 import dev.ratas.mobcolors.config.mob.MobSettings;
 import dev.ratas.mobcolors.config.mob.MobSettingsParser;
 import dev.ratas.mobcolors.config.mob.MobType;
+import dev.ratas.mobcolors.config.mob.IllegalMobSettingsException.MobTypeNotAvailableException;
 import dev.ratas.mobcolors.config.world.WorldManager;
 import dev.ratas.mobcolors.reload.Reloadable;
 import dev.ratas.mobcolors.scheduling.abstraction.Scheduler;
 
 public class Settings implements Reloadable {
     private final SettingsConfigProvider provider;
+    private final Messages messages;
     private boolean isDebug;
     private final boolean enableAll;
     private final Scheduler scheduler;
@@ -30,13 +32,15 @@ public class Settings implements Reloadable {
     private final Logger logger;
     private final PluginProvider pluginProvider;
 
-    public Settings(SettingsConfigProvider provider, PluginProvider pluginProvider, Scheduler scheduler) {
-        this(provider, pluginProvider, scheduler, false);
+    public Settings(SettingsConfigProvider provider, Messages messages, PluginProvider pluginProvider,
+            Scheduler scheduler) {
+        this(provider, messages, pluginProvider, scheduler, false);
     }
 
-    public Settings(SettingsConfigProvider provider, PluginProvider pluginProvider, Scheduler scheduler,
-            boolean enableAll) {
+    public Settings(SettingsConfigProvider provider, Messages messages, PluginProvider pluginProvider,
+            Scheduler scheduler, boolean enableAll) {
         this.provider = provider;
+        this.messages = messages;
         this.pluginProvider = pluginProvider;
         this.scheduler = scheduler;
         this.logger = provider.getLogger();
@@ -79,6 +83,9 @@ public class Settings implements Reloadable {
         MobSettingsParser parser;
         try {
             parser = new MobSettingsParser(section, enableAll);
+        } catch (MobTypeNotAvailableException e) {
+            logger.warning(messages.getMobTypeNotAvailable(e.getMobTypeName()));
+            return;
         } catch (IllegalMobSettingsException e) {
             logger.warning("Problem with mob settings for " + mobName + ": " + e.getMessage());
             return;

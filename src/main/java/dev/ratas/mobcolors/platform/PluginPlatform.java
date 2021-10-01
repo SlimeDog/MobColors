@@ -47,6 +47,13 @@ public class PluginPlatform {
         this.logger = LogUtils.getLogger();
         // initialize and register reloadables
         try {
+            messages = new Messages(resourceProvider);
+        } catch (Exception e) {
+            disableWith(e);
+            throw new PlatformInitializationException("Messages issue");
+        }
+        reloadManager.register(messages);
+        try {
             config = new CustomConfigHandler(resourceProvider, "config.yml");
         } catch (Exception e) {
             disableWith(e);
@@ -54,19 +61,12 @@ public class PluginPlatform {
         }
         reloadManager.register(config);
         try {
-            settings = new Settings(settingsProvider, this.pluginProvider, scheduler);
+            settings = new Settings(settingsProvider, messages, this.pluginProvider, scheduler);
         } catch (Exception e) {
             disableWith(e);
             throw new PlatformInitializationException("Settings issue");
         }
         reloadManager.register(settings);
-        try {
-            messages = new Messages(resourceProvider);
-        } catch (Exception e) {
-            disableWith(e);
-            throw new PlatformInitializationException("Messages issue");
-        }
-        reloadManager.register(messages);
         spawnListener = new SpawnListener(settings);
         // scheduling, scanning, mapping
         this.taskScheduler = new SimpleTaskScheduler(settings.maxMsPerTickInScheduler());
