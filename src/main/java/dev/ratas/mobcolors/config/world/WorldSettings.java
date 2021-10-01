@@ -1,11 +1,11 @@
 package dev.ratas.mobcolors.config.world;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.bukkit.entity.EntityType;
 
@@ -43,7 +43,8 @@ public class WorldSettings {
     }
 
     public List<ColorMap<?>> getEnabledColorMaps(boolean sorted) {
-        List<ColorMap<?>> list = new ArrayList<>(entityColorMaps.values());
+        List<ColorMap<?>> list = entityColorMaps.entrySet().stream().filter(e -> e.getKey() != EntityType.TRADER_LLAMA)
+                .map(e -> e.getValue()).collect(Collectors.toList());
         if (sorted) {
             Collections.sort(list,
                     (m1, m2) -> m1.getApplicableEntityType().name().compareTo(m2.getApplicableEntityType().name()));
