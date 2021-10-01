@@ -192,7 +192,7 @@ public class Messages extends CustomConfigHandler {
     public String getMobTypeNotAvailable(String typeName) {
         return getMessage("mob-type-not-available",
                 "Mob type {type} is not valid in this version of Minecraft. It should be disabled in the configuration.")
-                        .replace("{type", typeName);
+                        .replace("{type}", typeName);
     }
 
     public String updateCurrentVersion() {
