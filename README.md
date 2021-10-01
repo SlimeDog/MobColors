@@ -23,7 +23,7 @@
 
 ### Version Support
 
-**MobColors** **1.0.0** is certified for Spigot and Paper 1.16.5 and 1.17.1. 
+**MobColors** **1.0.0** is certified for Spigot 1.14.4, 1.15.2, 1.16.5, and 1.17.1; and Paper 1.16.5 and 1.17.1. 
 
 **MobColors** may or may not work on previous Spigot or Paper releases, or other non-Spigot variants.
 
