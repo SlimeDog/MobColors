@@ -8,6 +8,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import dev.ratas.mobcolors.coloring.settings.AbstractColorMap;
 import dev.ratas.mobcolors.coloring.settings.ColorMap;
 import dev.ratas.mobcolors.config.ColorSchemeParser;
+import dev.ratas.mobcolors.config.mob.IllegalMobSettingsException.MobTypeNotAvailableException;
 import dev.ratas.mobcolors.utils.LogUtils;
 
 public class MobSettingsParser {
@@ -40,7 +41,7 @@ public class MobSettingsParser {
             throw new IllegalMobSettingsException("Illegal entity type specified: " + name);
         }
         if (!type.isValid()) {
-            throw new IllegalMobSettingsException("Mob type " + type.name() + " is not valid (in this version of MC)");
+            throw new MobTypeNotAvailableException(type.name());
         }
         return type;
     }
