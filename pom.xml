@@ -5,7 +5,7 @@
   <artifactId>mobcolors</artifactId>
   <version>0.0.19-SNAPSHOT</version>
   <name>MobColors</name>
-  <description>Manage colors of mobs per world</description>
+  <description>Manage mob colors and variants, per world</description>
   <properties>
     <maven.compiler.source>1.16</maven.compiler.source>
     <maven.compiler.target>1.16</maven.compiler.target>
