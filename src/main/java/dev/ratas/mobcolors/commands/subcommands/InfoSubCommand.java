@@ -23,7 +23,7 @@ import dev.ratas.mobcolors.utils.WorldProvider;
 
 public class InfoSubCommand extends SimpleSubCommand {
     private static final String NAME = "info";
-    private static final String USAGE = "/mobcolors info [world] --mob";
+    private static final String USAGE = "/mobcolors info [world] [ --mob <mob-type> ]";
     private static final String PERMS = "mobcolors.info";
     private static final List<String> OPTIONS = Collections.unmodifiableList(Arrays.asList("--mob"));
     private final Settings settings;

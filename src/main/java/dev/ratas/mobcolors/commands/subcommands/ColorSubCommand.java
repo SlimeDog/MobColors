@@ -22,8 +22,8 @@ import dev.ratas.mobcolors.utils.WorldProvider;
 
 public class ColorSubCommand extends AbstractRegionSubCommand {
     private static final String NAME = "color";
-    private static final String USAGE_REGION = "/mobcolors color region [ world-name x z ] [ --all ] [ --leashed ] [ --pets ]";
-    private static final String USAGE_DISTANCE = "/mobcolors color distance <d> [ --all | --leashed | --pets ] [ --mob <mob-type> ]";
+    private static final String USAGE_REGION = "/mobcolors color region [ world-name x z ] [ --all | --leashed | --pets | --traders ] [ --mob <mob-type> ] [ --scan ]";
+    private static final String USAGE_DISTANCE = "/mobcolors color distance <d> [ --all | --leashed | --pets | --traders ] [ --mob <mob-type> ] [ --scan ]";
     private static final String PERMS = "mobcolors.region";
     private static final List<String> FIRST_OPTIONS = Arrays.asList("region", "distance");
     private static final List<String> OPTIONS = Arrays.asList("--all", "--leashed", "--pets", "--scan", "--mob");
