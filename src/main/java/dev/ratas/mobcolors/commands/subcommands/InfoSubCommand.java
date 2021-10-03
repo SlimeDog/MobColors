@@ -56,7 +56,7 @@ public class InfoSubCommand extends SimpleSubCommand {
     @Override
     public boolean executeCommand(CommandSender sender, String[] args) {
         MobType targetType = getTargetType(args);
-        if (args.length < 1) {
+        if (args.length < 1 || args[0].equalsIgnoreCase("--mob")) {
             showEnabledColorMaps(sender, targetType);
         } else {
             World world = worldProvider.getWorld(args[0]);
@@ -79,6 +79,7 @@ public class InfoSubCommand extends SimpleSubCommand {
             }
             sender.sendMessage(messages.getEnabledMobColorMapsHeaderMessage(type));
             if (enabledMaps.isEmpty()) {
+                foundEnabledColorMap = true;
                 sender.sendMessage(messages.getMobColorMapDefaultEnabledEverywherMessage());
                 continue;
             }
