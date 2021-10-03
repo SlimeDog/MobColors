@@ -1,5 +1,7 @@
 package dev.ratas.mobcolors.commands.subcommands;
 
+import java.util.Arrays;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -40,7 +42,8 @@ public abstract class AbstractRegionSubCommand extends SimpleSubCommand {
             return getDistanceRegionInfo((Player) sender, args, ignoredUngenerated, isColor);
         }
         if (args.length < 4 && sender instanceof Player) {
-            if (args.length > 1) {
+            if (args.length > 1 // if option (i.e --scan) specified then it's fine
+                    && Arrays.stream(Arrays.copyOfRange(args, 1, args.length)).anyMatch(arg -> !arg.startsWith("--"))) {
                 throw new IllegalArgumentException();
             }
             Player player = (Player) sender;
