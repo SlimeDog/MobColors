@@ -67,8 +67,6 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
             }
         }
         if (shouldShowOptions(sender, args)) {
-            // (sender instanceof Player && args.length > 1) || args.length > 4
-            // || (args[0].equalsIgnoreCase("distance") && args.length > 2)) {
             if (args[args.length - 2].equalsIgnoreCase("--mob")) { // after --mob, need entity type
                 return StringUtil.copyPartialMatches(args[args.length - 1], MobTypes.ENTITY_TYPE_NAMES, list);
             }
@@ -104,14 +102,12 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
                 if ((args.length <= 4 && args[1].startsWith("--")) || args.length > 4) {
                     return true;
                 }
+            } else if (args.length > 2 && args[0].equalsIgnoreCase("distance")) {
+                return true;
             }
             return false;
-        } else {
-            if (args.length > 1 && args[0].equalsIgnoreCase("distance")) {
-                return args.length >= 3;
-            } else {
-                return args.length > 4;
-            }
+        } else { // for console, only region
+            return args.length > 4;
         }
     }
 
