@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>dev.ratas</groupId>
   <artifactId>mobcolors</artifactId>
-  <version>0.0.20-SNAPSHOT</version>
+  <version>0.0.21-SNAPSHOT</version>
   <name>MobColors</name>
   <description>Manage mob colors and variants, per world</description>
   <properties>
