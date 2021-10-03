@@ -73,14 +73,15 @@ public class InfoSubCommand extends SimpleSubCommand {
         boolean foundEnabledColorMap = false;
         for (MobSettings mobSettings : settings.getEnabledMobSettings(true)) {
             List<EnabledColorMapInfo> enabledMaps = getEnabledColorMaps(mobSettings);
-            if (enabledMaps.isEmpty()) {
-                continue;
-            }
             MobType type = mobSettings.getEntityType();
             if (targetType != null && type != targetType) {
                 continue;
             }
             sender.sendMessage(messages.getEnabledMobColorMapsHeaderMessage(type));
+            if (enabledMaps.isEmpty()) {
+                sender.sendMessage(messages.getMobColorMapDefaultEnabledEverywherMessage());
+                continue;
+            }
             for (EnabledColorMapInfo info : enabledMaps) {
                 sender.sendMessage(messages.getEnabledMobColorMapItemMessage(info.map.getName(), info.activeWorlds));
             }

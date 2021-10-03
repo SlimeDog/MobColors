@@ -150,6 +150,10 @@ public class Messages extends CustomConfigHandler {
                 String.join(", ", worlds));
     }
 
+    public String getMobColorMapDefaultEnabledEverywherMessage() {
+        return getMessage("info-mob-colormap-default-everywhere", "- default: all worlds");
+    }
+
     public String getMobColorMapDefaultEnabledMessage() {
         return getMessage("info-mob-colormap-default-enabled", "- default: all other worlds");
     }
