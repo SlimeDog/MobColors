@@ -27,7 +27,7 @@ public class RegionScanner extends AbstractRegionHandler {
         this.bukkitScheduler = bukkitScheduler;
         this.scheduler = scheduler;
         if (Version.hasEntitiesLoadEvent()) {
-            eventLoadHandler = new One17PlusHandler(worldProvider);
+            eventLoadHandler = new One17PlusHandler(worldProvider, bukkitScheduler);
             registrator.register(eventLoadHandler);
         } else {
             eventLoadHandler = null;

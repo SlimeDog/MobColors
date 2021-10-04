@@ -67,7 +67,7 @@ public class PluginPlatform {
             throw new PlatformInitializationException("Settings issue");
         }
         reloadManager.register(settings);
-        spawnListener = new SpawnListener(settings);
+        spawnListener = new SpawnListener(settings, worldProvider, scheduler);
         // scheduling, scanning, mapping
         this.taskScheduler = new SimpleTaskScheduler(settings.maxMsPerTickInScheduler());
         scheduler.scheduleRepeating((Runnable) this.taskScheduler, 1L, 1L);

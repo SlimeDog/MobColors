@@ -15,12 +15,23 @@ import dev.ratas.mobcolors.config.Settings;
 import dev.ratas.mobcolors.config.mob.MobTypes;
 import dev.ratas.mobcolors.config.world.WorldSettings;
 import dev.ratas.mobcolors.region.RegionOptions;
+import dev.ratas.mobcolors.region.version.ChunkInfo;
+import dev.ratas.mobcolors.region.version.One17PlusHandler;
+import dev.ratas.mobcolors.region.version.Version;
+import dev.ratas.mobcolors.scheduling.abstraction.Scheduler;
+import dev.ratas.mobcolors.utils.WorldProvider;
 
 public class SpawnListener implements Listener {
     private final Settings settings;
+    private final One17PlusHandler eventHandler;
 
-    public SpawnListener(Settings settings) {
+    public SpawnListener(Settings settings, WorldProvider worldProvider, Scheduler scheduler) {
         this.settings = settings;
+        if (Version.hasEntitiesLoadEvent()) {
+            eventHandler = new One17PlusHandler(worldProvider, scheduler);
+        } else {
+            eventHandler = null;
+        }
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -58,6 +69,15 @@ public class SpawnListener implements Listener {
 
     @EventHandler
     public void onChunkPopulate(ChunkPopulateEvent event) {
+        if (eventHandler != null) {
+            eventHandler.addChunk(ChunkInfo.wrap(event.getChunk()), (ent) -> {
+                if (ent instanceof LivingEntity) {
+                    handleEntity((LivingEntity) ent, null, SpawnReason.DEFAULT);
+                }
+            }, () -> {
+            });
+            return;
+        }
         for (Entity ent : event.getChunk().getEntities()) {
             if (!(ent instanceof LivingEntity)) {
                 continue;

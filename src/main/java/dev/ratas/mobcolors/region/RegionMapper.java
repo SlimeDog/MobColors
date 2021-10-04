@@ -33,7 +33,7 @@ public class RegionMapper extends AbstractRegionHandler {
         this.spawnListener = spawnListener;
         this.scanner = scanner;
         if (Version.hasEntitiesLoadEvent()) {
-            eventLoadHandler = new One17PlusHandler(worldProvider);
+            eventLoadHandler = new One17PlusHandler(worldProvider, bukkitScheduler);
             registrator.register(eventLoadHandler);
         } else {
             eventLoadHandler = null;

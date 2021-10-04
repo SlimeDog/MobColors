@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import dev.ratas.mobcolors.region.version.mock.MockChunk;
 import dev.ratas.mobcolors.region.version.mock.MockEntity;
+import dev.ratas.mobcolors.region.version.mock.MockScheduler;
 import dev.ratas.mobcolors.region.version.mock.MockWorld;
 import dev.ratas.mobcolors.region.version.mock.MockWorldProvider;
 
@@ -24,7 +25,7 @@ public class TestOne17PlusHandler {
     @BeforeEach
     public void setup() {
         wp = new MockWorldProvider(mw = new MockWorld(UUID.randomUUID(), "worldName#132"));
-        handler = new One17PlusHandler(wp);
+        handler = new One17PlusHandler(wp, new MockScheduler());
         counter = 0;
     }
 

@@ -1,7 +1,9 @@
 package dev.ratas.mobcolors.region.version;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
@@ -19,12 +21,14 @@ import dev.ratas.mobcolors.utils.WorldProvider;
 
 public class One17PlusHandler implements Listener {
     private static final long COMPLETION_TIMEOUT_TICKS = 80L;
+    private static final long CLEANUP_DELAY = 20L; // once a second
     private final WorldProvider worldProvider;
     private final Map<ChunkInfo, ChunkCallbacks> chunksToCount = new HashMap<>();
     private CompletableFuture<Void> future = null;
 
-    public One17PlusHandler(WorldProvider worldProvider) {
+    public One17PlusHandler(WorldProvider worldProvider, Scheduler scheduler) {
         this.worldProvider = worldProvider;
+        scheduler.scheduleRepeating(this::cleanup, CLEANUP_DELAY, CLEANUP_DELAY);
     }
 
     public void addChunk(ChunkInfo chunk, Consumer<Entity> consumer, Runnable chunkCounter) {
@@ -40,6 +44,21 @@ public class One17PlusHandler implements Listener {
         // loaded along all its entities
         countChunk(worldProvider.getWorld(chunk.getWorldName()).getChunkAt(chunk.getChunkX(), chunk.getChunkZ()),
                 callback, false);
+    }
+
+    private void cleanup() {
+        List<ChunkInfo> toFinalize = new ArrayList<>();
+        for (Map.Entry<ChunkInfo, ChunkCallbacks> entry : chunksToCount.entrySet()) {
+            if (entry.getValue().hasExpired()) {
+                toFinalize.add(entry.getKey());
+            }
+        }
+        for (ChunkInfo info : toFinalize) {
+            ChunkCallbacks cb = chunksToCount.get(info);
+            countChunk(worldProvider.getWorld(info.getWorldName()).getChunkAt(info.getChunkX(), info.getChunkZ()), cb,
+                    false);
+            chunksToCount.remove(info);
+        }
     }
 
     public boolean hasPendingChunks() {
@@ -128,6 +147,7 @@ public class One17PlusHandler implements Listener {
         private final Consumer<Entity> consumer;
         private final Runnable chunkCounter;
         private final Set<Entity> alreadyCounted = new HashSet<>();
+        private final long start = System.currentTimeMillis();
 
         private ChunkCallbacks(Consumer<Entity> consumer, Runnable chunkCounter) {
             this.consumer = consumer;
@@ -141,6 +161,11 @@ public class One17PlusHandler implements Listener {
             consumer.accept(entity);
             alreadyCounted.add(entity);
         }
+
+        private boolean hasExpired() {
+            return System.currentTimeMillis() - start > COMPLETION_TIMEOUT_TICKS * 50;
+        }
+
     }
 
     public class PendingChunkTimeoutException extends IllegalStateException {
