@@ -35,11 +35,13 @@ enable-metrics: true
 # Illegal specifications will produce console/log errors, and may cause MobColors to disable.
 
 # ========== INCLUDED CATEGORIES ===================================================================
-# The following categories may be included in color-schems. They are disabled by default, to avoid
-# surprises. They may also be included via command flag parameters:
+# The following categories may be included in color-schemes. These options apply only to natural mob
+# generation. They are disabled by default, to avoid surprises.
 # - include-leashed: true = include any mob on a leash
 # - include-pets: true    = include any mob tagged with "MyPet" metadata, which is set by the MyPet plugin
 # - include-traders: true = include trader llamas (valid only for mob-type llama)
+# These options will not be included in coloration by commands unless the associated command flag
+# parameters are used. See the wiki command documentation for details.
 
 mobs:
 # ========== AXOLOTL ===============================================================================
