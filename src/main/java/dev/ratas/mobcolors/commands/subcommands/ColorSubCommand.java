@@ -71,7 +71,8 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
                 return StringUtil.copyPartialMatches(args[args.length - 1], MobTypes.ENTITY_TYPE_NAMES, list);
             }
             List<String> curOptions;
-            if (getTargetType(args) != MobType.llama) {
+            MobType targetType = getTargetType(args);
+            if (targetType != null && targetType != MobType.llama) {
                 curOptions = new ArrayList<>(OPTIONS);
             } else {
                 curOptions = new ArrayList<>(LLAMA_OPTIONS);
