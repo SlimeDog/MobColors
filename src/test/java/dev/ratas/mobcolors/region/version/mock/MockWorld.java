@@ -1195,4 +1195,24 @@ public class MockWorld implements World {
         throw new IllegalStateException("Not implemented yet");
     }
 
+    @Override
+    public long getTicksPerWaterUndergroundCreatureSpawns() {
+        throw new IllegalStateException("Not implemented yet");
+    }
+
+    @Override
+    public int getWaterUndergroundCreatureSpawnLimit() {
+        throw new IllegalStateException("Not implemented yet");
+    }
+
+    @Override
+    public void setTicksPerWaterUndergroundCreatureSpawns(int arg0) {
+        throw new IllegalStateException("Not implemented yet");
+    }
+
+    @Override
+    public void setWaterUndergroundCreatureSpawnLimit(int arg0) {
+        throw new IllegalStateException("Not implemented yet");
+    }
+
 }
