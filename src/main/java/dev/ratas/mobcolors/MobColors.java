@@ -41,7 +41,7 @@ public class MobColors extends JavaPlugin {
         // metrics
         if (platform.getSettings().enableMetrics()) {
             Metrics metrics = new Metrics(this, BSTATS_ID);
-            for (MobType type : MobType.values()) {
+            for (MobType type : MobType.availableValues()) {
                 metrics.addCustomChart(new SimplePie(String.format("mob_%s", type.name()), () -> {
                     MobSettings ms = platform.getSettings().getSettings(type);
                     return ms == null ? "disabled" : "enabled";

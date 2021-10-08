@@ -1,5 +1,6 @@
 package dev.ratas.mobcolors.config.mob;
 
+import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -25,6 +26,7 @@ public enum MobType {
     tropical_fish(EntityType.TROPICAL_FISH, TropicalFishVariant.class);
 
     private static final Map<EntityType, MobType> REVERSE_MAP = new EnumMap<>(EntityType.class);
+    private static final MobType[] AVAILABLE_VALUES = getAvailableValues();
 
     private final EntityType delegate;
     private final Class<?> typeClass;
@@ -76,6 +78,28 @@ public enum MobType {
             type = EntityType.LLAMA;
         }
         return REVERSE_MAP.get(type);
+    }
+
+    public static MobType[] availableValues() {
+        return Arrays.copyOf(AVAILABLE_VALUES, AVAILABLE_VALUES.length);
+    }
+
+    private static MobType[] getAvailableValues() {
+        MobType[] enums = values();
+        int existing = 0;
+        for (MobType type : enums) {
+            if (type.isValid()) {
+                existing++;
+            }
+        }
+        MobType[] types = new MobType[existing];
+        int i = 0;
+        for (MobType type : enums) {
+            if (type.isValid()) {
+                types[i++] = type;
+            }
+        }
+        return types;
     }
 
 }
