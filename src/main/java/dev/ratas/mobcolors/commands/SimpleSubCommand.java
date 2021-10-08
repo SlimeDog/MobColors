@@ -64,11 +64,13 @@ public abstract class SimpleSubCommand implements SubCommand {
         boolean optionFound = false;
         for (String arg : args) {
             if (optionFound) {
+                MobType type;
                 try {
-                    return MobType.valueOf(arg.toLowerCase());
+                    type = MobType.valueOf(arg.toLowerCase());
                 } catch (IllegalArgumentException e) {
                     return null;
                 }
+                return type.isValid() ? type : null;
             }
             if (arg.equalsIgnoreCase("--mob")) {
                 optionFound = true;
