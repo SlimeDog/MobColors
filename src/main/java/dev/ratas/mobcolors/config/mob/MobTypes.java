@@ -37,8 +37,8 @@ import dev.ratas.mobcolors.config.variants.RabbitVariant;
 public final class MobTypes {
     // for 1.16.5 support
     private static final Class<? extends Entity> AXOLOTL_CLASS;
-    public static final List<String> ENTITY_TYPE_NAMES = Collections
-            .unmodifiableList(Arrays.stream(MobType.availableValues()).map(Enum::name).collect(Collectors.toList()));
+    public static final List<String> ENTITY_TYPE_NAMES = Collections.unmodifiableList(
+            Arrays.stream(MobType.availableValues()).map(Enum::name).sorted().collect(Collectors.toList()));
     public static final Map<Class<? extends MobTypeVariant<?>>, Set<MobType>> VARIANT_MOB_TYPES;
     static {
         Map<Class<? extends MobTypeVariant<?>>, Set<MobType>> map = new HashMap<>();
