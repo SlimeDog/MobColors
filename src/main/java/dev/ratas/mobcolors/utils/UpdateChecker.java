@@ -14,7 +14,7 @@ import com.google.common.net.HttpHeaders;
 import dev.ratas.mobcolors.scheduling.abstraction.Scheduler;
 
 public class UpdateChecker {
-	private static final int ID = -1; // TODO - use ID
+	private static final int ID = 96771;
 	private static final String SPIGOT_URL = "https://api.spigotmc.org/legacy/update.php?resource=" + ID;
 
 	private final Scheduler scheduler;
