@@ -14,3 +14,7 @@
 &mdash; sheep<br>
 &mdash; shulker<br>
 &mdash; tropical_fish<br>
+
+### The Wiki
+
+MobColors is completely documented on The Wiki. Please start there when you have questions. https://github.com/SlimeDog/MobColors/wiki
