@@ -565,6 +565,16 @@ mobs:
         spotty/white/yellow: 0.20           # Goatfish
       enabled-worlds:
         - example_world_with_only_yellow_fish
+    goldfish:
+      probabilities:
+        brinely/orange/orange: 0.167
+        dasher/orange/orange: 0.167
+        kob/orange/orange: 0.167
+        snooper/orange/orange: 0.167
+        spotty/orange/orange: 0.166
+        sunstreak/orange/orange: 0.166
+      enabled-worlds:
+        - example_world_with_only_goldfish
     multicolor:
       probabilities:
         blockfish/purple/yellow: 0.18       # Dottyback
