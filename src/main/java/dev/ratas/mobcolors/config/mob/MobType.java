@@ -7,7 +7,6 @@ import java.util.Map;
 import org.bukkit.entity.EntityType;
 
 import dev.ratas.mobcolors.config.HorseVariant;
-import dev.ratas.mobcolors.config.TropicalFishVariant;
 import dev.ratas.mobcolors.config.variants.AxolotlVariant;
 import dev.ratas.mobcolors.config.variants.CatVariant;
 import dev.ratas.mobcolors.config.variants.DyeVariant;
@@ -16,6 +15,7 @@ import dev.ratas.mobcolors.config.variants.LlamaVariant;
 import dev.ratas.mobcolors.config.variants.MooshroomVariant;
 import dev.ratas.mobcolors.config.variants.ParrotVariant;
 import dev.ratas.mobcolors.config.variants.RabbitVariant;
+import dev.ratas.mobcolors.config.variants.TropicalFishVariant;
 
 public enum MobType {
     axolotl("AXOLOTL", AxolotlVariant.class), cat(EntityType.CAT, CatVariant.class),

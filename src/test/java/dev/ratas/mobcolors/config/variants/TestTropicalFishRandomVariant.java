@@ -3,8 +3,6 @@ package dev.ratas.mobcolors.config.variants;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import dev.ratas.mobcolors.config.TropicalFishVariant;
-
 public class TestTropicalFishRandomVariant {
 
     @Test

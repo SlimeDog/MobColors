@@ -23,7 +23,6 @@ import org.bukkit.entity.TropicalFish;
 import org.bukkit.material.Colorable;
 
 import dev.ratas.mobcolors.config.HorseVariant;
-import dev.ratas.mobcolors.config.TropicalFishVariant;
 import dev.ratas.mobcolors.config.variants.AxolotlVariant;
 import dev.ratas.mobcolors.config.variants.CatVariant;
 import dev.ratas.mobcolors.config.variants.DyeVariant;
@@ -33,6 +32,7 @@ import dev.ratas.mobcolors.config.variants.MobTypeVariant;
 import dev.ratas.mobcolors.config.variants.MooshroomVariant;
 import dev.ratas.mobcolors.config.variants.ParrotVariant;
 import dev.ratas.mobcolors.config.variants.RabbitVariant;
+import dev.ratas.mobcolors.config.variants.TropicalFishVariant;
 
 public final class MobTypes {
     // for 1.16.5 support

@@ -8,6 +8,7 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import dev.ratas.mobcolors.config.abstraction.CustomConfigHandler;
 import dev.ratas.mobcolors.config.abstraction.ResourceProvider;
 import dev.ratas.mobcolors.config.mob.MobType;
+import dev.ratas.mobcolors.config.variants.TropicalFishVariant;
 import dev.ratas.mobcolors.utils.WorldDescriptor;
 
 public class Messages extends CustomConfigHandler {

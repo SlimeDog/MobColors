@@ -15,7 +15,6 @@ import dev.ratas.mobcolors.coloring.DelegatingMobColorer;
 import dev.ratas.mobcolors.coloring.MobColorer;
 import dev.ratas.mobcolors.coloring.settings.ColorMap;
 import dev.ratas.mobcolors.config.HorseVariant;
-import dev.ratas.mobcolors.config.TropicalFishVariant;
 import dev.ratas.mobcolors.config.mob.MobSettings;
 import dev.ratas.mobcolors.config.variants.AxolotlVariant;
 import dev.ratas.mobcolors.config.variants.CatVariant;
@@ -25,6 +24,7 @@ import dev.ratas.mobcolors.config.variants.LlamaVariant;
 import dev.ratas.mobcolors.config.variants.MooshroomVariant;
 import dev.ratas.mobcolors.config.variants.ParrotVariant;
 import dev.ratas.mobcolors.config.variants.RabbitVariant;
+import dev.ratas.mobcolors.config.variants.TropicalFishVariant;
 import dev.ratas.mobcolors.scheduling.abstraction.Scheduler;
 
 public class ColorerGenerator {

@@ -1,12 +1,8 @@
-package dev.ratas.mobcolors.config;
+package dev.ratas.mobcolors.config.variants;
 
 import java.util.concurrent.ThreadLocalRandom;
 
 import org.bukkit.entity.TropicalFish;
-
-import dev.ratas.mobcolors.config.variants.DyeVariant;
-import dev.ratas.mobcolors.config.variants.ThreeTypeComplexVariant;
-import dev.ratas.mobcolors.config.variants.TropicalFishPattern;
 
 public class TropicalFishVariant extends ThreeTypeComplexVariant<TropicalFishPattern, DyeVariant, DyeVariant> {
     private static final String RANDOM_STATE = "random";

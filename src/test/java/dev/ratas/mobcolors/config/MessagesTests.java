@@ -28,6 +28,7 @@ import dev.ratas.mobcolors.config.variants.DyeVariant;
 import dev.ratas.mobcolors.config.variants.HorseColor;
 import dev.ratas.mobcolors.config.variants.HorseStyle;
 import dev.ratas.mobcolors.config.variants.TropicalFishPattern;
+import dev.ratas.mobcolors.config.variants.TropicalFishVariant;
 import dev.ratas.mobcolors.utils.WorldDescriptor;
 
 public class MessagesTests {
