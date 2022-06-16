@@ -6,6 +6,7 @@
 &mdash; axolotl<br>
 &mdash; cat<br>
 &mdash; fox<br>
+&mdash; frog<br>
 &mdash; horse<br>
 &mdash; llama<br>
 &mdash; mooshroom<br>
