@@ -13,6 +13,7 @@ import org.bukkit.block.PistonMoveReaction;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Pose;
+import org.bukkit.entity.SpawnCategory;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.metadata.MetadataValue;
@@ -517,6 +518,12 @@ public class MockEntity implements Entity {
     @Override
     public Spigot spigot() {
         throw new IllegalStateException("Not implemented yet");
+    }
+
+    @Override
+    public SpawnCategory getSpawnCategory() {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

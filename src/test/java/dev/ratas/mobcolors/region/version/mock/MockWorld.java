@@ -19,6 +19,7 @@ import org.bukkit.GameRule;
 import org.bukkit.HeightMap;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
 import org.bukkit.Raid;
 import org.bukkit.Sound;
@@ -42,12 +43,14 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.LightningStrike;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.SpawnCategory;
 import org.bukkit.generator.BiomeProvider;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 import org.bukkit.metadata.MetadataValue;
+import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.BoundingBox;
 import org.bukkit.util.Consumer;
@@ -1213,6 +1216,66 @@ public class MockWorld implements World {
     @Override
     public void setWaterUndergroundCreatureSpawnLimit(int arg0) {
         throw new IllegalStateException("Not implemented yet");
+    }
+
+    @Override
+    public boolean generateTree(Location arg0, Random arg1, TreeType arg2, Predicate<BlockState> arg3) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public PersistentDataContainer getPersistentDataContainer() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public NamespacedKey getKey() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public int getSimulationDistance() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public int getSpawnLimit(SpawnCategory arg0) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public long getTicksPerSpawns(SpawnCategory arg0) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public void playSound(Entity arg0, Sound arg1, float arg2, float arg3) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void playSound(Entity arg0, Sound arg1, SoundCategory arg2, float arg3, float arg4) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void setSpawnLimit(SpawnCategory arg0, int arg1) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void setTicksPerSpawns(SpawnCategory arg0, int arg1) {
+        // TODO Auto-generated method stub
+        
     }
 
 }
