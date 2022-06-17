@@ -11,6 +11,7 @@ import dev.ratas.mobcolors.config.variants.AxolotlVariant;
 import dev.ratas.mobcolors.config.variants.CatVariant;
 import dev.ratas.mobcolors.config.variants.DyeVariant;
 import dev.ratas.mobcolors.config.variants.FoxVariant;
+import dev.ratas.mobcolors.config.variants.FrogVariant;
 import dev.ratas.mobcolors.config.variants.LlamaVariant;
 import dev.ratas.mobcolors.config.variants.MooshroomVariant;
 import dev.ratas.mobcolors.config.variants.ParrotVariant;
@@ -23,7 +24,7 @@ public enum MobType {
     llama(EntityType.LLAMA, LlamaVariant.class), mooshroom(EntityType.MUSHROOM_COW, MooshroomVariant.class),
     parrot(EntityType.PARROT, ParrotVariant.class), rabbit(EntityType.RABBIT, RabbitVariant.class),
     sheep(EntityType.SHEEP, DyeVariant.class), shulker(EntityType.SHULKER, DyeVariant.class),
-    tropical_fish(EntityType.TROPICAL_FISH, TropicalFishVariant.class);
+    tropical_fish(EntityType.TROPICAL_FISH, TropicalFishVariant.class), frog("FROG", FrogVariant.class);
 
     private static final Map<EntityType, MobType> REVERSE_MAP = new EnumMap<>(EntityType.class);
     private static final MobType[] AVAILABLE_VALUES = getAvailableValues();

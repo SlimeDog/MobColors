@@ -3,6 +3,7 @@ package dev.ratas.mobcolors.config.world;
 import org.bukkit.entity.Axolotl;
 import org.bukkit.entity.Cat;
 import org.bukkit.entity.Fox;
+import org.bukkit.entity.Frog;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Llama;
 import org.bukkit.entity.MushroomCow;
@@ -20,6 +21,7 @@ import dev.ratas.mobcolors.config.variants.AxolotlVariant;
 import dev.ratas.mobcolors.config.variants.CatVariant;
 import dev.ratas.mobcolors.config.variants.DyeVariant;
 import dev.ratas.mobcolors.config.variants.FoxVariant;
+import dev.ratas.mobcolors.config.variants.FrogVariant;
 import dev.ratas.mobcolors.config.variants.LlamaVariant;
 import dev.ratas.mobcolors.config.variants.MooshroomVariant;
 import dev.ratas.mobcolors.config.variants.ParrotVariant;
@@ -83,6 +85,11 @@ public class ColorerGenerator {
                             fish.setBodyColor(var.getTwo().getBukkitVariant());
                             fish.setPatternColor(var.getThree().getBukkitVariant());
                         }, fish -> TropicalFishVariant.getVariant(fish));
+            case frog:
+                return new DelegatingMobColorer<Frog, FrogVariant>(scheduler, settings, (ColorMap<FrogVariant>) map,
+                        (frog, var) -> {
+                            frog.setVariant(var.getBukkitVariant());
+                        }, frog -> FrogVariant.getType(frog.getVariant()));
             default:
                 throw new IllegalStateException("No colorer defined for " + map.getApplicableEntityType());
         }
