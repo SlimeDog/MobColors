@@ -1,11 +1,11 @@
 package dev.ratas.mobcolors.config.variants;
 
-import org.bukkit.entity.Axolotl.Variant;
+import org.bukkit.entity.Frog.Variant;
 
 public enum FrogVariant implements MobTypeVariant<Variant> {
-    temperate(Variant.BLUE),
-    cold(Variant.BLUE),
-    warm(Variant.BLUE);
+    temperate(Variant.TEMPERATE),
+    cold(Variant.COLD),
+    warm(Variant.WARM);
 
     private static final ReverseTranslator<Variant, FrogVariant> REVERSE_MAP = new ReverseTranslator<>(Variant.class);
 
