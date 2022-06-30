@@ -13,14 +13,14 @@ import dev.ratas.mobcolors.coloring.MobColorer;
 import dev.ratas.mobcolors.coloring.settings.ColorMap;
 import dev.ratas.mobcolors.config.mob.MobSettings;
 import dev.ratas.mobcolors.config.mob.MobType;
-import dev.ratas.mobcolors.scheduling.abstraction.Scheduler;
+import dev.ratas.slimedogcore.api.scheduler.SDCScheduler;
 
 public class WorldSettings {
     private final Map<EntityType, ColorMap<?>> entityColorMaps = new EnumMap<>(EntityType.class);
     private final Map<String, ColorMap<?>> colorMapsByName = new HashMap<>(); // useless as it ignores entity type
     private final Map<MobType, MobColorer<?, ?>> colorers = new EnumMap<>(MobType.class);
 
-    public void addScheme(ColorMap<?> map, MobSettings settings, Scheduler scheduler) {
+    public void addScheme(ColorMap<?> map, MobSettings settings, SDCScheduler scheduler) {
         ColorMap<?> prev = entityColorMaps.put(map.getApplicableEntityType().getEntityType(), map);
         if (prev != null && prev != map) {
             entityColorMaps.put(prev.getApplicableEntityType().getEntityType(), prev);

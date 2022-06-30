@@ -5,7 +5,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.logging.Logger;
 
 import org.bukkit.DyeColor;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -20,27 +19,26 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import dev.ratas.mobcolors.config.abstraction.ResourceProvider;
 import dev.ratas.mobcolors.config.mob.MobType;
-import dev.ratas.mobcolors.config.mock.DummyResourceProvider;
-import dev.ratas.mobcolors.config.mock.FileResourceProvider;
 import dev.ratas.mobcolors.config.variants.DyeVariant;
 import dev.ratas.mobcolors.config.variants.HorseColor;
 import dev.ratas.mobcolors.config.variants.HorseStyle;
 import dev.ratas.mobcolors.config.variants.TropicalFishPattern;
 import dev.ratas.mobcolors.config.variants.TropicalFishVariant;
+import dev.ratas.mobcolors.mock.MockSlimeDogPlugin;
 import dev.ratas.mobcolors.utils.WorldDescriptor;
+import dev.ratas.slimedogcore.api.SlimeDogPlugin;
 
 public class MessagesTests {
-    private static final Logger LOGGER = Logger.getLogger("[MobColors TEST]");
+    // private static final Logger LOGGER = Logger.getLogger("[MobColors TEST]");
 
     @Test
     @DisplayName("Checking that all public methods within Messages class return strings")
     public void testMessagesAreStrings() {
-        ResourceProvider fileProvider = new FileResourceProvider(LOGGER);
+        SlimeDogPlugin mockPlugin = new MockSlimeDogPlugin();
         Messages messages;
         try {
-            messages = new Messages(fileProvider);
+            messages = new Messages(mockPlugin);
         } catch (InvalidConfigurationException e) {
             throw new IllegalStateException(e);
         }
@@ -56,13 +54,13 @@ public class MessagesTests {
     @Test
     @DisplayName("Checking that messages are the same in code and in messages.yml")
     public void testParityOfMessageEntries() {
-        ResourceProvider fileProvider = new FileResourceProvider(LOGGER);
-        ResourceProvider dummyProvider = new DummyResourceProvider(LOGGER);
         Messages fileMessages;
         Messages codeMessages;
+        SlimeDogPlugin filePlugin = new MockSlimeDogPlugin(true);
+        SlimeDogPlugin codePlugin = new MockSlimeDogPlugin();
         try {
-            fileMessages = new Messages(fileProvider);
-            codeMessages = new Messages(dummyProvider);
+            fileMessages = new Messages(filePlugin);
+            codeMessages = new Messages(codePlugin);
         } catch (InvalidConfigurationException e) {
             throw new IllegalStateException(e);
         }
@@ -135,10 +133,10 @@ public class MessagesTests {
     @Test
     @DisplayName("Checking that no placeholders are left unfilled within messages")
     public void testMesagesUsesPlaceholders() {
-        ResourceProvider fileProvider = new FileResourceProvider(LOGGER);
+        SlimeDogPlugin mockPlugin = new MockSlimeDogPlugin();
         Messages messages;
         try {
-            messages = new Messages(fileProvider);
+            messages = new Messages(mockPlugin);
         } catch (InvalidConfigurationException e) {
             throw new IllegalStateException(e);
         }
@@ -159,10 +157,10 @@ public class MessagesTests {
     @Test
     @DisplayName("Checking that item conversion works for all correct types")
     public void testItemMessageObjectConversion() {
-        ResourceProvider fileProvider = new FileResourceProvider(LOGGER);
+        SlimeDogPlugin mockPlugin = new MockSlimeDogPlugin();
         Messages messages;
         try {
-            messages = new Messages(fileProvider);
+            messages = new Messages(mockPlugin);
         } catch (InvalidConfigurationException e) {
             throw new IllegalStateException(e);
         }

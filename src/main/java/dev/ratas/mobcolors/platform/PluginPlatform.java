@@ -3,79 +3,69 @@ package dev.ratas.mobcolors.platform;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import dev.ratas.mobcolors.PluginProvider;
 import dev.ratas.mobcolors.SpawnListener;
 import dev.ratas.mobcolors.config.Messages;
 import dev.ratas.mobcolors.config.Settings;
-import dev.ratas.mobcolors.config.abstraction.CustomConfigHandler;
-import dev.ratas.mobcolors.config.abstraction.ResourceProvider;
-import dev.ratas.mobcolors.config.abstraction.SettingsConfigProvider;
-import dev.ratas.mobcolors.events.ListenerRegistrator;
 import dev.ratas.mobcolors.region.RegionMapper;
 import dev.ratas.mobcolors.region.RegionScanner;
-import dev.ratas.mobcolors.reload.ReloadManager;
 import dev.ratas.mobcolors.scheduling.SimpleTaskScheduler;
 import dev.ratas.mobcolors.scheduling.TaskScheduler;
-import dev.ratas.mobcolors.scheduling.abstraction.Scheduler;
 import dev.ratas.mobcolors.utils.LogUtils;
-import dev.ratas.mobcolors.utils.UpdateChecker;
-import dev.ratas.mobcolors.utils.VersionProvider;
-import dev.ratas.mobcolors.utils.WorldProvider;
+import dev.ratas.slimedogcore.api.SlimeDogPlugin;
+import dev.ratas.slimedogcore.api.config.SDCCustomConfig;
+import dev.ratas.slimedogcore.api.reload.ReloadException;
+import dev.ratas.slimedogcore.impl.utils.UpdateChecker;
 
 public class PluginPlatform {
-    private final ReloadManager reloadManager = new ReloadManager();
-    private final CustomConfigHandler config;
+    private static final int SPIGOT_RESOURCE_ID = 96771;
+    private final SDCCustomConfig config;
     private final Settings settings;
     private final Messages messages;
     private final SpawnListener spawnListener;
     private final TaskScheduler taskScheduler;
     private final RegionMapper mapper;
     private final RegionScanner scanner;
-    private final PluginProvider pluginProvider;
     private final Logger logger;
-    private final Runnable pluginReloader;
+    private final SlimeDogPlugin plugin;
 
-    public PluginPlatform(Scheduler scheduler, ResourceProvider resourceProvider,
-            SettingsConfigProvider settingsProvider, ListenerRegistrator lisenerRegistrator,
-            VersionProvider versionProvider, PluginProvider pluginProvider, WorldProvider worldProvider,
-            Runnable pluginReloader) throws PlatformInitializationException {
-        this.pluginReloader = pluginReloader;
-        this.pluginProvider = pluginProvider;
+    public PluginPlatform(SlimeDogPlugin plugin, PluginProvider pluginProvider) throws PlatformInitializationException {
         this.logger = LogUtils.getLogger();
+        this.plugin = plugin;
         // initialize and register reloadables
         try {
-            messages = new Messages(resourceProvider);
+            messages = new Messages(plugin);
         } catch (Exception e) {
             disableWith(e);
             throw new PlatformInitializationException("Messages issue");
         }
-        reloadManager.register(messages);
+        plugin.getReloadManager().register(messages);
         try {
-            config = new CustomConfigHandler(resourceProvider, "config.yml");
+            config = plugin.getDefaultConfig();
         } catch (Exception e) {
             disableWith(e);
             throw new PlatformInitializationException("Config issue");
         }
-        reloadManager.register(config);
         try {
-            settings = new Settings(settingsProvider, messages, this.pluginProvider, scheduler);
+            settings = new Settings(plugin, plugin.getCustomConfigManager(), messages, plugin.getPluginManager(),
+                    plugin.getScheduler());
         } catch (Exception e) {
             disableWith(e);
             throw new PlatformInitializationException("Settings issue");
         }
-        reloadManager.register(settings);
-        spawnListener = new SpawnListener(settings, worldProvider, scheduler);
+        plugin.getReloadManager().register(settings);
+        spawnListener = new SpawnListener(settings, plugin.getWorldProvider(), plugin.getScheduler());
         // scheduling, scanning, mapping
         this.taskScheduler = new SimpleTaskScheduler(settings.maxMsPerTickInScheduler());
-        scheduler.scheduleRepeating((Runnable) this.taskScheduler, 1L, 1L);
-        scanner = new RegionScanner(scheduler, this.taskScheduler, lisenerRegistrator, worldProvider);
-        mapper = new RegionMapper(scheduler, this.taskScheduler, spawnListener, scanner, lisenerRegistrator,
-                worldProvider);
+        plugin.getScheduler().runTaskTimer((Runnable) this.taskScheduler, 1L, 1L);
+        scanner = new RegionScanner(plugin.getScheduler(), this.taskScheduler, plugin.getPluginManager(),
+                plugin.getWorldProvider());
+        mapper = new RegionMapper(plugin.getScheduler(), this.taskScheduler, spawnListener, scanner,
+                plugin.getPluginManager(), plugin.getWorldProvider());
 
-        lisenerRegistrator.register(spawnListener);
+        plugin.getPluginManager().registerEvents(spawnListener);
 
         if (config.getConfig().isSet("debug")) {
             boolean debug = settings.isOnDebug();
@@ -84,7 +74,7 @@ public class PluginPlatform {
 
         // update
         if (settings.checkForUpdates()) {
-            new UpdateChecker(scheduler, versionProvider.getVersion(), (response, version) -> {
+            new UpdateChecker(plugin, (response, version) -> {
                 switch (response) {
                     case LATEST:
                         logger.info(messages.updateCurrentVersion());
@@ -96,7 +86,7 @@ public class PluginPlatform {
                         logger.info(messages.updateInfoUnavailable());
                         break;
                 }
-            }).check();
+            }, SPIGOT_RESOURCE_ID).check();
         }
     }
 
@@ -125,17 +115,13 @@ public class PluginPlatform {
 
     public boolean reload() {
         try {
-            pluginReloader.run();
-        } catch (RuntimeException e) {
+            plugin.getReloadManager().reload();
+        } catch (ReloadException e) {
             logger.severe("Problem reloading plugin:");
             e.printStackTrace();
+            return false;
         }
-        boolean successful = reloadManager.reload(this);
-        if (config.getConfig().isSet("debug")) {
-            boolean debug = settings.isOnDebug();
-            logger.info("Debug " + (debug ? "enabled" : "disabled"));
-        }
-        return successful;
+        return true;
     }
 
     public Settings getSettings() {
@@ -146,18 +132,10 @@ public class PluginPlatform {
         return messages;
     }
 
-    public FileConfiguration getConfig() {
-        return config.getConfig();
-    }
-
     public void debug(String msg) {
         if (!settings.isOnDebug())
             return;
         logger.info("DEBUG " + msg);
-    }
-
-    public ReloadManager getReloadManager() {
-        return reloadManager;
     }
 
 }

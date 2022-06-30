@@ -3,16 +3,15 @@ package dev.ratas.mobcolors.config.mob;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.bukkit.configuration.ConfigurationSection;
-
 import dev.ratas.mobcolors.coloring.settings.AbstractColorMap;
 import dev.ratas.mobcolors.coloring.settings.ColorMap;
 import dev.ratas.mobcolors.config.ColorSchemeParser;
 import dev.ratas.mobcolors.config.mob.IllegalMobSettingsException.MobTypeNotAvailableException;
 import dev.ratas.mobcolors.utils.LogUtils;
+import dev.ratas.slimedogcore.api.config.SDCConfiguration;
 
 public class MobSettingsParser {
-    private final ConfigurationSection section;
+    private final SDCConfiguration section;
     private boolean hasParsed = false;
     private boolean enabled;
     private MobType type;
@@ -22,7 +21,7 @@ public class MobSettingsParser {
     private boolean includeTraders;
     private final boolean forceEnable;
 
-    public MobSettingsParser(ConfigurationSection section, boolean forceEnable) throws IllegalMobSettingsException {
+    public MobSettingsParser(SDCConfiguration section, boolean forceEnable) throws IllegalMobSettingsException {
         this.section = section;
         this.forceEnable = forceEnable;
         parse();

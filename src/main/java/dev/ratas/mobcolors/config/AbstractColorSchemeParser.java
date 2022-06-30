@@ -7,14 +7,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.bukkit.configuration.ConfigurationSection;
+import dev.ratas.slimedogcore.api.config.SDCConfiguration;
 
 public class AbstractColorSchemeParser {
     protected static final EnumValueOfProvider ENUM_VALUE_OF_PROVIDER = new EnumValueOfProvider();
     private final String name;
     private final List<String> enabledWorlds = new ArrayList<>();
 
-    protected AbstractColorSchemeParser(ConfigurationSection section) {
+    protected AbstractColorSchemeParser(SDCConfiguration section) {
         if (section == null) {
             throw new IllegalStateException("Color scheme settings cannot have an empty section");
         }

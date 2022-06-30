@@ -2,34 +2,40 @@ package dev.ratas.mobcolors.config.mob;
 
 import java.util.EnumSet;
 import java.util.Set;
-import java.util.logging.Logger;
 import java.util.stream.Stream;
 
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import dev.ratas.mobcolors.config.abstraction.SettingsConfigProvider;
-import dev.ratas.mobcolors.config.mock.FileResourceProvider;
-import dev.ratas.mobcolors.config.mock.FileSettingsConfigProvider;
+import dev.ratas.mobcolors.config.Messages;
+import dev.ratas.mobcolors.config.Settings;
+import dev.ratas.mobcolors.mock.MockSlimeDogPlugin;
+import dev.ratas.slimedogcore.api.SlimeDogPlugin;
 
 public class MobTypeTests {
-    private static final Logger LOGGER = Logger.getLogger("[MobColors TEST]");
-    private static FileResourceProvider provider;
-    private static SettingsConfigProvider configProvider;
+    private static Settings settings;
 
     @BeforeAll
     public static void setup() {
-        provider = new FileResourceProvider(LOGGER);
-        configProvider = new FileSettingsConfigProvider(provider, null);
+        SlimeDogPlugin mockPlugin = new MockSlimeDogPlugin(true);
+        Messages msgs;
+        try {
+            msgs = new Messages(mockPlugin);
+        } catch (InvalidConfigurationException e) {
+            throw new RuntimeException(e);
+        }
+        settings = new Settings(mockPlugin, mockPlugin.getCustomConfigManager(), msgs, mockPlugin.getPluginManager(),
+                mockPlugin.getScheduler());
     }
 
     @Test
     public void test_ConfigHasAllMobTypes() {
         Set<MobType> notMapped = EnumSet.allOf(MobType.class);
-        for (String mobName : configProvider.getMobsConfig().getKeys(false)) {
+        for (String mobName : settings.getMobsConfig().getKeys(false)) {
             notMapped.remove(MobType.valueOf(mobName)); // throws exception for undefined mob type
         }
         Assertions.assertTrue(notMapped.isEmpty(), "Not all MobType values were present in config. "
@@ -47,7 +53,7 @@ public class MobTypeTests {
     }
 
     private static Stream<String> provideDyeVariants() {
-        return configProvider.getMobsConfig().getKeys(false).stream();
+        return settings.getMobsConfig().getKeys(false).stream();
     }
 
 }

@@ -1,47 +1,81 @@
 package dev.ratas.mobcolors.region.version.mock;
 
-import java.util.function.BooleanSupplier;
+import java.util.function.Consumer;
 
-import dev.ratas.mobcolors.scheduling.abstraction.Scheduler;
+import dev.ratas.slimedogcore.api.scheduler.SDCScheduler;
+import dev.ratas.slimedogcore.api.scheduler.SDCTask;
 
-public class MockScheduler extends Scheduler {
-
-    public MockScheduler() {
-        super(null, null);
-    }
+public class MockScheduler implements SDCScheduler {
 
     @Override
-    public void schedule(Runnable runnable) {
-        schedule(runnable, 1);
-    }
-
-    @Override
-    public void schedule(Runnable runnable, long ticks) {
+    public void runTask(Runnable runnable) {
+        // TODO Auto-generated method stub
 
     }
 
     @Override
-    public void scheduleRepeating(BooleanSupplier supplier, long delay, long period) {
+    public void runTaskAsync(Runnable runnable) {
+        // TODO Auto-generated method stub
 
     }
 
     @Override
-    public void scheduleRepeating(Runnable runnable, long delay, long period) {
+    public void runTaskLater(Runnable runnable, long delayTicks) {
+        // TODO Auto-generated method stub
 
     }
 
     @Override
-    public void scheduleAsync(Runnable runnable) {
+    public void runTaskLaterAsync(Runnable runnable, long delayTicks) {
+        // TODO Auto-generated method stub
 
     }
 
     @Override
-    public void scheduleAsync(Runnable runnable, long ticks) {
+    public void runTaskTimer(Runnable runnable, long delay, long period) {
+        // TODO Auto-generated method stub
 
     }
 
     @Override
-    public void scheduleRepeatingAsync(BooleanSupplier supplier, long delay, long period) {
+    public void runTaskTimerAsync(Runnable runnable, long delay, long period) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void runTask(Consumer<SDCTask> consumer) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void runTaskAsync(Consumer<SDCTask> consumer) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void runTaskLater(Consumer<SDCTask> consumer, long delayTicks) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void runTaskLaterAsync(Consumer<SDCTask> consumer, long delayTicks) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void runTaskTimer(Consumer<SDCTask> consumer, long delay, long period) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void runTaskTimerAsync(Consumer<SDCTask> consumer, long delay, long period) {
+        // TODO Auto-generated method stub
 
     }
 

@@ -7,52 +7,61 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import org.bukkit.configuration.ConfigurationSection;
-
-import dev.ratas.mobcolors.PluginProvider;
 import dev.ratas.mobcolors.coloring.settings.ColorMap;
-import dev.ratas.mobcolors.config.abstraction.SettingsConfigProvider;
 import dev.ratas.mobcolors.config.mob.IllegalMobSettingsException;
 import dev.ratas.mobcolors.config.mob.MobSettings;
 import dev.ratas.mobcolors.config.mob.MobSettingsParser;
 import dev.ratas.mobcolors.config.mob.MobType;
 import dev.ratas.mobcolors.config.mob.IllegalMobSettingsException.MobTypeNotAvailableException;
 import dev.ratas.mobcolors.config.world.WorldManager;
-import dev.ratas.mobcolors.reload.Reloadable;
-import dev.ratas.mobcolors.scheduling.abstraction.Scheduler;
+import dev.ratas.slimedogcore.api.SlimeDogPlugin;
+import dev.ratas.slimedogcore.api.config.SDCConfiguration;
+import dev.ratas.slimedogcore.api.config.SDCCustomConfigManager;
+import dev.ratas.slimedogcore.api.reload.SDCReloadable;
+import dev.ratas.slimedogcore.api.scheduler.SDCScheduler;
+import dev.ratas.slimedogcore.api.wrappers.SDCPluginManager;
 
-public class Settings implements Reloadable {
-    private final SettingsConfigProvider provider;
+public class Settings implements SDCReloadable {
+    private static final String MOBS_CONFIG_PATH = "mobs";
+    private final SDCCustomConfigManager provider;
     private final Messages messages;
     private boolean isDebug;
     private final boolean enableAll;
-    private final Scheduler scheduler;
+    private final SDCScheduler scheduler;
     private final Map<MobType, MobSettings> mobSettings = new EnumMap<>(MobType.class);
     private final WorldManager worldManager = new WorldManager();
     private final Logger logger;
-    private final PluginProvider pluginProvider;
+    private final SDCPluginManager pluginProvider;
 
-    public Settings(SettingsConfigProvider provider, Messages messages, PluginProvider pluginProvider,
-            Scheduler scheduler) {
-        this(provider, messages, pluginProvider, scheduler, false);
+    public Settings(SlimeDogPlugin plugin, SDCCustomConfigManager provider, Messages messages,
+            SDCPluginManager pluginProvider, SDCScheduler scheduler) {
+        this(plugin, provider, messages, pluginProvider, scheduler, false);
     }
 
-    public Settings(SettingsConfigProvider provider, Messages messages, PluginProvider pluginProvider,
-            Scheduler scheduler, boolean enableAll) {
+    public Settings(SlimeDogPlugin plugin, SDCCustomConfigManager provider, Messages messages,
+            SDCPluginManager pluginProvider, SDCScheduler scheduler, boolean enableAll) {
         this.provider = provider;
         this.messages = messages;
         this.pluginProvider = pluginProvider;
         this.scheduler = scheduler;
-        this.logger = provider.getLogger();
+        this.logger = plugin.getLogger();
         this.enableAll = enableAll; // for testing
         load();
+    }
+
+    public SDCConfiguration getMobsConfig() {
+        return provider.getDefaultConfig().getConfig().getConfigurationSection(MOBS_CONFIG_PATH);
+    }
+
+    public SDCConfiguration getBaseSettingsConfig() {
+        return provider.getDefaultConfig().getConfig();
     }
 
     private void load() {
         isDebug = _getDebug();
         worldManager.clear();
         mobSettings.clear();
-        ConfigurationSection mobsSection = provider.getMobsConfig();
+        SDCConfiguration mobsSection = getMobsConfig();
         if (mobsSection == null) {
             logger.info("No mobs section found in config!");
             return;
@@ -75,7 +84,7 @@ public class Settings implements Reloadable {
         }
     }
 
-    private void loadMob(String mobName, ConfigurationSection section) {
+    private void loadMob(String mobName, SDCConfiguration section) {
         if (section == null) {
             logger.warning("Problem with mob settings for " + mobName + " - not a section");
             return;
@@ -129,7 +138,7 @@ public class Settings implements Reloadable {
     }
 
     private boolean _getDebug() {
-        return provider.getBaseSettingsConfig().getBoolean("debug", false);
+        return getBaseSettingsConfig().getBoolean("debug", false);
     }
 
     public boolean isOnDebug() {
@@ -146,35 +155,35 @@ public class Settings implements Reloadable {
     }
 
     public boolean checkForUpdates() {
-        return provider.getBaseSettingsConfig().getBoolean("check-for-updates", true);
+        return getBaseSettingsConfig().getBoolean("check-for-updates", true);
     }
 
     public boolean enableMetrics() {
-        return provider.getBaseSettingsConfig().getBoolean("enable-metrics", true);
+        return getBaseSettingsConfig().getBoolean("enable-metrics", true);
     }
 
     public double colorDistanceUpdateProgress() {
-        return provider.getBaseSettingsConfig().getInt("report-distance-color-progress", 25) / 100.0;
+        return getBaseSettingsConfig().getInt("report-distance-color-progress", 25) / 100.0;
     }
 
     public double scanDistanceUpdateProgress() {
-        return provider.getBaseSettingsConfig().getInt("report-distance-scan-progress", 25) / 100.0;
+        return getBaseSettingsConfig().getInt("report-distance-scan-progress", 25) / 100.0;
     }
 
     public double colorRegionUpdateProgress() {
-        return provider.getBaseSettingsConfig().getInt("report-region-color-progress", 10) / 100.0;
+        return getBaseSettingsConfig().getInt("report-region-color-progress", 10) / 100.0;
     }
 
     public double scanRegionUpdateProgress() {
-        return provider.getBaseSettingsConfig().getInt("report-region-scan-progress", 25) / 100.0;
+        return getBaseSettingsConfig().getInt("report-region-scan-progress", 25) / 100.0;
     }
 
     public long maxMsPerTickInScheduler() {
-        return provider.getBaseSettingsConfig().getLong("max-ms-per-tick-in-scheduler", 20L);
+        return getBaseSettingsConfig().getLong("max-ms-per-tick-in-scheduler", 20L);
     }
 
     public double maxDistanceForCommands() {
-        return provider.getBaseSettingsConfig().getDouble("distance-limit", 512.0D);
+        return getBaseSettingsConfig().getDouble("distance-limit", 512.0D);
     }
 
 }

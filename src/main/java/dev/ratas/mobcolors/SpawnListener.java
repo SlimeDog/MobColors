@@ -18,14 +18,14 @@ import dev.ratas.mobcolors.region.RegionOptions;
 import dev.ratas.mobcolors.region.version.ChunkInfo;
 import dev.ratas.mobcolors.region.version.One17PlusHandler;
 import dev.ratas.mobcolors.region.version.Version;
-import dev.ratas.mobcolors.scheduling.abstraction.Scheduler;
-import dev.ratas.mobcolors.utils.WorldProvider;
+import dev.ratas.slimedogcore.api.scheduler.SDCScheduler;
+import dev.ratas.slimedogcore.api.wrappers.SDCWorldProvider;
 
 public class SpawnListener implements Listener {
     private final Settings settings;
     private final One17PlusHandler eventHandler;
 
-    public SpawnListener(Settings settings, WorldProvider worldProvider, Scheduler scheduler) {
+    public SpawnListener(Settings settings, SDCWorldProvider worldProvider, SDCScheduler scheduler) {
         this.settings = settings;
         if (Version.hasEntitiesLoadEvent()) {
             eventHandler = new One17PlusHandler(worldProvider, scheduler);

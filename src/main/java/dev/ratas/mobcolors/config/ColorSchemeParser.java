@@ -4,18 +4,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.bukkit.configuration.ConfigurationSection;
-
 import dev.ratas.mobcolors.utils.LogUtils;
+import dev.ratas.slimedogcore.api.config.SDCConfiguration;
 
 public class ColorSchemeParser<T> extends AbstractColorSchemeParser {
     private static final double TOLERANCE = 0.0000001D;
     private final Map<T, Double> colorMap;
 
-    public ColorSchemeParser(Class<T> clazz, ConfigurationSection section) {
+    public ColorSchemeParser(Class<T> clazz, SDCConfiguration section) {
         super(section);
         colorMap = new HashMap<>();
-        ConfigurationSection probabilitiesSection = section.getConfigurationSection("probabilities");
+        SDCConfiguration probabilitiesSection = section.getConfigurationSection("probabilities");
         if (probabilitiesSection == null) {
             throw new IllegalStateException("No probabilities provided");
         }

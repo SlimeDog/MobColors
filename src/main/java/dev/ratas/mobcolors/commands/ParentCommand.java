@@ -8,11 +8,11 @@ import dev.ratas.mobcolors.commands.subcommands.SchedulerInfoSubCommand;
 import dev.ratas.mobcolors.config.Messages;
 import dev.ratas.mobcolors.config.Settings;
 import dev.ratas.mobcolors.platform.PluginPlatform;
-import dev.ratas.mobcolors.utils.WorldProvider;
+import dev.ratas.slimedogcore.api.wrappers.SDCWorldProvider;
 
 public class ParentCommand extends AbstractParentCommand {
 
-    public ParentCommand(PluginPlatform platform, WorldProvider worldProvider, Messages messages, Settings settings) {
+    public ParentCommand(PluginPlatform platform, SDCWorldProvider worldProvider, Messages messages, Settings settings) {
         addSubCommand(new ReloadSubCommand(platform, messages));
         addSubCommand(new ColorSubCommand(platform.getMapper(), worldProvider, settings, messages));
         addSubCommand(new ScanSubCommand(platform.getScanner(), worldProvider, settings, messages));

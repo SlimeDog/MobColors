@@ -5,17 +5,17 @@ import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
 
-import dev.ratas.mobcolors.config.abstraction.CustomConfigHandler;
-import dev.ratas.mobcolors.config.abstraction.ResourceProvider;
 import dev.ratas.mobcolors.config.mob.MobType;
 import dev.ratas.mobcolors.config.variants.TropicalFishVariant;
 import dev.ratas.mobcolors.utils.WorldDescriptor;
+import dev.ratas.slimedogcore.api.SlimeDogPlugin;
+import dev.ratas.slimedogcore.impl.messaging.MessagesBase;
 
-public class Messages extends CustomConfigHandler {
+public class Messages extends MessagesBase {
     private static final String NAME = "messages.yml";
 
-    public Messages(ResourceProvider resourceProvider) throws InvalidConfigurationException {
-        super(resourceProvider, NAME);
+    public Messages(SlimeDogPlugin plugin) throws InvalidConfigurationException {
+        super(plugin.getCustomConfigManager().getConfig(NAME));
     }
 
     public String getReloadedMessage() {
@@ -115,8 +115,8 @@ public class Messages extends CustomConfigHandler {
     public String getDoneScanningHeaderMessage(long count, long chunks, MobType type) {
         return getMessage("done-scanning-header",
                 "Scanning completed. Scanned {count} {type} in {chunks} loaded chunks")
-                        .replace("{count}", String.valueOf(count)).replace("{chunks}", String.valueOf(chunks))
-                        .replace("{type}", type == null ? "total" : type.name());
+                .replace("{count}", String.valueOf(count)).replace("{chunks}", String.valueOf(chunks))
+                .replace("{type}", type == null ? "total" : type.name());
     }
 
     public String getDoneScanningItemMessage(Object color, int amount) {
@@ -181,13 +181,13 @@ public class Messages extends CustomConfigHandler {
     public String getScanDistanceTooBig(double maxDistance) {
         return getMessage("scan-distance-too-big",
                 "You are trying to scan an area that is too large. The maximum distance allowed is {max-distance}.")
-                        .replace("{max-distance}", String.format("%.0f", maxDistance));
+                .replace("{max-distance}", String.format("%.0f", maxDistance));
     }
 
     public String getColorDistanceTooBig(double maxDistance) {
         return getMessage("color-distance-too-big",
                 "You are trying to color an area that is too large. The maximum distance allowed is {max-distance}.")
-                        .replace("{max-distance}", String.format("%.0f", maxDistance));
+                .replace("{max-distance}", String.format("%.0f", maxDistance));
     }
 
     public String getSchedulerBusyMessage() {
@@ -197,7 +197,7 @@ public class Messages extends CustomConfigHandler {
     public String getMobTypeNotAvailable(String typeName) {
         return getMessage("mob-type-not-available",
                 "Mob type {type} is not valid in this version of Minecraft. It should be disabled in the configuration.")
-                        .replace("{type}", typeName);
+                .replace("{type}", typeName);
     }
 
     public String updateCurrentVersion() {
@@ -214,7 +214,7 @@ public class Messages extends CustomConfigHandler {
     }
 
     private String getMessage(String path, String def) {
-        return ChatColor.translateAlternateColorCodes('&', getConfig().getString(path, def));
+        return ChatColor.translateAlternateColorCodes('&', getConfig().getConfig().getString(path, def));
     }
 
 }

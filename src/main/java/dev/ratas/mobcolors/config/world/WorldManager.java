@@ -10,9 +10,9 @@ import org.bukkit.World;
 
 import dev.ratas.mobcolors.coloring.settings.ColorMap;
 import dev.ratas.mobcolors.config.mob.MobSettings;
-import dev.ratas.mobcolors.scheduling.abstraction.Scheduler;
 import dev.ratas.mobcolors.utils.LogUtils;
 import dev.ratas.mobcolors.utils.WorldDescriptor;
+import dev.ratas.slimedogcore.api.scheduler.SDCScheduler;
 
 public class WorldManager {
     private final Map<String, WorldSettings> worldSettings = new HashMap<>();
@@ -24,7 +24,7 @@ public class WorldManager {
         }
     }
 
-    public void addMobSettings(MobSettings settings, Scheduler scheduler) {
+    public void addMobSettings(MobSettings settings, SDCScheduler scheduler) {
         Set<String> allWorlds = new HashSet<>(worldSettings.keySet());
         for (ColorMap<?> map : settings.getAllColorMaps()) {
             for (String worldName : map.getApplicableWorlds()) {

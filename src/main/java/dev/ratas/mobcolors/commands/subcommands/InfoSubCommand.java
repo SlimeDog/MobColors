@@ -19,7 +19,7 @@ import dev.ratas.mobcolors.config.mob.MobType;
 import dev.ratas.mobcolors.config.mob.MobTypes;
 import dev.ratas.mobcolors.config.world.WorldSettings;
 import dev.ratas.mobcolors.utils.WorldDescriptor;
-import dev.ratas.mobcolors.utils.WorldProvider;
+import dev.ratas.slimedogcore.api.wrappers.SDCWorldProvider;
 
 public class InfoSubCommand extends SimpleSubCommand {
     private static final String NAME = "info";
@@ -27,10 +27,10 @@ public class InfoSubCommand extends SimpleSubCommand {
     private static final String PERMS = "mobcolors.info";
     private static final List<String> OPTIONS = Collections.unmodifiableList(Arrays.asList("--mob"));
     private final Settings settings;
-    private final WorldProvider worldProvider;
+    private final SDCWorldProvider worldProvider;
     private final Messages messages;
 
-    public InfoSubCommand(Settings settings, WorldProvider worldProvider, Messages messages) {
+    public InfoSubCommand(Settings settings, SDCWorldProvider worldProvider, Messages messages) {
         super(NAME, USAGE, PERMS, false, true);
         this.settings = settings;
         this.worldProvider = worldProvider;
@@ -44,7 +44,7 @@ public class InfoSubCommand extends SimpleSubCommand {
             if (args[0].startsWith("--")) {
                 return StringUtil.copyPartialMatches(args[0], OPTIONS, list);
             }
-            return StringUtil.copyPartialMatches(args[0], worldProvider.getWorldNames(), list);
+            return StringUtil.copyPartialMatches(args[0], worldProvider.getAllWorldNames(), list);
         } else if (args.length == 2) {
             return StringUtil.copyPartialMatches(args[1], OPTIONS, list);
         } else if (args.length == 3 && args[1].equals("--mob")) {
@@ -59,7 +59,7 @@ public class InfoSubCommand extends SimpleSubCommand {
         if (args.length < 1 || args[0].equalsIgnoreCase("--mob")) {
             showEnabledColorMaps(sender, targetType);
         } else {
-            World world = worldProvider.getWorld(args[0]);
+            World world = worldProvider.getWorldByName(args[0]);
             if (world == null) {
                 sender.sendMessage(messages.getWorldNotFoundMessage(args[0]));
             } else {
@@ -115,7 +115,7 @@ public class InfoSubCommand extends SimpleSubCommand {
     private List<String> getActiveWorlds(Collection<String> worlds) {
         List<String> activeWorlds = new ArrayList<>();
         for (String worldName : worlds) {
-            if (worldProvider.getWorld(worldName) != null) {
+            if (worldProvider.getWorldByName(worldName) != null) {
                 activeWorlds.add(worldName);
             }
         }

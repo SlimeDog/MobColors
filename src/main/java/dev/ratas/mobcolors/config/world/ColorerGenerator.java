@@ -27,7 +27,7 @@ import dev.ratas.mobcolors.config.variants.MooshroomVariant;
 import dev.ratas.mobcolors.config.variants.ParrotVariant;
 import dev.ratas.mobcolors.config.variants.RabbitVariant;
 import dev.ratas.mobcolors.config.variants.TropicalFishVariant;
-import dev.ratas.mobcolors.scheduling.abstraction.Scheduler;
+import dev.ratas.slimedogcore.api.scheduler.SDCScheduler;
 
 public class ColorerGenerator {
 
@@ -37,7 +37,7 @@ public class ColorerGenerator {
 
     // all the colormap casting is unchecked
     @SuppressWarnings("unchecked")
-    static MobColorer<?, ?> generateColorer(ColorMap<?> map, MobSettings settings, Scheduler scheduler) {
+    static MobColorer<?, ?> generateColorer(ColorMap<?> map, MobSettings settings, SDCScheduler scheduler) {
         switch (map.getApplicableEntityType()) {
             case sheep:
             case shulker:

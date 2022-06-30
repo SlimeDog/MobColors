@@ -4,30 +4,36 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Logger;
 
-import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import dev.ratas.mobcolors.config.abstraction.SettingsConfigProvider;
+import dev.ratas.mobcolors.config.Messages;
+import dev.ratas.mobcolors.config.Settings;
 import dev.ratas.mobcolors.config.mob.MobType;
 import dev.ratas.mobcolors.config.mob.MobTypes;
-import dev.ratas.mobcolors.config.mock.FileResourceProvider;
-import dev.ratas.mobcolors.config.mock.FileSettingsConfigProvider;
+import dev.ratas.mobcolors.mock.MockSlimeDogPlugin;
+import dev.ratas.slimedogcore.api.SlimeDogPlugin;
+import dev.ratas.slimedogcore.api.config.SDCConfiguration;
 
 public class VariantsTests {
-    private static final Logger LOGGER = Logger.getLogger("[MobColors TEST]");
-    private static FileResourceProvider provider;
-    private static SettingsConfigProvider configProvider;
+    private static Settings settings;
 
     @BeforeAll
     public static void setup() {
-        provider = new FileResourceProvider(LOGGER);
-        configProvider = new FileSettingsConfigProvider(provider, null);
+        SlimeDogPlugin mockPlugin = new MockSlimeDogPlugin(true);
+        Messages messages;
+        try {
+            messages = new Messages(mockPlugin);
+        } catch (InvalidConfigurationException e) {
+            throw new RuntimeException(e);
+        }
+        settings = new Settings(mockPlugin, mockPlugin.getCustomConfigManager(), messages,
+                mockPlugin.getPluginManager(), mockPlugin.getScheduler());
     }
 
     // this checks that all he type names within the config are names of the enum
@@ -37,9 +43,9 @@ public class VariantsTests {
     @MethodSource("provideArgumentsForTest")
     public <T extends Enum<T>> void test_VariantsHaveCorrectNames(String mobType, Class<T> clazz) {
         Set<T> leftovers = EnumSet.allOf(clazz);
-        ConfigurationSection mobSection = configProvider.getMobsConfig().getConfigurationSection(mobType);
+        SDCConfiguration mobSection = settings.getMobsConfig().getConfigurationSection(mobType);
         for (String schemeName : mobSection.getKeys(false)) {
-            ConfigurationSection schemeSection = mobSection.getConfigurationSection(schemeName + ".probabilities");
+            SDCConfiguration schemeSection = mobSection.getConfigurationSection(schemeName + ".probabilities");
             if (schemeSection == null) {
                 continue; // general options such as: enabled, include-leashed, include-pets
             }

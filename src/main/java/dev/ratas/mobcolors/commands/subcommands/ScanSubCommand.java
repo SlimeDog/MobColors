@@ -17,7 +17,7 @@ import dev.ratas.mobcolors.region.DistanceRegionInfo;
 import dev.ratas.mobcolors.region.RegionInfo;
 import dev.ratas.mobcolors.region.RegionOptions;
 import dev.ratas.mobcolors.region.RegionScanner;
-import dev.ratas.mobcolors.utils.WorldProvider;
+import dev.ratas.slimedogcore.api.wrappers.SDCWorldProvider;
 
 public class ScanSubCommand extends AbstractRegionSubCommand {
     private static final String NAME = "scan";
@@ -29,11 +29,11 @@ public class ScanSubCommand extends AbstractRegionSubCommand {
     private static final List<String> LLAMA_OPTIONS = Arrays.asList("--all", "--leashed", "--pets", "--traders",
             "--scan", "--mob");
     private final RegionScanner scanner;
-    private final WorldProvider worldProvider;
+    private final SDCWorldProvider worldProvider;
     private final Messages messages;
     private final Settings settings;
 
-    public ScanSubCommand(RegionScanner scanner, WorldProvider worldProvider, Settings settings, Messages messages) {
+    public ScanSubCommand(RegionScanner scanner, SDCWorldProvider worldProvider, Settings settings, Messages messages) {
         super(settings, messages, NAME, USAGE_REGION + "\n" + USAGE_DISTANCE, PERMS, false);
         this.scanner = scanner;
         this.worldProvider = worldProvider;
@@ -67,7 +67,7 @@ public class ScanSubCommand extends AbstractRegionSubCommand {
         }
         if (args.length == 2) {
             if (args[0].equalsIgnoreCase("region")) {
-                return StringUtil.copyPartialMatches(args[1], worldProvider.getWorldNames(), list);
+                return StringUtil.copyPartialMatches(args[1], worldProvider.getAllWorldNames(), list);
             } else {
                 return list; // no tab-completion for distance
             }

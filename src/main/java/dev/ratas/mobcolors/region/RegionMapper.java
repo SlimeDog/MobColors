@@ -9,32 +9,32 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 
 import dev.ratas.mobcolors.SpawnListener;
-import dev.ratas.mobcolors.events.ListenerRegistrator;
 import dev.ratas.mobcolors.region.version.ChunkInfo;
 import dev.ratas.mobcolors.region.version.One17PlusHandler;
 import dev.ratas.mobcolors.region.version.Version;
 import dev.ratas.mobcolors.scheduling.SimpleRegionTaskDelegator;
 import dev.ratas.mobcolors.scheduling.TaskScheduler;
-import dev.ratas.mobcolors.scheduling.abstraction.Scheduler;
 import dev.ratas.mobcolors.utils.LogUtils;
-import dev.ratas.mobcolors.utils.WorldProvider;
+import dev.ratas.slimedogcore.api.scheduler.SDCScheduler;
+import dev.ratas.slimedogcore.api.wrappers.SDCPluginManager;
+import dev.ratas.slimedogcore.api.wrappers.SDCWorldProvider;
 
 public class RegionMapper extends AbstractRegionHandler {
-    private final Scheduler bukkitScheduler;
+    private final SDCScheduler bukkitScheduler;
     private final TaskScheduler scheduler;
     private final SpawnListener spawnListener;
     private final RegionScanner scanner;
     private final One17PlusHandler eventLoadHandler;
 
-    public RegionMapper(Scheduler bukkitScheduler, TaskScheduler scheduler, SpawnListener spawnListener,
-            RegionScanner scanner, ListenerRegistrator registrator, WorldProvider worldProvider) {
+    public RegionMapper(SDCScheduler bukkitScheduler, TaskScheduler scheduler, SpawnListener spawnListener,
+            RegionScanner scanner, SDCPluginManager registrator, SDCWorldProvider worldProvider) {
         this.bukkitScheduler = bukkitScheduler;
         this.scheduler = scheduler;
         this.spawnListener = spawnListener;
         this.scanner = scanner;
         if (Version.hasEntitiesLoadEvent()) {
             eventLoadHandler = new One17PlusHandler(worldProvider, bukkitScheduler);
-            registrator.register(eventLoadHandler);
+            registrator.registerEvents(eventLoadHandler);
         } else {
             eventLoadHandler = null;
         }

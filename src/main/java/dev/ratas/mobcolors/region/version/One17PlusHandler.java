@@ -16,19 +16,19 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.EntitiesLoadEvent;
 
-import dev.ratas.mobcolors.scheduling.abstraction.Scheduler;
-import dev.ratas.mobcolors.utils.WorldProvider;
+import dev.ratas.slimedogcore.api.scheduler.SDCScheduler;
+import dev.ratas.slimedogcore.api.wrappers.SDCWorldProvider;
 
 public class One17PlusHandler implements Listener {
     private static final long COMPLETION_TIMEOUT_TICKS = 80L;
     private static final long CLEANUP_DELAY = 20L; // once a second
-    private final WorldProvider worldProvider;
+    private final SDCWorldProvider worldProvider;
     private final Map<ChunkInfo, ChunkCallbacks> chunksToCount = new HashMap<>();
     private CompletableFuture<Void> future = null;
 
-    public One17PlusHandler(WorldProvider worldProvider, Scheduler scheduler) {
+    public One17PlusHandler(SDCWorldProvider worldProvider, SDCScheduler scheduler) {
         this.worldProvider = worldProvider;
-        scheduler.scheduleRepeating(this::cleanup, CLEANUP_DELAY, CLEANUP_DELAY);
+        scheduler.runTaskTimer(this::cleanup, CLEANUP_DELAY, CLEANUP_DELAY);
     }
 
     public void addChunk(ChunkInfo chunk, Consumer<Entity> consumer, Runnable chunkCounter) {
@@ -42,7 +42,7 @@ public class One17PlusHandler implements Listener {
         // count what is available now
         // whatever isn't available now, will be counted once the chunk li properly
         // loaded along all its entities
-        countChunk(worldProvider.getWorld(chunk.getWorldName()).getChunkAt(chunk.getChunkX(), chunk.getChunkZ()),
+        countChunk(worldProvider.getWorldByName(chunk.getWorldName()).getChunkAt(chunk.getChunkX(), chunk.getChunkZ()),
                 callback, false);
     }
 
@@ -55,8 +55,8 @@ public class One17PlusHandler implements Listener {
         }
         for (ChunkInfo info : toFinalize) {
             ChunkCallbacks cb = chunksToCount.get(info);
-            countChunk(worldProvider.getWorld(info.getWorldName()).getChunkAt(info.getChunkX(), info.getChunkZ()), cb,
-                    false);
+            countChunk(worldProvider.getWorldByName(info.getWorldName()).getChunkAt(info.getChunkX(), info.getChunkZ()),
+                    cb, false);
             chunksToCount.remove(info);
         }
     }
@@ -65,13 +65,13 @@ public class One17PlusHandler implements Listener {
         return !chunksToCount.isEmpty();
     }
 
-    public CompletableFuture<Void> reportWhenPendingChunksDone(Scheduler scheduler) {
+    public CompletableFuture<Void> reportWhenPendingChunksDone(SDCScheduler scheduler) {
         if (this.future != null) {
             throw new IllegalStateException("There is already a future");
         }
         this.future = new CompletableFuture<>();
         // timeout
-        scheduler.schedule(() -> {
+        scheduler.runTaskLater(() -> {
             if (this.future != null && !this.future.isDone()) {
                 Map<ChunkInfo, Integer> newEntitiesInChunks = getNrOfNewEntitiesInPendingChunks();
                 chunksToCount.clear();
@@ -94,8 +94,8 @@ public class One17PlusHandler implements Listener {
         for (Map.Entry<ChunkInfo, ChunkCallbacks> entry : chunksToCount.entrySet()) {
             ChunkInfo chunkInfo = entry.getKey();
             try {
-                Chunk bukkitChunk = worldProvider.getWorld(chunkInfo.getWorldName()).getChunkAt(chunkInfo.getChunkX(),
-                        chunkInfo.getChunkZ());
+                Chunk bukkitChunk = worldProvider.getWorldByName(chunkInfo.getWorldName())
+                        .getChunkAt(chunkInfo.getChunkX(), chunkInfo.getChunkZ());
                 ChunkCallbacks callback = entry.getValue();
                 int before = callback.alreadyCounted.size();
                 countChunk(bukkitChunk, callback, true);

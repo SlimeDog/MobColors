@@ -7,28 +7,28 @@ import org.bukkit.Chunk;
 import org.bukkit.entity.Entity;
 
 import dev.ratas.mobcolors.config.mob.MobTypes;
-import dev.ratas.mobcolors.events.ListenerRegistrator;
 import dev.ratas.mobcolors.region.version.ChunkInfo;
 import dev.ratas.mobcolors.region.version.One17PlusHandler;
 import dev.ratas.mobcolors.region.version.Version;
 import dev.ratas.mobcolors.scheduling.SimpleRegionTaskDelegator;
 import dev.ratas.mobcolors.scheduling.TaskScheduler;
-import dev.ratas.mobcolors.scheduling.abstraction.Scheduler;
 import dev.ratas.mobcolors.utils.LogUtils;
-import dev.ratas.mobcolors.utils.WorldProvider;
+import dev.ratas.slimedogcore.api.scheduler.SDCScheduler;
+import dev.ratas.slimedogcore.api.wrappers.SDCPluginManager;
+import dev.ratas.slimedogcore.api.wrappers.SDCWorldProvider;
 
 public class RegionScanner extends AbstractRegionHandler {
-    private final Scheduler bukkitScheduler;
+    private final SDCScheduler bukkitScheduler;
     private final TaskScheduler scheduler;
     private final One17PlusHandler eventLoadHandler;
 
-    public RegionScanner(Scheduler bukkitScheduler, TaskScheduler scheduler, ListenerRegistrator registrator,
-            WorldProvider worldProvider) {
+    public RegionScanner(SDCScheduler bukkitScheduler, TaskScheduler scheduler, SDCPluginManager registrator,
+            SDCWorldProvider worldProvider) {
         this.bukkitScheduler = bukkitScheduler;
         this.scheduler = scheduler;
         if (Version.hasEntitiesLoadEvent()) {
             eventLoadHandler = new One17PlusHandler(worldProvider, bukkitScheduler);
-            registrator.register(eventLoadHandler);
+            registrator.registerEvents(eventLoadHandler);
         } else {
             eventLoadHandler = null;
         }
