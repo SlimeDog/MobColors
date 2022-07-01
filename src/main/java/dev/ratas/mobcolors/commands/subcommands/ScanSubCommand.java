@@ -21,7 +21,7 @@ import dev.ratas.slimedogcore.api.wrappers.SDCWorldProvider;
 
 public class ScanSubCommand extends AbstractRegionSubCommand {
     private static final String NAME = "scan";
-    private static final String USAGE_REGION = "/mobcolors scan [ <world> <x> <z> ] [ --all | --leashed | --pets | --traders ] [ --mob <mob-type> ]";
+    private static final String USAGE_REGION = "/mobcolors scan region [ <world> <x> <z> ] [ --all | --leashed | --pets | --traders ] [ --mob <mob-type> ]";
     private static final String USAGE_DISTANCE = "/mobcolors scan distance <d> [ --all | --leashed | --pets | --traders ] [ --mob <mob-type> ]";
     private static final String PERMS = "mobcolors.scan";
     private static final List<String> FIRST_OPTIONS = Arrays.asList("region", "distance");
