@@ -16,7 +16,7 @@ public class ReloadSubCommand extends AbstractSubCommand {
     private final Messages messages;
 
     public ReloadSubCommand(PluginPlatform platform, Messages messages) {
-        super(NAME, USAGE, PERMS, true, false);
+        super(NAME, PERMS, USAGE, true, false);
         this.platform = platform;
         this.messages = messages;
     }

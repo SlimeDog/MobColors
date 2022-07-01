@@ -28,7 +28,7 @@ public abstract class AbstractRegionSubCommand extends AbstractSubCommand {
 
     public AbstractRegionSubCommand(Settings settings, Messages messages, String name, String usage, String perms,
             boolean needsPlayer, boolean showOnTabComplete) {
-        super(name, usage, perms, showOnTabComplete, needsPlayer);
+        super(name, perms, usage, showOnTabComplete, needsPlayer);
         this.settings = settings;
         this.messages = messages;
     }

@@ -32,7 +32,7 @@ public class InfoSubCommand extends AbstractSubCommand {
     private final Messages messages;
 
     public InfoSubCommand(Settings settings, SDCWorldProvider worldProvider, Messages messages) {
-        super(NAME, USAGE, PERMS, true, false);
+        super(NAME, PERMS, USAGE, true, false);
         this.settings = settings;
         this.worldProvider = worldProvider;
         this.messages = messages;

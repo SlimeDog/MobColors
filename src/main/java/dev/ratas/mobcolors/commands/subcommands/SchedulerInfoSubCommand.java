@@ -15,7 +15,7 @@ public class SchedulerInfoSubCommand extends AbstractSubCommand {
     private final SimpleTaskScheduler scheduler;
 
     public SchedulerInfoSubCommand(TaskScheduler scheduler, boolean onDebug) {
-        super(name, usage, perms, false, onDebug);
+        super(name, perms, usage, false, onDebug);
         this.scheduler = (SimpleTaskScheduler) scheduler;
     }
 
