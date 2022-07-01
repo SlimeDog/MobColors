@@ -47,6 +47,7 @@ import org.bukkit.entity.SpawnCategory;
 import org.bukkit.generator.BiomeProvider;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.generator.structure.Structure;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 import org.bukkit.metadata.MetadataValue;
@@ -55,6 +56,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.util.BoundingBox;
 import org.bukkit.util.Consumer;
 import org.bukkit.util.RayTraceResult;
+import org.bukkit.util.StructureSearchResult;
 import org.bukkit.util.Vector;
 
 @SuppressWarnings("deprecation")
@@ -1276,6 +1278,19 @@ public class MockWorld implements World {
     public void setTicksPerSpawns(SpawnCategory arg0, int arg1) {
         // TODO Auto-generated method stub
         
+    }
+
+    @Override
+    public StructureSearchResult locateNearestStructure(Location origin,
+            org.bukkit.generator.structure.StructureType structureType, int radius, boolean findUnexplored) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public StructureSearchResult locateNearestStructure(Location arg0, Structure arg1, int arg2, boolean arg3) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }
