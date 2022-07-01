@@ -35,7 +35,7 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
     private final Messages messages;
 
     public ColorSubCommand(RegionMapper mapper, SDCWorldProvider worldProvider, Settings settings, Messages messages) {
-        super(settings, messages, NAME, USAGE_REGION + "\n" + USAGE_DISTANCE, PERMS, false);
+        super(settings, messages, NAME, USAGE_REGION + "\n" + USAGE_DISTANCE, PERMS, false, true);
         this.mapper = mapper;
         this.worldProvider = worldProvider;
         this.settings = settings;

@@ -34,7 +34,7 @@ public class ScanSubCommand extends AbstractRegionSubCommand {
     private final Settings settings;
 
     public ScanSubCommand(RegionScanner scanner, SDCWorldProvider worldProvider, Settings settings, Messages messages) {
-        super(settings, messages, NAME, USAGE_REGION + "\n" + USAGE_DISTANCE, PERMS, false);
+        super(settings, messages, NAME, USAGE_REGION + "\n" + USAGE_DISTANCE, PERMS, false, true);
         this.scanner = scanner;
         this.worldProvider = worldProvider;
         this.settings = settings;
