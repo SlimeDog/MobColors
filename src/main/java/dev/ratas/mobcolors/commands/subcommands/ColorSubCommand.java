@@ -3,9 +3,7 @@ package dev.ratas.mobcolors.commands.subcommands;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
@@ -18,6 +16,8 @@ import dev.ratas.mobcolors.region.RegionInfo;
 import dev.ratas.mobcolors.region.RegionMapper;
 import dev.ratas.mobcolors.region.RegionOptions;
 import dev.ratas.mobcolors.region.ScanReport;
+import dev.ratas.mobcolors.utils.CommandUtils;
+import dev.ratas.slimedogcore.api.messaging.recipient.SDCRecipient;
 import dev.ratas.slimedogcore.api.wrappers.SDCWorldProvider;
 
 public class ColorSubCommand extends AbstractRegionSubCommand {
@@ -43,7 +43,7 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
     }
 
     @Override
-    public String getUsage(CommandSender sender, String[] args) {
+    public String getUsage(SDCRecipient sender, String[] args) {
         if (args.length == 0) {
             return super.getUsage(sender, args);
         } else if (args[0].equalsIgnoreCase("region")) {
@@ -55,7 +55,7 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
     }
 
     @Override
-    public List<String> getTabComletions(CommandSender sender, String[] args) {
+    public List<String> onTabComplete(SDCRecipient sender, String[] args) {
         List<String> list = new ArrayList<>();
         if (args.length == 1) {
             if (sender instanceof Player) {
@@ -71,13 +71,13 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
                 return StringUtil.copyPartialMatches(args[args.length - 1], MobTypes.ENTITY_TYPE_NAMES, list);
             }
             List<String> curOptions;
-            MobType targetType = getTargetType(args);
+            MobType targetType = CommandUtils.getTargetType(args);
             if (targetType != null && targetType != MobType.llama) {
                 curOptions = new ArrayList<>(OPTIONS);
             } else {
                 curOptions = new ArrayList<>(LLAMA_OPTIONS);
             }
-            for (String prevOption : getOptions(args)) {
+            for (String prevOption : CommandUtils.getOptions(args)) {
                 curOptions.remove(prevOption);
                 if (prevOption.equalsIgnoreCase("--all")) {
                     curOptions.remove("--all");
@@ -97,7 +97,7 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
         return list;
     }
 
-    private boolean shouldShowOptions(CommandSender sender, String[] args) {
+    private boolean shouldShowOptions(SDCRecipient sender, String[] args) {
         if (sender instanceof Player) {
             if (args.length > 1 && args[0].equalsIgnoreCase("region")) {
                 if ((args.length <= 4 && args[1].startsWith("--")) || args.length > 4) {
@@ -112,7 +112,7 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
         }
     }
 
-    private boolean hasValidArguments(CommandSender sender, String[] args) {
+    private boolean hasValidArguments(SDCRecipient sender, String[] args) {
         if (args.length < 1) {
             return false;
         }
@@ -132,15 +132,14 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
     }
 
     @Override
-    public boolean executeCommand(CommandSender sender, String[] args) {
+    public boolean onCommand(SDCRecipient sender, String[] args, List<String> options) {
         if (!hasValidArguments(sender, args)) {
             return false;
         }
         if (mapper.isBusy()) {
-            sender.sendMessage(messages.getSchedulerBusyMessage());
+            sender.sendRawMessage(messages.getSchedulerBusyMessage());
             return true;
         }
-        Set<String> options = getOptions(args);
         boolean isRegion = args[0].equalsIgnoreCase("region"); // otherwise distance
         boolean doLeashed = options.contains("--all") || options.contains("--leashed");
         boolean doPets = options.contains("--all") || options.contains("--pets");
@@ -150,7 +149,7 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
         boolean doTraders = options.contains("--all") || options.contains("--traders");
         MobType targetType;
         if (specifyMob) {
-            targetType = getTargetType(args);
+            targetType = CommandUtils.getTargetType(args);
             if (targetType == null) {
                 return false;
             }
@@ -158,7 +157,7 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
             targetType = null; // all
         }
         if (!showScan && specifyMob && settings.getSettings(targetType) == null) {
-            sender.sendMessage(messages.getMobColorMapDisabledMessage(targetType));
+            sender.sendRawMessage(messages.getMobColorMapDisabledMessage(targetType));
             return true;
         }
         RegionInfo info;
@@ -178,15 +177,15 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
                         info.getStartChunkZ() >> 5, updateProgress, targetType)
                 : messages.getStartingToColorRadiusMessage(info.getWorldDescriptor(),
                         ((DistanceRegionInfo) info).getMaxDistance(), updateProgress, targetType);
-        sender.sendMessage(msg);
+        sender.sendRawMessage(msg);
         mapper.dyeEntitiesInRegion(
                 info, regionOptions, updateProgress, (done,
-                        total) -> sender.sendMessage(isRegion ? messages.getUpdateOnColorRegionMessage(done, total)
+                        total) -> sender.sendRawMessage(isRegion ? messages.getUpdateOnColorRegionMessage(done, total)
                                 : messages.getUpdateOnColorRadiusMessage(done, total)),
                 showScan).whenComplete((result, e) -> {
                     ScanReport<?> colorReport = result.getColoringReport();
                     int mobsCounted = countAllMobs(colorReport);
-                    sender.sendMessage(
+                    sender.sendRawMessage(
                             messages.getDoneColoringRegionMessage(mobsCounted, colorReport.getChunksCounted()));
                     if (showScan) {
                         showReport(sender, result.getScanReport());

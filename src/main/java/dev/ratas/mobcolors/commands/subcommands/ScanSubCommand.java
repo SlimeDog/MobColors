@@ -3,9 +3,7 @@ package dev.ratas.mobcolors.commands.subcommands;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
@@ -17,6 +15,8 @@ import dev.ratas.mobcolors.region.DistanceRegionInfo;
 import dev.ratas.mobcolors.region.RegionInfo;
 import dev.ratas.mobcolors.region.RegionOptions;
 import dev.ratas.mobcolors.region.RegionScanner;
+import dev.ratas.mobcolors.utils.CommandUtils;
+import dev.ratas.slimedogcore.api.messaging.recipient.SDCRecipient;
 import dev.ratas.slimedogcore.api.wrappers.SDCWorldProvider;
 
 public class ScanSubCommand extends AbstractRegionSubCommand {
@@ -42,7 +42,7 @@ public class ScanSubCommand extends AbstractRegionSubCommand {
     }
 
     @Override
-    public String getUsage(CommandSender sender, String[] args) {
+    public String getUsage(SDCRecipient sender, String[] args) {
         if (args.length == 0) {
             return super.getUsage(sender, args);
         } else if (args[0].equalsIgnoreCase("region")) {
@@ -54,7 +54,7 @@ public class ScanSubCommand extends AbstractRegionSubCommand {
     }
 
     @Override
-    public List<String> getTabComletions(CommandSender sender, String[] args) {
+    public List<String> onTabComplete(SDCRecipient sender, String[] args) {
         List<String> list = new ArrayList<>();
         if (args.length == 1) {
             if (sender instanceof Player) {
@@ -77,12 +77,12 @@ public class ScanSubCommand extends AbstractRegionSubCommand {
                 return StringUtil.copyPartialMatches(args[args.length - 1], MobTypes.ENTITY_TYPE_NAMES, list);
             }
             List<String> curOptions;
-            if (getTargetType(args) != MobType.llama) {
+            if (CommandUtils.getTargetType(args) != MobType.llama) {
                 curOptions = new ArrayList<>(OPTIONS);
             } else {
                 curOptions = new ArrayList<>(LLAMA_OPTIONS);
             }
-            for (String prevOption : getOptions(args)) {
+            for (String prevOption : CommandUtils.getOptions(args)) {
                 curOptions.remove(prevOption);
                 if (prevOption.equalsIgnoreCase("--all")) {
                     curOptions.remove("--all");
@@ -96,7 +96,7 @@ public class ScanSubCommand extends AbstractRegionSubCommand {
         return list;
     }
 
-    private boolean hasValidArguments(CommandSender sender, String[] args) {
+    private boolean hasValidArguments(SDCRecipient sender, String[] args) {
         if (args.length < 1) {
             return false;
         }
@@ -116,16 +116,15 @@ public class ScanSubCommand extends AbstractRegionSubCommand {
     }
 
     @Override
-    public boolean executeCommand(CommandSender sender, String[] args) {
+    public boolean onCommand(SDCRecipient sender, String[] args, List<String> options) {
         if (!hasValidArguments(sender, args)) {
             return false;
         }
         if (scanner.isBusy()) {
-            sender.sendMessage(messages.getSchedulerBusyMessage());
+            sender.sendRawMessage(messages.getSchedulerBusyMessage());
             return true;
         }
         boolean isRegion = args[0].equalsIgnoreCase("region");
-        Set<String> options = getOptions(args);
         boolean doLeashed = options.contains("--all") || options.contains("--leashed");
         boolean doPets = options.contains("--all") || options.contains("--pets");
         boolean ignoredUngenerated = !options.contains("--ungenerated");
@@ -133,7 +132,7 @@ public class ScanSubCommand extends AbstractRegionSubCommand {
         boolean doTraders = options.contains("--all") || options.contains("--traders");
         MobType targetType;
         if (specifyMob) {
-            targetType = getTargetType(args);
+            targetType = CommandUtils.getTargetType(args);
             if (targetType == null) {
                 return false;
             }
@@ -156,15 +155,15 @@ public class ScanSubCommand extends AbstractRegionSubCommand {
                         info.getStartChunkZ() >> 5, updateProgress)
                 : messages.getStartingToScanRadiusMessage(info.getWorldDescriptor(),
                         ((DistanceRegionInfo) info).getMaxDistance(), updateProgress, targetType);
-        sender.sendMessage(msg);
+        sender.sendRawMessage(msg);
         scanner.scanRegion(info, regionOptions, updateProgress,
-                (done, total) -> sender.sendMessage(isRegion ? messages.getUpdateOnScanRegionMessage(done, total)
+                (done, total) -> sender.sendRawMessage(isRegion ? messages.getUpdateOnScanRegionMessage(done, total)
                         : messages.getUpdateOnScanRadiusMessage(done, total)))
                 .whenComplete((report, e) -> {
                     int mobsCounted = countAllMobs(report);
                     if (!specifyMob) { // if mob specified, the one in showReport will suffice
-                        sender.sendMessage(messages.getDoneScanningHeaderMessage(mobsCounted, report.getChunksCounted(),
-                                targetType));
+                        sender.sendRawMessage(messages.getDoneScanningHeaderMessage(mobsCounted,
+                                report.getChunksCounted(), targetType));
                     }
                     showReport(sender, report);
                 });

@@ -5,10 +5,8 @@ import java.util.Arrays;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import dev.ratas.mobcolors.commands.SimpleSubCommand;
 import dev.ratas.mobcolors.config.Messages;
 import dev.ratas.mobcolors.config.Settings;
 import dev.ratas.mobcolors.region.DistanceRegionInfo;
@@ -16,8 +14,10 @@ import dev.ratas.mobcolors.region.MultiReport;
 import dev.ratas.mobcolors.region.RectangularRegionInfo;
 import dev.ratas.mobcolors.region.RegionInfo;
 import dev.ratas.mobcolors.region.ScanReport;
+import dev.ratas.slimedogcore.api.messaging.recipient.SDCRecipient;
+import dev.ratas.slimedogcore.impl.commands.AbstractSubCommand;
 
-public abstract class AbstractRegionSubCommand extends SimpleSubCommand {
+public abstract class AbstractRegionSubCommand extends AbstractSubCommand {
     private final Settings settings;
     private final Messages messages;
 
@@ -28,12 +28,12 @@ public abstract class AbstractRegionSubCommand extends SimpleSubCommand {
 
     public AbstractRegionSubCommand(Settings settings, Messages messages, String name, String usage, String perms,
             boolean needsPlayer, boolean showOnTabComplete) {
-        super(name, usage, perms, needsPlayer, showOnTabComplete);
+        super(name, usage, perms, showOnTabComplete, needsPlayer);
         this.settings = settings;
         this.messages = messages;
     }
 
-    protected RegionInfo getRegionInfo(CommandSender sender, String[] args, boolean isRegion,
+    protected RegionInfo getRegionInfo(SDCRecipient sender, String[] args, boolean isRegion,
             boolean ignoredUngenerated, boolean isColor) {
         if (!isRegion) { // distance
             if (!(sender instanceof Player)) {
@@ -56,7 +56,7 @@ public abstract class AbstractRegionSubCommand extends SimpleSubCommand {
         String worldName = args[1];
         World world = Bukkit.getWorld(worldName);
         if (world == null) {
-            sender.sendMessage(messages.getWorldNotFoundMessage(worldName));
+            sender.sendRawMessage(messages.getWorldNotFoundMessage(worldName));
             return null;
         }
         int regionX, regionZ;
@@ -64,7 +64,7 @@ public abstract class AbstractRegionSubCommand extends SimpleSubCommand {
             regionX = Integer.parseInt(args[2]);
             regionZ = Integer.parseInt(args[3]);
         } catch (NumberFormatException e) {
-            sender.sendMessage(messages.getNeedANumber(args[2], args[3]));
+            sender.sendRawMessage(messages.getNeedANumber(args[2], args[3]));
             return null;
         }
         return new RectangularRegionInfo(world, regionX, regionZ, ignoredUngenerated);
@@ -102,7 +102,7 @@ public abstract class AbstractRegionSubCommand extends SimpleSubCommand {
         return report.getColors().values().stream().mapToInt((i) -> i).sum();
     }
 
-    protected void showReport(CommandSender sender, ScanReport<?> report) {
+    protected void showReport(SDCRecipient sender, ScanReport<?> report) {
         if (report instanceof MultiReport) {
             for (ScanReport<?> part : ((MultiReport) report).getAllReports().values()) {
                 showReport(sender, part);
@@ -111,9 +111,10 @@ public abstract class AbstractRegionSubCommand extends SimpleSubCommand {
         }
         long mobsCounted = countAllMobs(report);
         long chunks = report.getChunksCounted();
-        sender.sendMessage(messages.getDoneScanningHeaderMessage(mobsCounted, chunks, report.getType()));
+        sender.sendRawMessage(messages.getDoneScanningHeaderMessage(mobsCounted, chunks, report.getType()));
         report.getSortedColors().forEach(
-                (entry) -> sender.sendMessage(messages.getDoneScanningItemMessage(entry.getKey(), entry.getValue())));
+                (entry) -> sender
+                        .sendRawMessage(messages.getDoneScanningItemMessage(entry.getKey(), entry.getValue())));
     }
 
 }

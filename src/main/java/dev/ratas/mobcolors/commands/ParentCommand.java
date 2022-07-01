@@ -9,8 +9,9 @@ import dev.ratas.mobcolors.config.Messages;
 import dev.ratas.mobcolors.config.Settings;
 import dev.ratas.mobcolors.platform.PluginPlatform;
 import dev.ratas.slimedogcore.api.wrappers.SDCWorldProvider;
+import dev.ratas.slimedogcore.impl.commands.BukkitFacingParentCommand;
 
-public class ParentCommand extends AbstractParentCommand {
+public class ParentCommand extends BukkitFacingParentCommand {
 
     public ParentCommand(PluginPlatform platform, SDCWorldProvider worldProvider, Messages messages, Settings settings) {
         addSubCommand(new ReloadSubCommand(platform, messages));

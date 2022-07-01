@@ -7,11 +7,9 @@ import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.World;
-import org.bukkit.command.CommandSender;
 import org.bukkit.util.StringUtil;
 
 import dev.ratas.mobcolors.coloring.settings.ColorMap;
-import dev.ratas.mobcolors.commands.SimpleSubCommand;
 import dev.ratas.mobcolors.config.Messages;
 import dev.ratas.mobcolors.config.Settings;
 import dev.ratas.mobcolors.config.mob.MobSettings;
@@ -19,9 +17,12 @@ import dev.ratas.mobcolors.config.mob.MobType;
 import dev.ratas.mobcolors.config.mob.MobTypes;
 import dev.ratas.mobcolors.config.world.WorldSettings;
 import dev.ratas.mobcolors.utils.WorldDescriptor;
+import dev.ratas.mobcolors.utils.CommandUtils;
+import dev.ratas.slimedogcore.api.messaging.recipient.SDCRecipient;
 import dev.ratas.slimedogcore.api.wrappers.SDCWorldProvider;
+import dev.ratas.slimedogcore.impl.commands.AbstractSubCommand;
 
-public class InfoSubCommand extends SimpleSubCommand {
+public class InfoSubCommand extends AbstractSubCommand {
     private static final String NAME = "info";
     private static final String USAGE = "/mobcolors info [world] [ --mob <mob-type> ]";
     private static final String PERMS = "mobcolors.info";
@@ -38,7 +39,7 @@ public class InfoSubCommand extends SimpleSubCommand {
     }
 
     @Override
-    public List<String> getTabComletions(CommandSender sender, String[] args) {
+    public List<String> onTabComplete(SDCRecipient sender, String[] args) {
         List<String> list = new ArrayList<>();
         if (args.length == 1) {
             if (args[0].startsWith("--")) {
@@ -54,14 +55,14 @@ public class InfoSubCommand extends SimpleSubCommand {
     }
 
     @Override
-    public boolean executeCommand(CommandSender sender, String[] args) {
-        MobType targetType = getTargetType(args);
+    public boolean onCommand(SDCRecipient sender, String[] args, List<String> options) {
+        MobType targetType = CommandUtils.getTargetType(args);
         if (args.length < 1 || args[0].equalsIgnoreCase("--mob")) {
             showEnabledColorMaps(sender, targetType);
         } else {
             World world = worldProvider.getWorldByName(args[0]);
             if (world == null) {
-                sender.sendMessage(messages.getWorldNotFoundMessage(args[0]));
+                sender.sendRawMessage(messages.getWorldNotFoundMessage(args[0]));
             } else {
                 showColorMapsInWorld(WorldDescriptor.wrap(world), sender, targetType);
             }
@@ -69,7 +70,7 @@ public class InfoSubCommand extends SimpleSubCommand {
         return true;
     }
 
-    private void showEnabledColorMaps(CommandSender sender, MobType targetType) {
+    private void showEnabledColorMaps(SDCRecipient sender, MobType targetType) {
         boolean foundEnabledColorMap = false;
         for (MobSettings mobSettings : settings.getEnabledMobSettings(true)) {
             List<EnabledColorMapInfo> enabledMaps = getEnabledColorMaps(mobSettings);
@@ -77,14 +78,14 @@ public class InfoSubCommand extends SimpleSubCommand {
             if (targetType != null && type != targetType) {
                 continue;
             }
-            sender.sendMessage(messages.getEnabledMobColorMapsHeaderMessage(type));
+            sender.sendRawMessage(messages.getEnabledMobColorMapsHeaderMessage(type));
             if (enabledMaps.isEmpty()) {
                 foundEnabledColorMap = true;
-                sender.sendMessage(messages.getMobColorMapDefaultEnabledEverywherMessage());
+                sender.sendRawMessage(messages.getMobColorMapDefaultEnabledEverywherMessage());
                 continue;
             }
             for (EnabledColorMapInfo info : enabledMaps) {
-                sender.sendMessage(messages.getEnabledMobColorMapItemMessage(info.map.getName(), info.activeWorlds));
+                sender.sendRawMessage(messages.getEnabledMobColorMapItemMessage(info.map.getName(), info.activeWorlds));
             }
             foundEnabledColorMap = true;
             String defaultsMessage;
@@ -93,10 +94,10 @@ public class InfoSubCommand extends SimpleSubCommand {
             } else {
                 defaultsMessage = messages.getMobColorMapDefaultDisabledMessage();
             }
-            sender.sendMessage(defaultsMessage);
+            sender.sendRawMessage(defaultsMessage);
         }
         if (!foundEnabledColorMap) {
-            sender.sendMessage(messages.getNoColormapsEnabledMessage());
+            sender.sendRawMessage(messages.getNoColormapsEnabledMessage());
         }
     }
 
@@ -122,19 +123,19 @@ public class InfoSubCommand extends SimpleSubCommand {
         return activeWorlds;
     }
 
-    private void showColorMapsInWorld(WorldDescriptor world, CommandSender sender, MobType targetType) {
+    private void showColorMapsInWorld(WorldDescriptor world, SDCRecipient sender, MobType targetType) {
         WorldSettings worldSettings = settings.getWorldManager().getWorldSettings(world);
         if (worldSettings == null) {
-            sender.sendMessage(messages.getNoColorMapsInWorldMessage(world));
+            sender.sendRawMessage(messages.getNoColorMapsInWorldMessage(world));
             return;
         }
-        sender.sendMessage(messages.getWorldColorMapsHeaderMessage(world));
+        sender.sendRawMessage(messages.getWorldColorMapsHeaderMessage(world));
         for (ColorMap<?> map : worldSettings.getEnabledColorMaps(true)) {
             MobType type = map.getApplicableEntityType();
             if (targetType != null && type != targetType) {
                 continue;
             }
-            sender.sendMessage(messages.getWorldColorMapItemMessage(type, map.getName()));
+            sender.sendRawMessage(messages.getWorldColorMapItemMessage(type, map.getName()));
         }
     }
 

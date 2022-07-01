@@ -3,13 +3,12 @@ package dev.ratas.mobcolors.commands.subcommands;
 import java.util.Collections;
 import java.util.List;
 
-import org.bukkit.command.CommandSender;
-
-import dev.ratas.mobcolors.commands.SimpleSubCommand;
 import dev.ratas.mobcolors.scheduling.SimpleTaskScheduler;
 import dev.ratas.mobcolors.scheduling.TaskScheduler;
+import dev.ratas.slimedogcore.api.messaging.recipient.SDCRecipient;
+import dev.ratas.slimedogcore.impl.commands.AbstractSubCommand;
 
-public class SchedulerInfoSubCommand extends SimpleSubCommand {
+public class SchedulerInfoSubCommand extends AbstractSubCommand {
     private static final String name = "schedulerinfo";
     private static final String usage = "/mobcolors schedulerinfo";
     private static final String perms = "mobcolors.schedulerinfo";
@@ -21,14 +20,14 @@ public class SchedulerInfoSubCommand extends SimpleSubCommand {
     }
 
     @Override
-    public List<String> getTabComletions(CommandSender sender, String[] args) {
+    public List<String> onTabComplete(SDCRecipient sender, String[] args) {
         return Collections.emptyList();
     }
 
     @Override
-    public boolean executeCommand(CommandSender sender, String[] args) {
-        sender.sendMessage("Tasks completed\tTicks worked on\tAtomic tasks completed\tWork time (ms)");
-        sender.sendMessage(scheduler.toString());
+    public boolean onCommand(SDCRecipient sender, String[] args, List<String> options) {
+        sender.sendRawMessage("Tasks completed\tTicks worked on\tAtomic tasks completed\tWork time (ms)");
+        sender.sendRawMessage(scheduler.toString());
         return true;
     }
 

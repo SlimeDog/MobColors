@@ -3,13 +3,12 @@ package dev.ratas.mobcolors.commands.subcommands;
 import java.util.Collections;
 import java.util.List;
 
-import org.bukkit.command.CommandSender;
-
-import dev.ratas.mobcolors.commands.SimpleSubCommand;
 import dev.ratas.mobcolors.config.Messages;
 import dev.ratas.mobcolors.platform.PluginPlatform;
+import dev.ratas.slimedogcore.api.messaging.recipient.SDCRecipient;
+import dev.ratas.slimedogcore.impl.commands.AbstractSubCommand;
 
-public class ReloadSubCommand extends SimpleSubCommand {
+public class ReloadSubCommand extends AbstractSubCommand {
     private static final String NAME = "reload";
     private static final String USAGE = "/mobcolors reload";
     private static final String PERMS = "mobcolors.reload";
@@ -23,16 +22,16 @@ public class ReloadSubCommand extends SimpleSubCommand {
     }
 
     @Override
-    public List<String> getTabComletions(CommandSender sender, String[] args) {
+    public List<String> onTabComplete(SDCRecipient sender, String[] args) {
         return Collections.emptyList();
     }
 
     @Override
-    public boolean executeCommand(CommandSender sender, String[] args) {
+    public boolean onCommand(SDCRecipient sender, String[] args, List<String> opts) {
         if (platform.reload()) {
-            sender.sendMessage(messages.getReloadedMessage());
+            sender.sendRawMessage(messages.getReloadedMessage());
         } else {
-            sender.sendMessage(messages.getProblemReloadingMessage());
+            sender.sendRawMessage(messages.getProblemReloadingMessage());
         }
         return true;
     }
