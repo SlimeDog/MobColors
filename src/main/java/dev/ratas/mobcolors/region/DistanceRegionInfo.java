@@ -50,7 +50,7 @@ public class DistanceRegionInfo extends AbstractRegionInfo {
 
     @Override
     public int getChunkXFor(long order) {
-        if (order < 0 || order > getNumberOfTotalChunks()) {
+        if (order < 0 || order >= getNumberOfTotalChunks()) {
             throw new IllegalArgumentException(
                     "Unknown order: " + order + " (out of " + getNumberOfTotalChunks() + ")");
         }
@@ -59,7 +59,7 @@ public class DistanceRegionInfo extends AbstractRegionInfo {
 
     @Override
     public int getChunkZFor(long order) {
-        if (order < 0 || order > getNumberOfTotalChunks()) {
+        if (order < 0 || order >= getNumberOfTotalChunks()) {
             throw new IllegalArgumentException(
                     "Unknown order: " + order + " (out of " + getNumberOfTotalChunks() + ")");
         }
