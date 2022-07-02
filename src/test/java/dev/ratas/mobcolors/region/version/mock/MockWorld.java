@@ -324,12 +324,12 @@ public class MockWorld implements World {
 
     @Override
     public boolean isChunkLoaded(int x, int z) {
-        throw new IllegalStateException("Not implemented yet");
+        return true;
     }
 
     @Override
     public boolean isChunkGenerated(int x, int z) {
-        throw new IllegalStateException("Not implemented yet");
+        return true;
     }
 
     @Override
@@ -1259,25 +1259,25 @@ public class MockWorld implements World {
     @Override
     public void playSound(Entity arg0, Sound arg1, float arg2, float arg3) {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void playSound(Entity arg0, Sound arg1, SoundCategory arg2, float arg3, float arg4) {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void setSpawnLimit(SpawnCategory arg0, int arg1) {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void setTicksPerSpawns(SpawnCategory arg0, int arg1) {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
