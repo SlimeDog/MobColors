@@ -149,7 +149,7 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
         boolean doTraders = options.hasRawOption("--all") || options.hasRawOption("--traders");
         MobType targetType;
         if (specifyMob) {
-            targetType = CommandUtils.getTargetType(args);
+            targetType = options.getValue("mob", (name) -> CommandUtils.identifyType(name), null);
             if (targetType == null) {
                 return false;
             }

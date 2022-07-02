@@ -16,17 +16,21 @@ public final class CommandUtils {
         return Arrays.stream(args).filter((arg) -> arg.startsWith("--")).collect(Collectors.toSet());
     }
 
+    public static MobType identifyType(String mobName) {
+        MobType type;
+        try {
+            type = MobType.valueOf(mobName.toLowerCase());
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+        return type.isValid() ? type : null;
+    }
+
     public static MobType getTargetType(String[] args) {
         boolean optionFound = false;
         for (String arg : args) {
             if (optionFound) {
-                MobType type;
-                try {
-                    type = MobType.valueOf(arg.toLowerCase());
-                } catch (IllegalArgumentException e) {
-                    return null;
-                }
-                return type.isValid() ? type : null;
+                return identifyType(arg);
             }
             if (arg.equalsIgnoreCase("--mob")) {
                 optionFound = true;
