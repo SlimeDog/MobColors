@@ -77,7 +77,7 @@ public class DistanceRegionInfo extends AbstractRegionInfo {
             int centerZ = center.getBlockZ();
             int centerChunkX = centerX >> 4;
             int centerChunkZ = centerZ >> 4;
-            int chunkDistance = ((int) distance) >> 4;
+            int chunkDistance = 1 + (((int) distance) >> 4);
             double distance2 = distance * distance;
             List<Integer> coordsX = new ArrayList<>();
             List<Integer> coordsZ = new ArrayList<>();
