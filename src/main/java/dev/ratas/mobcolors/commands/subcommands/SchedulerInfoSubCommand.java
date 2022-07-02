@@ -5,6 +5,7 @@ import java.util.List;
 
 import dev.ratas.mobcolors.scheduling.SimpleTaskScheduler;
 import dev.ratas.mobcolors.scheduling.TaskScheduler;
+import dev.ratas.slimedogcore.api.commands.SDCCommandOptionSet;
 import dev.ratas.slimedogcore.api.messaging.recipient.SDCRecipient;
 import dev.ratas.slimedogcore.impl.commands.AbstractSubCommand;
 
@@ -25,7 +26,7 @@ public class SchedulerInfoSubCommand extends AbstractSubCommand {
     }
 
     @Override
-    public boolean onCommand(SDCRecipient sender, String[] args, List<String> options) {
+    public boolean onOptionedCommand(SDCRecipient sender, String[] args, SDCCommandOptionSet options) {
         sender.sendRawMessage("Tasks completed\tTicks worked on\tAtomic tasks completed\tWork time (ms)");
         sender.sendRawMessage(scheduler.toString());
         return true;

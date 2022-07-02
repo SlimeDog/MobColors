@@ -18,6 +18,7 @@ import dev.ratas.mobcolors.config.mob.MobTypes;
 import dev.ratas.mobcolors.config.world.WorldSettings;
 import dev.ratas.mobcolors.utils.WorldDescriptor;
 import dev.ratas.mobcolors.utils.CommandUtils;
+import dev.ratas.slimedogcore.api.commands.SDCCommandOptionSet;
 import dev.ratas.slimedogcore.api.messaging.recipient.SDCRecipient;
 import dev.ratas.slimedogcore.api.wrappers.SDCWorldProvider;
 import dev.ratas.slimedogcore.impl.commands.AbstractSubCommand;
@@ -55,7 +56,7 @@ public class InfoSubCommand extends AbstractSubCommand {
     }
 
     @Override
-    public boolean onCommand(SDCRecipient sender, String[] args, List<String> options) {
+    public boolean onOptionedCommand(SDCRecipient sender, String[] args, SDCCommandOptionSet options) {
         MobType targetType = CommandUtils.getTargetType(args);
         if (args.length < 1 || args[0].equalsIgnoreCase("--mob")) {
             showEnabledColorMaps(sender, targetType);

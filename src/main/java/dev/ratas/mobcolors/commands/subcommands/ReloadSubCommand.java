@@ -5,6 +5,7 @@ import java.util.List;
 
 import dev.ratas.mobcolors.config.Messages;
 import dev.ratas.mobcolors.platform.PluginPlatform;
+import dev.ratas.slimedogcore.api.commands.SDCCommandOptionSet;
 import dev.ratas.slimedogcore.api.messaging.recipient.SDCRecipient;
 import dev.ratas.slimedogcore.impl.commands.AbstractSubCommand;
 
@@ -27,7 +28,7 @@ public class ReloadSubCommand extends AbstractSubCommand {
     }
 
     @Override
-    public boolean onCommand(SDCRecipient sender, String[] args, List<String> opts) {
+    public boolean onOptionedCommand(SDCRecipient sender, String[] args, SDCCommandOptionSet options) {
         if (platform.reload()) {
             sender.sendRawMessage(messages.getReloadedMessage());
         } else {

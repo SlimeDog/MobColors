@@ -16,6 +16,7 @@ import dev.ratas.mobcolors.region.RegionMapper;
 import dev.ratas.mobcolors.region.RegionOptions;
 import dev.ratas.mobcolors.region.ScanReport;
 import dev.ratas.mobcolors.utils.CommandUtils;
+import dev.ratas.slimedogcore.api.commands.SDCCommandOptionSet;
 import dev.ratas.slimedogcore.api.messaging.recipient.SDCRecipient;
 import dev.ratas.slimedogcore.api.wrappers.SDCWorldProvider;
 
@@ -131,7 +132,7 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
     }
 
     @Override
-    public boolean onCommand(SDCRecipient sender, String[] args, List<String> options) {
+    public boolean onOptionedCommand(SDCRecipient sender, String[] args, SDCCommandOptionSet options) {
         if (!hasValidArguments(sender, args)) {
             return false;
         }
@@ -140,12 +141,12 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
             return true;
         }
         boolean isRegion = args[0].equalsIgnoreCase("region"); // otherwise distance
-        boolean doLeashed = options.contains("--all") || options.contains("--leashed");
-        boolean doPets = options.contains("--all") || options.contains("--pets");
-        boolean ignoredUngenerated = !options.contains("--ungenerated");
-        boolean showScan = options.contains("--scan");
-        boolean specifyMob = options.contains("--mob");
-        boolean doTraders = options.contains("--all") || options.contains("--traders");
+        boolean doLeashed = options.hasRawOption("--all") || options.hasRawOption("--leashed");
+        boolean doPets = options.hasRawOption("--all") || options.hasRawOption("--pets");
+        boolean ignoredUngenerated = !options.hasRawOption("--ungenerated");
+        boolean showScan = options.hasRawOption("--scan");
+        boolean specifyMob = options.hasRawOption("--mob");
+        boolean doTraders = options.hasRawOption("--all") || options.hasRawOption("--traders");
         MobType targetType;
         if (specifyMob) {
             targetType = CommandUtils.getTargetType(args);

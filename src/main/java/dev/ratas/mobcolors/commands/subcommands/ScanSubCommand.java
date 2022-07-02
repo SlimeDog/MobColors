@@ -15,6 +15,7 @@ import dev.ratas.mobcolors.region.RegionInfo;
 import dev.ratas.mobcolors.region.RegionOptions;
 import dev.ratas.mobcolors.region.RegionScanner;
 import dev.ratas.mobcolors.utils.CommandUtils;
+import dev.ratas.slimedogcore.api.commands.SDCCommandOptionSet;
 import dev.ratas.slimedogcore.api.messaging.recipient.SDCRecipient;
 import dev.ratas.slimedogcore.api.wrappers.SDCWorldProvider;
 
@@ -115,7 +116,7 @@ public class ScanSubCommand extends AbstractRegionSubCommand {
     }
 
     @Override
-    public boolean onCommand(SDCRecipient sender, String[] args, List<String> options) {
+    public boolean onOptionedCommand(SDCRecipient sender, String[] args, SDCCommandOptionSet options) {
         if (!hasValidArguments(sender, args)) {
             return false;
         }
@@ -124,11 +125,11 @@ public class ScanSubCommand extends AbstractRegionSubCommand {
             return true;
         }
         boolean isRegion = args[0].equalsIgnoreCase("region");
-        boolean doLeashed = options.contains("--all") || options.contains("--leashed");
-        boolean doPets = options.contains("--all") || options.contains("--pets");
-        boolean ignoredUngenerated = !options.contains("--ungenerated");
-        boolean specifyMob = options.contains("--mob");
-        boolean doTraders = options.contains("--all") || options.contains("--traders");
+        boolean doLeashed = options.hasRawOption("--all") || options.hasRawOption("--leashed");
+        boolean doPets = options.hasRawOption("--all") || options.hasRawOption("--pets");
+        boolean ignoredUngenerated = !options.hasRawOption("--ungenerated");
+        boolean specifyMob = options.hasRawOption("--mob");
+        boolean doTraders = options.hasRawOption("--all") || options.hasRawOption("--traders");
         MobType targetType;
         if (specifyMob) {
             targetType = CommandUtils.getTargetType(args);
