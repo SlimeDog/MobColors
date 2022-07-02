@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
 import dev.ratas.mobcolors.config.Messages;
@@ -58,7 +57,7 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
     public List<String> onTabComplete(SDCRecipient sender, String[] args) {
         List<String> list = new ArrayList<>();
         if (args.length == 1) {
-            if (sender instanceof Player) {
+            if (sender.isPlayer()) {
                 return StringUtil.copyPartialMatches(args[0], FIRST_OPTIONS, list);
             } else {
                 List<String> options = new ArrayList<>(FIRST_OPTIONS);
@@ -98,7 +97,7 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
     }
 
     private boolean shouldShowOptions(SDCRecipient sender, String[] args) {
-        if (sender instanceof Player) {
+        if (sender.isPlayer()) {
             if (args.length > 1 && args[0].equalsIgnoreCase("region")) {
                 if ((args.length <= 4 && args[1].startsWith("--")) || args.length > 4) {
                     return true;
@@ -117,7 +116,7 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
             return false;
         }
         if (args[0].equalsIgnoreCase("region")) {
-            if (args.length < 4 && !(sender instanceof Player)) {
+            if (args.length < 4 && !sender.isPlayer()) {
                 return false;
             }
             return true;
