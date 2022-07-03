@@ -8,11 +8,15 @@ import org.bukkit.World;
 
 import dev.ratas.mobcolors.config.Messages;
 import dev.ratas.mobcolors.config.Settings;
+import dev.ratas.mobcolors.config.mob.MobType;
 import dev.ratas.mobcolors.region.DistanceRegionInfo;
 import dev.ratas.mobcolors.region.MultiReport;
 import dev.ratas.mobcolors.region.RectangularRegionInfo;
 import dev.ratas.mobcolors.region.RegionInfo;
 import dev.ratas.mobcolors.region.ScanReport;
+import dev.ratas.slimedogcore.api.messaging.factory.SDCDoubleContextMessageFactory;
+import dev.ratas.slimedogcore.api.messaging.factory.SDCSingleContextMessageFactory;
+import dev.ratas.slimedogcore.api.messaging.factory.SDCTripleContextMessageFactory;
 import dev.ratas.slimedogcore.api.messaging.recipient.SDCPlayerRecipient;
 import dev.ratas.slimedogcore.api.messaging.recipient.SDCRecipient;
 import dev.ratas.slimedogcore.impl.commands.AbstractSubCommand;
@@ -56,7 +60,8 @@ public abstract class AbstractRegionSubCommand extends AbstractSubCommand {
         String worldName = args[1];
         World world = Bukkit.getWorld(worldName);
         if (world == null) {
-            sender.sendRawMessage(messages.getWorldNotFoundMessage(worldName));
+            SDCSingleContextMessageFactory<String> msg = messages.getWorldNotFoundMessage();
+            sender.sendMessage(msg.getMessage(msg.getContextFactory().getContext(worldName)));
             return null;
         }
         int regionX, regionZ;
@@ -64,7 +69,8 @@ public abstract class AbstractRegionSubCommand extends AbstractSubCommand {
             regionX = Integer.parseInt(args[2]);
             regionZ = Integer.parseInt(args[3]);
         } catch (NumberFormatException e) {
-            sender.sendRawMessage(messages.getNeedANumber(args[2], args[3]));
+            SDCSingleContextMessageFactory<String[]> msg = messages.getNeedANumber();
+            sender.sendMessage(msg.getMessage(msg.getContextFactory().getContext(new String[] { args[2], args[3] })));
             return null;
         }
         return new RectangularRegionInfo(world, regionX, regionZ, ignoredUngenerated);
@@ -84,8 +90,9 @@ public abstract class AbstractRegionSubCommand extends AbstractSubCommand {
         }
         double maxDist = settings.maxDistanceForCommands();
         if (dist > maxDist) {
-            String msg = isColor ? messages.getColorDistanceTooBig(maxDist) : messages.getScanDistanceTooBig(maxDist);
-            player.sendRawMessage(msg);
+            SDCSingleContextMessageFactory<Double> msg = isColor ? messages.getColorDistanceTooBig()
+                    : messages.getScanDistanceTooBig();
+            player.sendMessage(msg.getMessage(msg.getContextFactory().getContext(maxDist)));
             return null;
         }
         return new DistanceRegionInfo(player.getLocation(), dist, ignoreUngenerated);
@@ -111,10 +118,15 @@ public abstract class AbstractRegionSubCommand extends AbstractSubCommand {
         }
         long mobsCounted = countAllMobs(report);
         long chunks = report.getChunksCounted();
-        sender.sendRawMessage(messages.getDoneScanningHeaderMessage(mobsCounted, chunks, report.getType()));
+        SDCTripleContextMessageFactory<Long, Long, MobType> msg = messages.getDoneScanningHeaderMessage();
+        sender.sendMessage(msg.getMessage(msg.getContextFactory().getContext(mobsCounted, chunks, report.getType())));
         report.getSortedColors().forEach(
-                (entry) -> sender
-                        .sendRawMessage(messages.getDoneScanningItemMessage(entry.getKey(), entry.getValue())));
+                (entry) -> {
+
+                    SDCDoubleContextMessageFactory<Integer, Object> m = messages.getDoneScanningItemMessage();
+                    sender.sendMessage(
+                            m.getMessage(m.getContextFactory().getContext(entry.getValue(), entry.getKey())));
+                });
     }
 
 }

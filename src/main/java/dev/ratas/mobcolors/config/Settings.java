@@ -17,6 +17,7 @@ import dev.ratas.mobcolors.config.world.WorldManager;
 import dev.ratas.slimedogcore.api.SlimeDogPlugin;
 import dev.ratas.slimedogcore.api.config.SDCConfiguration;
 import dev.ratas.slimedogcore.api.config.SDCCustomConfigManager;
+import dev.ratas.slimedogcore.api.messaging.factory.SDCSingleContextMessageFactory;
 import dev.ratas.slimedogcore.api.reload.SDCReloadable;
 import dev.ratas.slimedogcore.api.scheduler.SDCScheduler;
 import dev.ratas.slimedogcore.api.wrappers.SDCPluginManager;
@@ -93,7 +94,8 @@ public class Settings implements SDCReloadable {
         try {
             parser = new MobSettingsParser(section, enableAll);
         } catch (MobTypeNotAvailableException e) {
-            logger.warning(messages.getMobTypeNotAvailable(e.getMobTypeName()));
+            SDCSingleContextMessageFactory<String> msg = messages.getMobTypeNotAvailable();
+            logger.warning(msg.getMessage(msg.getContextFactory().getContext(e.getMobTypeName())).getFilled());
             return;
         } catch (IllegalMobSettingsException e) {
             logger.warning("Problem with mob settings for " + mobName + ": " + e.getMessage());

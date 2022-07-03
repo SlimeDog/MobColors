@@ -8,6 +8,7 @@ import org.bukkit.util.StringUtil;
 
 import dev.ratas.mobcolors.config.Messages;
 import dev.ratas.mobcolors.config.Settings;
+import dev.ratas.mobcolors.config.Messages.ProgressInfo;
 import dev.ratas.mobcolors.config.mob.MobType;
 import dev.ratas.mobcolors.config.mob.MobTypes;
 import dev.ratas.mobcolors.region.DistanceRegionInfo;
@@ -16,7 +17,12 @@ import dev.ratas.mobcolors.region.RegionMapper;
 import dev.ratas.mobcolors.region.RegionOptions;
 import dev.ratas.mobcolors.region.ScanReport;
 import dev.ratas.mobcolors.utils.CommandUtils;
+import dev.ratas.mobcolors.utils.WorldDescriptor;
 import dev.ratas.slimedogcore.api.commands.SDCCommandOptionSet;
+import dev.ratas.slimedogcore.api.messaging.factory.SDCDoubleContextMessageFactory;
+import dev.ratas.slimedogcore.api.messaging.factory.SDCQuadrupleContextMessageFactory;
+import dev.ratas.slimedogcore.api.messaging.factory.SDCSingleContextMessageFactory;
+import dev.ratas.slimedogcore.api.messaging.factory.SDCTripleContextMessageFactory;
 import dev.ratas.slimedogcore.api.messaging.recipient.SDCRecipient;
 import dev.ratas.slimedogcore.api.wrappers.SDCWorldProvider;
 
@@ -137,7 +143,7 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
             return false;
         }
         if (mapper.isBusy()) {
-            sender.sendRawMessage(messages.getSchedulerBusyMessage());
+            sender.sendMessage(messages.getSchedulerBusyMessage().getMessage());
             return true;
         }
         boolean isRegion = args[0].equalsIgnoreCase("region"); // otherwise distance
@@ -157,7 +163,8 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
             targetType = null; // all
         }
         if (!showScan && specifyMob && settings.getSettings(targetType) == null) {
-            sender.sendRawMessage(messages.getMobColorMapDisabledMessage(targetType));
+            SDCSingleContextMessageFactory<MobType> msg = messages.getMobColorMapDisabledMessage();
+            sender.sendMessage(msg.getMessage(msg.getContextFactory().getContext(targetType)));
             return true;
         }
         RegionInfo info;
@@ -172,21 +179,33 @@ public class ColorSubCommand extends AbstractRegionSubCommand {
         RegionOptions regionOptions = new RegionOptions(targetType, !doPets, !doLeashed, !doTraders);
         double updateProgress = isRegion ? settings.colorRegionUpdateProgress()
                 : settings.colorDistanceUpdateProgress();
-        String msg = isRegion
-                ? messages.getStartingToColorRegionMessage(info.getWorldDescriptor(), info.getStartChunkX() >> 5,
-                        info.getStartChunkZ() >> 5, updateProgress, targetType)
-                : messages.getStartingToColorRadiusMessage(info.getWorldDescriptor(),
-                        ((DistanceRegionInfo) info).getMaxDistance(), updateProgress, targetType);
-        sender.sendRawMessage(msg);
+        if (isRegion) {
+            SDCQuadrupleContextMessageFactory<WorldDescriptor, Integer, Integer, MobType> m = messages
+                    .getStartingToColorRegionMessage();
+            sender.sendMessage(m.getMessage(m.getContextFactory().getContext(info.getWorldDescriptor(),
+                    info.getStartChunkX() >> 5, info.getStartChunkZ() >> 5, targetType)));
+        } else {
+            SDCTripleContextMessageFactory<WorldDescriptor, Double, MobType> m = messages
+                    .getStartingToColorRadiusMessage();
+
+            sender.sendMessage(m.getMessage(m.getContextFactory().getContext(info.getWorldDescriptor(),
+                    ((DistanceRegionInfo) info).getMaxDistance(), targetType)));
+        }
+        final SDCSingleContextMessageFactory<ProgressInfo> progressMessage = isRegion
+                ? messages.getUpdateOnColorRegionMessage()
+                : messages.getUpdateOnColorRadiusMessage();
         mapper.dyeEntitiesInRegion(
                 info, regionOptions, updateProgress, (done,
-                        total) -> sender.sendRawMessage(isRegion ? messages.getUpdateOnColorRegionMessage(done, total)
-                                : messages.getUpdateOnColorRadiusMessage(done, total)),
+                        total) -> {
+                    sender.sendMessage(progressMessage
+                            .getMessage(progressMessage.getContextFactory().getContext(new ProgressInfo(done, total))));
+                },
                 showScan).whenComplete((result, e) -> {
                     ScanReport<?> colorReport = result.getColoringReport();
                     int mobsCounted = countAllMobs(colorReport);
-                    sender.sendRawMessage(
-                            messages.getDoneColoringRegionMessage(mobsCounted, colorReport.getChunksCounted()));
+                    SDCDoubleContextMessageFactory<Long, Long> msg = messages.getDoneColoringRegionMessage();
+                    sender.sendMessage(msg.getMessage(
+                            msg.getContextFactory().getContext((long) mobsCounted, colorReport.getChunksCounted())));
                     if (showScan) {
                         showReport(sender, result.getScanReport());
                     }

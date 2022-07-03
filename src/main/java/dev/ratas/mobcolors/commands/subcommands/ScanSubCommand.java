@@ -8,6 +8,7 @@ import org.bukkit.util.StringUtil;
 
 import dev.ratas.mobcolors.config.Messages;
 import dev.ratas.mobcolors.config.Settings;
+import dev.ratas.mobcolors.config.Messages.ProgressInfo;
 import dev.ratas.mobcolors.config.mob.MobType;
 import dev.ratas.mobcolors.config.mob.MobTypes;
 import dev.ratas.mobcolors.region.DistanceRegionInfo;
@@ -15,7 +16,11 @@ import dev.ratas.mobcolors.region.RegionInfo;
 import dev.ratas.mobcolors.region.RegionOptions;
 import dev.ratas.mobcolors.region.RegionScanner;
 import dev.ratas.mobcolors.utils.CommandUtils;
+import dev.ratas.mobcolors.utils.WorldDescriptor;
 import dev.ratas.slimedogcore.api.commands.SDCCommandOptionSet;
+import dev.ratas.slimedogcore.api.messaging.factory.SDCQuadrupleContextMessageFactory;
+import dev.ratas.slimedogcore.api.messaging.factory.SDCSingleContextMessageFactory;
+import dev.ratas.slimedogcore.api.messaging.factory.SDCTripleContextMessageFactory;
 import dev.ratas.slimedogcore.api.messaging.recipient.SDCRecipient;
 import dev.ratas.slimedogcore.api.wrappers.SDCWorldProvider;
 
@@ -121,7 +126,7 @@ public class ScanSubCommand extends AbstractRegionSubCommand {
             return false;
         }
         if (scanner.isBusy()) {
-            sender.sendRawMessage(messages.getSchedulerBusyMessage());
+            sender.sendMessage(messages.getSchedulerBusyMessage().getMessage());
             return true;
         }
         boolean isRegion = args[0].equalsIgnoreCase("region");
@@ -150,20 +155,30 @@ public class ScanSubCommand extends AbstractRegionSubCommand {
         }
         RegionOptions regionOptions = new RegionOptions(targetType, !doPets, !doLeashed, !doTraders);
         double updateProgress = isRegion ? settings.scanRegionUpdateProgress() : settings.scanDistanceUpdateProgress();
-        String msg = isRegion
-                ? messages.getStartingToScanRegionMessage(info.getWorldDescriptor(), info.getStartChunkX() >> 5,
-                        info.getStartChunkZ() >> 5, updateProgress)
-                : messages.getStartingToScanRadiusMessage(info.getWorldDescriptor(),
-                        ((DistanceRegionInfo) info).getMaxDistance(), updateProgress, targetType);
-        sender.sendRawMessage(msg);
+        if (isRegion) {
+            SDCQuadrupleContextMessageFactory<WorldDescriptor, Integer, Integer, MobType> msg = messages
+                    .getStartingToScanRegionMessage();
+            sender.sendMessage(msg.getMessage(
+                    msg.getContextFactory().getContext(info.getWorldDescriptor(), info.getStartChunkX() >> 5,
+                            info.getStartChunkZ() >> 5, targetType)));
+        } else {
+            SDCTripleContextMessageFactory<WorldDescriptor, Double, MobType> msg = messages
+                    .getStartingToScanRadiusMessage();
+            sender.sendMessage(msg.getMessage(msg.getContextFactory().getContext(info.getWorldDescriptor(),
+                    ((DistanceRegionInfo) info).getMaxDistance(), targetType)));
+        }
+        SDCSingleContextMessageFactory<ProgressInfo> updater = isRegion ? messages.getUpdateOnScanRegionMessage()
+                : messages.getUpdateOnScanRadiusMessage();
         scanner.scanRegion(info, regionOptions, updateProgress,
-                (done, total) -> sender.sendRawMessage(isRegion ? messages.getUpdateOnScanRegionMessage(done, total)
-                        : messages.getUpdateOnScanRadiusMessage(done, total)))
+                (done, total) -> sender.sendMessage(
+                        updater.getMessage(updater.getContextFactory().getContext(new ProgressInfo(done, total)))))
                 .whenComplete((report, e) -> {
                     int mobsCounted = countAllMobs(report);
                     if (!specifyMob) { // if mob specified, the one in showReport will suffice
-                        sender.sendRawMessage(messages.getDoneScanningHeaderMessage(mobsCounted,
-                                report.getChunksCounted(), targetType));
+                        SDCTripleContextMessageFactory<Long, Long, MobType> msg = messages
+                                .getDoneScanningHeaderMessage();
+                        sender.sendMessage(msg.getMessage(msg.getContextFactory().getContext((long) mobsCounted,
+                                report.getChunksCounted(), targetType)));
                     }
                     showReport(sender, report);
                 });

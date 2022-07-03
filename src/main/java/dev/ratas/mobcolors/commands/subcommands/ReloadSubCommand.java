@@ -30,9 +30,9 @@ public class ReloadSubCommand extends AbstractSubCommand {
     @Override
     public boolean onOptionedCommand(SDCRecipient sender, String[] args, SDCCommandOptionSet options) {
         if (platform.reload()) {
-            sender.sendRawMessage(messages.getReloadedMessage());
+            sender.sendMessage(messages.getReloadedMessage().getMessage());
         } else {
-            sender.sendRawMessage(messages.getProblemReloadingMessage());
+            sender.sendMessage(messages.getProblemReloadingMessage().getMessage());
         }
         return true;
     }
