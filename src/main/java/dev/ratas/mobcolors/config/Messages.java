@@ -111,7 +111,8 @@ public class Messages extends MessagesBase {
                 chunks -> valueOf(chunks), "{d}", dist -> String.format("%.2f", dist),
                 getRawMessage("done-coloring-distance", "Coloring completed. Colored {count} mobs in distance {d}"));
         doneScanningHeader = MsgUtil.tripleContext("{count}", count -> valueOf(count), "{chunks}",
-                chunks -> valueOf(chunks), "{type}", type -> type.name(), getRawMessage("done-scanning-header",
+                chunks -> valueOf(chunks), "{type}", type -> type == null ? "total" : type.name(),
+                getRawMessage("done-scanning-header",
                         "Scanning completed. Scanned {count} {type} in {chunks} loaded chunks"));
         doneScanningItem = MsgUtil.doubleContext("{amount}", amount -> valueOf(amount), "{color}", color -> {
             if (color instanceof Enum) {
