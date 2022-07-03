@@ -91,7 +91,8 @@ public class MessagesTests {
     }
 
     private boolean shouldTestMethod(Method method, Object obj) {
-        return !Modifier.isStatic(method.getModifiers()) && method.canAccess(obj);
+        return !Modifier.isStatic(method.getModifiers()) && method.canAccess(obj)
+                && !method.getName().equals("reloadConfig") && !method.getName().equals("fill");
     }
 
     private void checkMethod(Messages file, Messages code, Method method) {
