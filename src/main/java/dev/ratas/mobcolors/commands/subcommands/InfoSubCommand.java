@@ -141,7 +141,6 @@ public class InfoSubCommand extends AbstractSubCommand {
         SDCSingleContextMessageFactory<WorldDescriptor> msg = messages.getWorldColorMapsHeaderMessage();
         sender.sendMessage(msg.getMessage(msg.getContextFactory().getContext(world)));
         SDCDoubleContextMessageFactory<MobType, String> item = messages.getWorldColorMapItemMessage();
-        sender.sendMessage(msg.getMessage(msg.getContextFactory().getContext(world)));
         for (ColorMap<?> map : worldSettings.getEnabledColorMaps(true)) {
             MobType type = map.getApplicableEntityType();
             if (targetType != null && type != targetType) {
