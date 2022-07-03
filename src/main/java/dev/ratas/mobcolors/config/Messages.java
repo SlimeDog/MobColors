@@ -124,7 +124,7 @@ public class Messages extends MessagesBase {
                 } else if (color instanceof TropicalFishVariant) {
                     return ((TropicalFishVariant) color).getName().toLowerCase();
                 } else {
-                    throw new IllegalArgumentException("Unknown color type: " + color);
+                    throw new IllegalColorException(color);
                 }
             }
         }, getRawMessage("done-scanning-item", "- {color}: {amount}"));
@@ -303,6 +303,14 @@ public class Messages extends MessagesBase {
 
     private static String valueOf(Object o) {
         return String.valueOf(o);
+    }
+
+    public static final class IllegalColorException extends IllegalArgumentException {
+
+        public IllegalColorException(Object color) {
+            super("Unknown color type: " + color);
+        }
+
     }
 
 }
