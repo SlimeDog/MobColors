@@ -166,6 +166,12 @@ public class Messages extends MessagesBase {
                 getRawMessage("updater-info-unavailable", "Version update information is not available at this time"));
     }
 
+	@Override
+	public void reloadConfig() {
+		super.reloadConfig();
+		loadMessages();
+	}
+
     public SDCVoidContextMessageFactory getReloadedMessage() {
         return reloadMessage;
     }
