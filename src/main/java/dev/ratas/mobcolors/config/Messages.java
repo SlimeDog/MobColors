@@ -167,8 +167,8 @@ public class Messages extends MessagesBase {
     }
 
 	@Override
-	public void reloadConfig() {
-		super.reloadConfig();
+	public void reload() {
+		super.reload();
 		loadMessages();
 	}
 
