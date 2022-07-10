@@ -172,17 +172,26 @@ mobs:
 
 # ========== FROG ==================================================================================
 # Vanilla frog variants, per hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/Frog.Variant.html
+#     COLD = verdant (ie., green)
+#     TEMPERATE = ochre (ie., yellow-orange)
+#     WARM = pearlescent (ie., white)
+#
+# cold biomes:
+#     cold: 1.00
 # temperate biomes:
 #     temperate: 1.00
 # warm biomes:
 #     warm: 1.00
-# cold biomes:
-#     cold: 1.00
 #
   frog:
     enabled: false
     include-leashed: false
     include-pets: false
+    cold:
+      probabilities:
+        cold: 1.00
+      enabled-worlds:
+        - example_cold_world
     temperate:
       probabilities:
         temperate: 1.00
@@ -193,11 +202,6 @@ mobs:
         warm: 1.00
       enabled-worlds:
         - example_warm_world
-    cold:
-      probabilities:
-        cold: 1.00
-      enabled-worlds:
-        - example_cold_world
         
 # ========== HORSE =================================================================================
 # Vanilla horse color/style variants,
