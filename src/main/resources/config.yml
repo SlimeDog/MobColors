@@ -6,15 +6,14 @@
 # Implementation: drives_a_ford
 # Testing: SlimeDog
 #
-# Minecraft version support: 1.14.4, 1.15.2, 1.16.5, 1.17.x, 1.18.2, 1.19
+# Supported MC versions:
+# https://github.com/SlimeDog/MobColors/wiki/Technical-Details
+# Default configuration:
+# https://github.com/SlimeDog/MobColors/blob/master/src/main/resources/config.yml
 #
 # Color-scheme values are listed according to the standard ENUM values for each mob-type.
 # The vanilla schemes are subject to change, and are listed here for reference only.
 # For convenience, both uppercase and lowercase values are accepted; for example "WHITE" or "white".
-
-# ========== CONFIGURATION FILE VERSION ============================================================
-# Do not edit the version string unless you know what you are dolng.
-version: 1
 
 # ========== CHECK FOR UPDATES =====================================================================
 # If you do not want notification of available updates in the console log, you may disable it here.
