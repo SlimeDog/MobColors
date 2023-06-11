@@ -1,5 +1,6 @@
 package dev.ratas.mobcolors.platform;
 
+import java.util.function.BiConsumer;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
@@ -16,12 +17,13 @@ import dev.ratas.mobcolors.scheduling.TaskScheduler;
 import dev.ratas.mobcolors.utils.LogUtils;
 import dev.ratas.slimedogcore.api.SlimeDogPlugin;
 import dev.ratas.slimedogcore.api.config.SDCCustomConfig;
-import dev.ratas.slimedogcore.api.messaging.factory.SDCSingleContextMessageFactory;
 import dev.ratas.slimedogcore.api.reload.ReloadException;
 import dev.ratas.slimedogcore.impl.utils.UpdateChecker;
 
 public class PluginPlatform {
     private static final int SPIGOT_RESOURCE_ID = 96771;
+    private static final String HANGAR_AUTHOR = "SlimeDog";
+    private static final String HANGAR_SLUG = "MobColors";
     private final SDCCustomConfig config;
     private final Settings settings;
     private final Messages messages;
@@ -75,20 +77,27 @@ public class PluginPlatform {
 
         // update
         if (settings.checkForUpdates()) {
-            new UpdateChecker(plugin, (response, version) -> {
+            String source = plugin.getDefaultConfig().getConfig().getString("update-source", "Hangar");
+            BiConsumer<UpdateChecker.VersionResponse, String> consumer = (response, version) -> {
                 switch (response) {
                     case LATEST:
                         logger.info(messages.updateCurrentVersion().getMessage().getFilled());
                         break;
                     case FOUND_NEW:
-                        SDCSingleContextMessageFactory<String> msg = messages.updateNewVersionAvailable();
-                        logger.info(msg.getMessage(msg.getContextFactory().getContext(version)).getFilled());
+                        logger.info(messages.updateNewVersionAvailable().createWith(version).getFilled());
                         break;
                     case UNAVAILABLE:
                         logger.info(messages.updateInfoUnavailable().getMessage().getFilled());
                         break;
                 }
-            }, SPIGOT_RESOURCE_ID).check();
+            };
+            UpdateChecker checker;
+            if (source.equalsIgnoreCase("Hangar")) {
+                checker = UpdateChecker.forHangar(plugin, consumer, HANGAR_AUTHOR, HANGAR_SLUG);
+            } else {
+                checker = UpdateChecker.forSpigot(plugin, consumer, SPIGOT_RESOURCE_ID);
+            }
+            checker.check();
         }
     }
 
