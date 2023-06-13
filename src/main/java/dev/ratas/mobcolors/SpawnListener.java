@@ -1,5 +1,7 @@
 package dev.ratas.mobcolors;
 
+import java.util.function.BooleanSupplier;
+
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
@@ -25,10 +27,11 @@ public class SpawnListener implements Listener {
     private final Settings settings;
     private final One17PlusHandler eventHandler;
 
-    public SpawnListener(Settings settings, SDCWorldProvider worldProvider, SDCScheduler scheduler) {
+    public SpawnListener(Settings settings, SDCWorldProvider worldProvider, SDCScheduler scheduler,
+            BooleanSupplier mainThread) {
         this.settings = settings;
         if (Version.hasEntitiesLoadEvent()) {
-            eventHandler = new One17PlusHandler(worldProvider, scheduler);
+            eventHandler = new One17PlusHandler(worldProvider, scheduler, mainThread);
         } else {
             eventHandler = null;
         }

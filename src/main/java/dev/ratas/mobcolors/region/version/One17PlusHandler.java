@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
+import java.util.function.BooleanSupplier;
 
 import org.bukkit.Chunk;
 import org.bukkit.entity.Entity;
@@ -24,10 +25,14 @@ public class One17PlusHandler implements Listener {
     private static final long CLEANUP_DELAY = 20L; // once a second
     private final SDCWorldProvider worldProvider;
     private final Map<ChunkInfo, ChunkCallbacks> chunksToCount = new HashMap<>();
+    private final SDCScheduler scheduler;
+    private final BooleanSupplier mainThread;
     private CompletableFuture<Void> future = null;
 
-    public One17PlusHandler(SDCWorldProvider worldProvider, SDCScheduler scheduler) {
+    public One17PlusHandler(SDCWorldProvider worldProvider, SDCScheduler scheduler, BooleanSupplier mainThread) {
         this.worldProvider = worldProvider;
+        this.mainThread = mainThread;
+        this.scheduler = scheduler;
         scheduler.runTaskTimer(this::cleanup, CLEANUP_DELAY, CLEANUP_DELAY);
     }
 
@@ -77,7 +82,9 @@ public class One17PlusHandler implements Listener {
                 chunksToCount.clear();
                 // in my experience, if there's nothing new to load, then that's about it
                 if (newEntitiesInChunks.isEmpty()) {
-                    this.future.complete(null);
+                    if (this.future != null) {
+                        this.future.complete(null);
+                    }
                 } else {
                     Throwable exception = new PendingChunkTimeoutException(newEntitiesInChunks);
                     this.future.completeExceptionally(exception);
@@ -91,7 +98,7 @@ public class One17PlusHandler implements Listener {
     // failsafe for when the EntitiesLoadEvent approach doesn't work for some reason
     private Map<ChunkInfo, Integer> getNrOfNewEntitiesInPendingChunks() {
         Map<ChunkInfo, Integer> map = new HashMap<>();
-        for (Map.Entry<ChunkInfo, ChunkCallbacks> entry : chunksToCount.entrySet()) {
+        for (Map.Entry<ChunkInfo, ChunkCallbacks> entry : new ArrayList<>(chunksToCount.entrySet())) {
             ChunkInfo chunkInfo = entry.getKey();
             try {
                 Chunk bukkitChunk = worldProvider.getWorldByName(chunkInfo.getWorldName())
@@ -124,6 +131,14 @@ public class One17PlusHandler implements Listener {
     public void onEntityLoad(EntitiesLoadEvent event) {
         Chunk bukkitChunk = event.getChunk();
         ChunkInfo chunk = ChunkInfo.wrap(bukkitChunk);
+        if (!mainThread.getAsBoolean()) {
+            scheduler.runTask(() -> entityLoad(bukkitChunk, chunk));
+            return;
+        }
+        entityLoad(bukkitChunk, chunk);
+    }
+
+    private void entityLoad(Chunk bukkitChunk, ChunkInfo chunk) {
         ChunkCallbacks callback = chunksToCount.remove(chunk);
         if (callback == null) {
             return;

@@ -25,7 +25,7 @@ public class TestOne17PlusHandler {
     @BeforeEach
     public void setup() {
         wp = new MockWorldProvider(mw = new MockWorld(UUID.randomUUID(), "worldName#132"));
-        handler = new One17PlusHandler(wp, new MockScheduler());
+        handler = new One17PlusHandler(wp, new MockScheduler(), () -> true);
         counter = 0;
     }
 

@@ -1,6 +1,7 @@
 package dev.ratas.mobcolors.platform;
 
 import java.util.function.BiConsumer;
+import java.util.function.BooleanSupplier;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
@@ -34,7 +35,8 @@ public class PluginPlatform {
     private final Logger logger;
     private final SlimeDogPlugin plugin;
 
-    public PluginPlatform(SlimeDogPlugin plugin, PluginProvider pluginProvider) throws PlatformInitializationException {
+    public PluginPlatform(SlimeDogPlugin plugin, PluginProvider pluginProvider, BooleanSupplier mainThread)
+            throws PlatformInitializationException {
         this.logger = LogUtils.getLogger();
         this.plugin = plugin;
         // initialize and register reloadables
@@ -59,14 +61,14 @@ public class PluginPlatform {
             throw new PlatformInitializationException("Settings issue");
         }
         plugin.getReloadManager().register(settings);
-        spawnListener = new SpawnListener(settings, plugin.getWorldProvider(), plugin.getScheduler());
+        spawnListener = new SpawnListener(settings, plugin.getWorldProvider(), plugin.getScheduler(), mainThread);
         // scheduling, scanning, mapping
         this.taskScheduler = new SimpleTaskScheduler(settings.maxMsPerTickInScheduler());
         plugin.getScheduler().runTaskTimer((Runnable) this.taskScheduler, 1L, 1L);
         scanner = new RegionScanner(plugin.getScheduler(), this.taskScheduler, plugin.getPluginManager(),
-                plugin.getWorldProvider());
+                plugin.getWorldProvider(), mainThread);
         mapper = new RegionMapper(plugin.getScheduler(), this.taskScheduler, spawnListener, scanner,
-                plugin.getPluginManager(), plugin.getWorldProvider());
+                plugin.getPluginManager(), plugin.getWorldProvider(), mainThread);
 
         plugin.getPluginManager().registerEvents(spawnListener);
 
