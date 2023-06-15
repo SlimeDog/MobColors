@@ -2,6 +2,7 @@ package dev.ratas.mobcolors.region;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
+import java.util.function.BooleanSupplier;
 
 import org.bukkit.Chunk;
 import org.bukkit.entity.Entity;
@@ -27,13 +28,14 @@ public class RegionMapper extends AbstractRegionHandler {
     private final One17PlusHandler eventLoadHandler;
 
     public RegionMapper(SDCScheduler bukkitScheduler, TaskScheduler scheduler, SpawnListener spawnListener,
-            RegionScanner scanner, SDCPluginManager registrator, SDCWorldProvider worldProvider) {
+            RegionScanner scanner, SDCPluginManager registrator, SDCWorldProvider worldProvider,
+            BooleanSupplier mainThread) {
         this.bukkitScheduler = bukkitScheduler;
         this.scheduler = scheduler;
         this.spawnListener = spawnListener;
         this.scanner = scanner;
         if (Version.hasEntitiesLoadEvent()) {
-            eventLoadHandler = new One17PlusHandler(worldProvider, bukkitScheduler);
+            eventLoadHandler = new One17PlusHandler(worldProvider, bukkitScheduler, mainThread);
             registrator.registerEvents(eventLoadHandler);
         } else {
             eventLoadHandler = null;

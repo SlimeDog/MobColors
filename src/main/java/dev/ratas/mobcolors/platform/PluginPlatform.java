@@ -1,5 +1,7 @@
 package dev.ratas.mobcolors.platform;
 
+import java.util.function.BiConsumer;
+import java.util.function.BooleanSupplier;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
@@ -16,12 +18,13 @@ import dev.ratas.mobcolors.scheduling.TaskScheduler;
 import dev.ratas.mobcolors.utils.LogUtils;
 import dev.ratas.slimedogcore.api.SlimeDogPlugin;
 import dev.ratas.slimedogcore.api.config.SDCCustomConfig;
-import dev.ratas.slimedogcore.api.messaging.factory.SDCSingleContextMessageFactory;
 import dev.ratas.slimedogcore.api.reload.ReloadException;
 import dev.ratas.slimedogcore.impl.utils.UpdateChecker;
 
 public class PluginPlatform {
     private static final int SPIGOT_RESOURCE_ID = 96771;
+    private static final String HANGAR_AUTHOR = "SlimeDog";
+    private static final String HANGAR_SLUG = "MobColors";
     private final SDCCustomConfig config;
     private final Settings settings;
     private final Messages messages;
@@ -32,7 +35,8 @@ public class PluginPlatform {
     private final Logger logger;
     private final SlimeDogPlugin plugin;
 
-    public PluginPlatform(SlimeDogPlugin plugin, PluginProvider pluginProvider) throws PlatformInitializationException {
+    public PluginPlatform(SlimeDogPlugin plugin, PluginProvider pluginProvider, BooleanSupplier mainThread)
+            throws PlatformInitializationException {
         this.logger = LogUtils.getLogger();
         this.plugin = plugin;
         // initialize and register reloadables
@@ -57,14 +61,14 @@ public class PluginPlatform {
             throw new PlatformInitializationException("Settings issue");
         }
         plugin.getReloadManager().register(settings);
-        spawnListener = new SpawnListener(settings, plugin.getWorldProvider(), plugin.getScheduler());
+        spawnListener = new SpawnListener(settings, plugin.getWorldProvider(), plugin.getScheduler(), mainThread);
         // scheduling, scanning, mapping
         this.taskScheduler = new SimpleTaskScheduler(settings.maxMsPerTickInScheduler());
         plugin.getScheduler().runTaskTimer((Runnable) this.taskScheduler, 1L, 1L);
         scanner = new RegionScanner(plugin.getScheduler(), this.taskScheduler, plugin.getPluginManager(),
-                plugin.getWorldProvider());
+                plugin.getWorldProvider(), mainThread);
         mapper = new RegionMapper(plugin.getScheduler(), this.taskScheduler, spawnListener, scanner,
-                plugin.getPluginManager(), plugin.getWorldProvider());
+                plugin.getPluginManager(), plugin.getWorldProvider(), mainThread);
 
         plugin.getPluginManager().registerEvents(spawnListener);
 
@@ -75,20 +79,27 @@ public class PluginPlatform {
 
         // update
         if (settings.checkForUpdates()) {
-            new UpdateChecker(plugin, (response, version) -> {
+            String source = plugin.getDefaultConfig().getConfig().getString("update-source", "Hangar");
+            BiConsumer<UpdateChecker.VersionResponse, String> consumer = (response, version) -> {
                 switch (response) {
                     case LATEST:
                         logger.info(messages.updateCurrentVersion().getMessage().getFilled());
                         break;
                     case FOUND_NEW:
-                        SDCSingleContextMessageFactory<String> msg = messages.updateNewVersionAvailable();
-                        logger.info(msg.getMessage(msg.getContextFactory().getContext(version)).getFilled());
+                        logger.info(messages.updateNewVersionAvailable().createWith(version).getFilled());
                         break;
                     case UNAVAILABLE:
                         logger.info(messages.updateInfoUnavailable().getMessage().getFilled());
                         break;
                 }
-            }, SPIGOT_RESOURCE_ID).check();
+            };
+            UpdateChecker checker;
+            if (source.equalsIgnoreCase("Hangar")) {
+                checker = UpdateChecker.forHangar(plugin, consumer, HANGAR_AUTHOR, HANGAR_SLUG);
+            } else {
+                checker = UpdateChecker.forSpigot(plugin, consumer, SPIGOT_RESOURCE_ID);
+            }
+            checker.check();
         }
     }
 

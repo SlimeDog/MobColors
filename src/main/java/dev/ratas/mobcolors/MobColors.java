@@ -17,7 +17,7 @@ public class MobColors extends SlimeDogCore {
         PluginProvider pluginProvider = new PluginProvider.Implementation(this);
 
         // platform
-        PluginPlatform platform = new PluginPlatform(this, pluginProvider);
+        PluginPlatform platform = new PluginPlatform(this, pluginProvider, () -> getServer().isPrimaryThread());
 
         // commands
         getCommand("mobcolors").setExecutor(
