@@ -33,6 +33,8 @@ enable-metrics: true
 # Color-schemes for all mob-types are disabled by default, to avoid surprises and minimize impact.
 # Enable only those you wish to employ.
 #
+# Non-vanilla default color-schemes may be specified, if desired.
+#
 # Illegal specifications will produce console/log errors, and may cause MobColors to disable.
 
 # ========== INCLUDED CATEGORIES ===================================================================
@@ -154,7 +156,7 @@ mobs:
 # other biomes:
 #     red: 1.00
 #
-# A non-vanilla default color-scheme may be added.
+# A non-vanilla default color-scheme may be specified, if desired.
 #
   fox:
     enabled: false
@@ -183,6 +185,8 @@ mobs:
 #     temperate: 1.00
 # warm biomes:
 #     warm: 1.00
+#
+# A non-vanilla default color-scheme may be specified, if desired.
 #
   frog:
     enabled: false
@@ -324,6 +328,8 @@ mobs:
 # At spawn, all mooshrooms are red. They can change to brown when struck by lightning.
 #   brown: 0.00
 #   red: 1.00
+#
+# A non-vanilla default color-scheme may be specified, if desired.
 #
   mooshroom:
     enabled: false
@@ -479,8 +485,6 @@ mobs:
 #    gray, pink, lime, yellow, light_blue, magenta, orange, white
 # as well as "default".
 #
-# A non-vanilla default color-scheme may be specified, if desired.
-#
   shulker:
     enabled: false
     include-leashed: false
@@ -627,3 +631,51 @@ mobs:
         sunstreak/white/light_gray: 0.25    # Triggerfish
       enabled-worlds:
         - example_world_with_only_monochrome_fish
+
+# ========== WOLF ==================================================================================
+# Vanilla wolf types, per hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/Wolf.Type.html
+# forest biome:
+#     woods: 1.00
+# grove biome:
+#     snowy: 1.00
+# old_growth_pine_taiga biome:
+#     black: 1.00
+# old_growth_spruce_taiga biome:
+#     chestnut: 1.00
+# savanna_plateau biome:
+#     spotted: 1.00
+# snowy_taiga biome:
+#     ashen: 1.00
+# sparse_jungle biome:
+#     rusty: 1.00
+# taiga biome:
+#     pale: 1.00
+# wooded_badlands biome:
+#     striped: 1.00
+#
+# A non-vanilla default color-scheme may be specified, if desired.
+#
+  wolf:
+    enabled: false
+    include-leashed: false
+    include-pets: false
+    black:
+      probabilities:
+        ashen: 0.50
+        black: 0.50
+      enabled-worlds:
+        - example_black_world
+    brown:
+      probabilities:
+        chestnut: 0.25
+        rusty: 0.25
+        spotted: 0.25
+        striped: 0.25
+      enabled-worlds:
+        - example_brown_world
+    white:
+      probabilities:
+        pale: 0.50
+        snowy: 0.50
+      enabled-worlds:
+        - example_white_world
