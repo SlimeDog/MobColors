@@ -15,6 +15,7 @@
 &mdash; sheep<br>
 &mdash; shulker<br>
 &mdash; tropical_fish<br>
+&mdash; wolf<br>
 
 ### The Wiki
 
