@@ -12,7 +12,6 @@ Completed tasks:
   - `README` for SlimeDog/MobColors repository on Github
   - `Home` page of SlimeDog/MobColors wiki on Github
 - Archived SlimeDog/MobColors Github repository
-- Removed SlimeDog/MobColors from bStats
 - Removed SlimeDog/MobColors from Hangar
 
 Support for future Minecraft versions:
