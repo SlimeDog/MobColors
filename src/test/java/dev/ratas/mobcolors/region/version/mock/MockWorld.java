@@ -2,6 +2,7 @@ package dev.ratas.mobcolors.region.version.mock;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -14,12 +15,15 @@ import org.bukkit.Chunk;
 import org.bukkit.ChunkSnapshot;
 import org.bukkit.Difficulty;
 import org.bukkit.Effect;
+import org.bukkit.FeatureFlag;
 import org.bukkit.FluidCollisionMode;
 import org.bukkit.GameRule;
 import org.bukkit.HeightMap;
+import org.bukkit.Instrument;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Note;
 import org.bukkit.Particle;
 import org.bukkit.Raid;
 import org.bukkit.Sound;
@@ -44,15 +48,18 @@ import org.bukkit.entity.LightningStrike;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.SpawnCategory;
+import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.generator.BiomeProvider;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.generator.structure.GeneratedStructure;
 import org.bukkit.generator.structure.Structure;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.util.BiomeSearchResult;
 import org.bukkit.util.BoundingBox;
 import org.bukkit.util.Consumer;
 import org.bukkit.util.RayTraceResult;
@@ -144,7 +151,7 @@ public class MockWorld implements World {
         throw new IllegalStateException("Not implemented yet");
     }
 
-    @Override
+    // @Override
     public boolean generateTree(Location location, Random random, TreeType type, Consumer<BlockState> stateConsumer) {
         throw new IllegalStateException("Not implemented yet");
     }
@@ -164,13 +171,13 @@ public class MockWorld implements World {
         throw new IllegalStateException("Not implemented yet");
     }
 
-    @Override
+    // @Override
     public <T extends Entity> T spawn(Location location, Class<T> clazz, Consumer<T> function)
             throws IllegalArgumentException {
         throw new IllegalStateException("Not implemented yet");
     }
 
-    @Override
+    // @Override
     public <T extends Entity> T spawn(Location location, Class<T> clazz, boolean randomizeData, Consumer<T> function)
             throws IllegalArgumentException {
         throw new IllegalStateException("Not implemented yet");
@@ -422,7 +429,7 @@ public class MockWorld implements World {
         throw new IllegalStateException("Not implemented yet");
     }
 
-    @Override
+    // @Override
     public Item dropItem(Location location, ItemStack item, Consumer<Item> function) {
         throw new IllegalStateException("Not implemented yet");
     }
@@ -432,7 +439,7 @@ public class MockWorld implements World {
         throw new IllegalStateException("Not implemented yet");
     }
 
-    @Override
+    // @Override
     public Item dropItemNaturally(Location location, ItemStack item, Consumer<Item> function) {
         throw new IllegalStateException("Not implemented yet");
     }
@@ -504,21 +511,21 @@ public class MockWorld implements World {
         throw new IllegalStateException("Not implemented yet");
     }
 
-    @Override
-    public Collection<Entity> getNearbyEntities(Location location, double x, double y, double z,
-            Predicate<Entity> filter) {
-        throw new IllegalStateException("Not implemented yet");
-    }
+    // @Override
+    // public Collection<Entity> getNearbyEntities(Location location, double x, double y, double z,
+    //         Predicate<Entity> filter) {
+    //     throw new IllegalStateException("Not implemented yet");
+    // }
 
     @Override
     public Collection<Entity> getNearbyEntities(BoundingBox boundingBox) {
         throw new IllegalStateException("Not implemented yet");
     }
 
-    @Override
-    public Collection<Entity> getNearbyEntities(BoundingBox boundingBox, Predicate<Entity> filter) {
-        throw new IllegalStateException("Not implemented yet");
-    }
+    // @Override
+    // public Collection<Entity> getNearbyEntities(BoundingBox boundingBox, Predicate<Entity> filter) {
+    //     throw new IllegalStateException("Not implemented yet");
+    // }
 
     @Override
     public RayTraceResult rayTraceEntities(Location start, Vector direction, double maxDistance) {
@@ -530,17 +537,17 @@ public class MockWorld implements World {
         throw new IllegalStateException("Not implemented yet");
     }
 
-    @Override
-    public RayTraceResult rayTraceEntities(Location start, Vector direction, double maxDistance,
-            Predicate<Entity> filter) {
-        throw new IllegalStateException("Not implemented yet");
-    }
+    // @Override
+    // public RayTraceResult rayTraceEntities(Location start, Vector direction, double maxDistance,
+    //         Predicate<Entity> filter) {
+    //     throw new IllegalStateException("Not implemented yet");
+    // }
 
-    @Override
-    public RayTraceResult rayTraceEntities(Location start, Vector direction, double maxDistance, double raySize,
-            Predicate<Entity> filter) {
-        throw new IllegalStateException("Not implemented yet");
-    }
+    // @Override
+    // public RayTraceResult rayTraceEntities(Location start, Vector direction, double maxDistance, double raySize,
+    //         Predicate<Entity> filter) {
+    //     throw new IllegalStateException("Not implemented yet");
+    // }
 
     @Override
     public RayTraceResult rayTraceBlocks(Location start, Vector direction, double maxDistance) {
@@ -559,12 +566,12 @@ public class MockWorld implements World {
         throw new IllegalStateException("Not implemented yet");
     }
 
-    @Override
-    public RayTraceResult rayTrace(Location start, Vector direction, double maxDistance,
-            FluidCollisionMode fluidCollisionMode, boolean ignorePassableBlocks, double raySize,
-            Predicate<Entity> filter) {
-        throw new IllegalStateException("Not implemented yet");
-    }
+    // @Override
+    // public RayTraceResult rayTrace(Location start, Vector direction, double maxDistance,
+    //         FluidCollisionMode fluidCollisionMode, boolean ignorePassableBlocks, double raySize,
+    //         Predicate<Entity> filter) {
+    //     throw new IllegalStateException("Not implemented yet");
+    // }
 
     @Override
     public Location getSpawnLocation() {
@@ -1221,7 +1228,8 @@ public class MockWorld implements World {
     }
 
     @Override
-    public boolean generateTree(Location arg0, Random arg1, TreeType arg2, Predicate<BlockState> arg3) {
+    public boolean generateTree(Location location, Random random, TreeType type,
+            java.util.function.Consumer<? super BlockState> stateConsumer) {
         // TODO Auto-generated method stub
         return false;
     }
@@ -1291,6 +1299,187 @@ public class MockWorld implements World {
     public StructureSearchResult locateNearestStructure(Location arg0, Structure arg1, int arg2, boolean arg3) {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    public Collection<GeneratedStructure> getStructures(int x, int z, Structure structure) {
+        return Collections.emptyList();
+    }
+
+    public Collection<GeneratedStructure> getStructures(int x, int z) {
+        return Collections.emptyList();
+    }
+
+    public Set<FeatureFlag> getFeatureFlags() {
+        return Collections.emptySet();
+    }
+
+    @Override
+    public <T extends Entity> T createEntity(Location location, Class<T> clazz) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'createEntity'");
+    }
+
+    @Override
+    public <T extends Entity> T spawn(Location location, Class<T> clazz,
+            java.util.function.Consumer<? super T> function) throws IllegalArgumentException {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'spawn'");
+    }
+
+    @Override
+    public <T extends Entity> T spawn(Location location, Class<T> clazz, boolean randomizeData,
+            java.util.function.Consumer<? super T> function) throws IllegalArgumentException {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'spawn'");
+    }
+
+    @Override
+    public <T extends Entity> T addEntity(T entity) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'addEntity'");
+    }
+
+    @Override
+    public Chunk getChunkAt(int x, int z, boolean generate) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getChunkAt'");
+    }
+
+    @Override
+    public Collection<Player> getPlayersSeeingChunk(Chunk chunk) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getPlayersSeeingChunk'");
+    }
+
+    @Override
+    public Collection<Player> getPlayersSeeingChunk(int x, int z) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getPlayersSeeingChunk'");
+    }
+
+    @Override
+    public Collection<Chunk> getIntersectingChunks(BoundingBox box) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getIntersectingChunks'");
+    }
+
+    @Override
+    public Item dropItem(Location location, ItemStack item, java.util.function.Consumer<? super Item> function) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'dropItem'");
+    }
+
+    @Override
+    public Item dropItemNaturally(Location location, ItemStack item,
+            java.util.function.Consumer<? super Item> function) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'dropItemNaturally'");
+    }
+
+    @Override
+    public <T extends LivingEntity> T spawn(Location location, Class<T> clazz, SpawnReason spawnReason,
+            boolean randomizeData, java.util.function.Consumer<? super T> function) throws IllegalArgumentException {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'spawn'");
+    }
+
+    @Override
+    public void playNote(Location loc, Instrument instrument, Note note) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'playNote'");
+    }
+
+    @Override
+    public void playSound(Location location, Sound sound, SoundCategory category, float volume, float pitch,
+            long seed) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'playSound'");
+    }
+
+    @Override
+    public void playSound(Location location, String sound, SoundCategory category, float volume, float pitch,
+            long seed) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'playSound'");
+    }
+
+    @Override
+    public void playSound(Entity entity, String sound, float volume, float pitch) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'playSound'");
+    }
+
+    @Override
+    public void playSound(Entity entity, String sound, SoundCategory category, float volume, float pitch) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'playSound'");
+    }
+
+    @Override
+    public void playSound(Entity entity, Sound sound, SoundCategory category, float volume, float pitch, long seed) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'playSound'");
+    }
+
+    @Override
+    public void playSound(Entity entity, String sound, SoundCategory category, float volume, float pitch, long seed) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'playSound'");
+    }
+
+    @Override
+    public BiomeSearchResult locateNearestBiome(Location origin, int radius, Biome... biomes) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'locateNearestBiome'");
+    }
+
+    @Override
+    public BiomeSearchResult locateNearestBiome(Location origin, int radius, int horizontalInterval,
+            int verticalInterval, Biome... biomes) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'locateNearestBiome'");
+    }
+
+    @Override
+    public boolean generateTree(Location location, Random random, TreeType type,
+            Predicate<? super BlockState> statePredicate) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'generateTree'");
+    }
+
+    @Override
+    public Collection<Entity> getNearbyEntities(Location location, double x, double y, double z,
+            Predicate<? super Entity> filter) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getNearbyEntities'");
+    }
+
+    @Override
+    public Collection<Entity> getNearbyEntities(BoundingBox boundingBox, Predicate<? super Entity> filter) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getNearbyEntities'");
+    }
+
+    @Override
+    public RayTraceResult rayTraceEntities(Location start, Vector direction, double maxDistance,
+            Predicate<? super Entity> filter) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'rayTraceEntities'");
+    }
+
+    @Override
+    public RayTraceResult rayTraceEntities(Location start, Vector direction, double maxDistance, double raySize,
+            Predicate<? super Entity> filter) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'rayTraceEntities'");
+    }
+
+    @Override
+    public RayTraceResult rayTrace(Location start, Vector direction, double maxDistance,
+            FluidCollisionMode fluidCollisionMode, boolean ignorePassableBlocks, double raySize,
+            Predicate<? super Entity> filter) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'rayTrace'");
     }
 
 }

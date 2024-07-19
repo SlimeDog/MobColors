@@ -6,14 +6,15 @@ import java.util.List;
 import java.util.Set;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.params.ParameterizedTest;
+// import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import dev.ratas.mobcolors.config.mob.MobTypes;
 
 public class TestInternalEnumsMapAllBukkitEnums {
 
-    @ParameterizedTest
+    // NOTE: Would require a serve instance for lookup in 1.21 - RIP
+    // @ParameterizedTest
     @MethodSource("provideArgumentsForTest")
     public void test_InternalEnumMapsAllBukkitEnumValues(Class<Enum<? extends MobTypeVariant<?>>> clazz) {
         Set<Object> usedBukkitVariants = new HashSet<>();
