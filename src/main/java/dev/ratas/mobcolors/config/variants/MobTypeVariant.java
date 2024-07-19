@@ -1,17 +1,17 @@
 package dev.ratas.mobcolors.config.variants;
 
-import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.Map;
 
-public interface MobTypeVariant<T extends Enum<T>> {
+public interface MobTypeVariant<T> {
 
     T getBukkitVariant();
 
-    public class ReverseTranslator<U extends Enum<U>, V extends MobTypeVariant<?>> {
+    public class ReverseTranslator<U, V extends MobTypeVariant<?>> {
         private final Map<U, V> map;
 
         protected ReverseTranslator(Class<U> clazz) {
-            map = new EnumMap<>(clazz);
+            map = new HashMap<>();
         }
 
         protected boolean isEmpty() {

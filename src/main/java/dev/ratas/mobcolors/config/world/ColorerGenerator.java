@@ -10,6 +10,7 @@ import org.bukkit.entity.MushroomCow;
 import org.bukkit.entity.Parrot;
 import org.bukkit.entity.Rabbit;
 import org.bukkit.entity.TropicalFish;
+import org.bukkit.entity.Wolf;
 import org.bukkit.material.Colorable;
 
 import dev.ratas.mobcolors.coloring.DelegatingMobColorer;
@@ -27,6 +28,7 @@ import dev.ratas.mobcolors.config.variants.MooshroomVariant;
 import dev.ratas.mobcolors.config.variants.ParrotVariant;
 import dev.ratas.mobcolors.config.variants.RabbitVariant;
 import dev.ratas.mobcolors.config.variants.TropicalFishVariant;
+import dev.ratas.mobcolors.config.variants.WolfVariant;
 import dev.ratas.slimedogcore.api.scheduler.SDCScheduler;
 
 public class ColorerGenerator {
@@ -90,6 +92,11 @@ public class ColorerGenerator {
                         (frog, var) -> {
                             frog.setVariant(var.getBukkitVariant());
                         }, frog -> FrogVariant.getType(frog.getVariant()));
+            case wolf:
+                return new DelegatingMobColorer<Wolf, WolfVariant>(scheduler, settings, (ColorMap<WolfVariant>) map,
+                        (wolf, var) -> {
+                            wolf.setVariant(var.getBukkitVariant());
+                        }, wolf -> WolfVariant.getVariant(wolf.getVariant()));
             default:
                 throw new IllegalStateException("No colorer defined for " + map.getApplicableEntityType());
         }
