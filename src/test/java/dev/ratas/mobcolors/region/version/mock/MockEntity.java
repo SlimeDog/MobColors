@@ -7,11 +7,14 @@ import java.util.UUID;
 import org.bukkit.EntityEffect;
 import org.bukkit.Location;
 import org.bukkit.Server;
+import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.PistonMoveReaction;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntitySnapshot;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.entity.Pose;
 import org.bukkit.entity.SpawnCategory;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -524,6 +527,72 @@ public class MockEntity implements Entity {
     public SpawnCategory getSpawnCategory() {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    @Override
+    public Sound getSwimSound() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getSwimSound'");
+    }
+
+    @Override
+    public Sound getSwimSplashSound() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getSwimSplashSound'");
+    }
+
+    @Override
+    public Sound getSwimHighSpeedSplashSound() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getSwimHighSpeedSplashSound'");
+    }
+
+    @Override
+    public void setVisibleByDefault(boolean visible) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setVisibleByDefault'");
+    }
+
+    @Override
+    public boolean isVisibleByDefault() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'isVisibleByDefault'");
+    }
+
+    @Override
+    public Set<Player> getTrackedBy() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getTrackedBy'");
+    }
+
+    @Override
+    public boolean isInWorld() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'isInWorld'");
+    }
+
+    @Override
+    public String getAsString() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAsString'");
+    }
+
+    @Override
+    public EntitySnapshot createSnapshot() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'createSnapshot'");
+    }
+
+    @Override
+    public Entity copy() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'copy'");
+    }
+
+    @Override
+    public Entity copy(Location to) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'copy'");
     }
 
 }

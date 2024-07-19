@@ -7,10 +7,14 @@ import java.util.List;
 import org.bukkit.Chunk;
 import org.bukkit.ChunkSnapshot;
 import org.bukkit.World;
+import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.generator.structure.GeneratedStructure;
+import org.bukkit.generator.structure.Structure;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.plugin.Plugin;
 
@@ -148,6 +152,42 @@ public class MockChunk extends ChunkInfo implements Chunk {
     @Override
     public boolean contains(BlockData block) {
         throw new IllegalStateException("Not implemented yet");
+    }
+
+    @Override
+    public boolean isGenerated() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'isGenerated'");
+    }
+
+    @Override
+    public boolean contains(Biome biome) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'contains'");
+    }
+
+    @Override
+    public LoadLevel getLoadLevel() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getLoadLevel'");
+    }
+
+    @Override
+    public Collection<GeneratedStructure> getStructures() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getStructures'");
+    }
+
+    @Override
+    public Collection<GeneratedStructure> getStructures(Structure structure) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getStructures'");
+    }
+
+    @Override
+    public Collection<Player> getPlayersSeeingChunk() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getPlayersSeeingChunk'");
     }
 
 }

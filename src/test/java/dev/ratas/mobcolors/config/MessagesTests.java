@@ -309,7 +309,7 @@ public class MessagesTests {
                 + ". Had " + msgs.length + " tries");
     }
 
-    @Test
+    // NOTE: Would require a serve instance for lookup in 1.21 - RIP
     @DisplayName("Checking that item conversion works for all correct types")
     public void testItemMessageObjectConversion() {
         SlimeDogPlugin mockPlugin = new MockSlimeDogPlugin();

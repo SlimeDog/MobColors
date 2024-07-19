@@ -21,6 +21,7 @@ import org.bukkit.entity.MushroomCow;
 import org.bukkit.entity.Parrot;
 import org.bukkit.entity.Rabbit;
 import org.bukkit.entity.TropicalFish;
+import org.bukkit.entity.Wolf;
 import org.bukkit.material.Colorable;
 
 import dev.ratas.mobcolors.config.HorseVariant;
@@ -35,6 +36,7 @@ import dev.ratas.mobcolors.config.variants.MooshroomVariant;
 import dev.ratas.mobcolors.config.variants.ParrotVariant;
 import dev.ratas.mobcolors.config.variants.RabbitVariant;
 import dev.ratas.mobcolors.config.variants.TropicalFishVariant;
+import dev.ratas.mobcolors.config.variants.WolfVariant;
 
 public final class MobTypes {
     // for 1.16.5 support
@@ -91,6 +93,8 @@ public final class MobTypes {
             return TropicalFish.class;
         } else if (ent instanceof Frog) {
             return FrogVariant.class;
+        } else if (ent instanceof Wolf) {
+            return WolfVariant.class;
         } else {
             return null;
         }
@@ -119,6 +123,8 @@ public final class MobTypes {
             return e -> TropicalFishVariant.getVariant((TropicalFish) e);
         } else if (ent instanceof Frog) {
             return e -> FrogVariant.getType(((Frog) e).getVariant());
+        } else if (ent instanceof Wolf) {
+            return e -> WolfVariant.getVariant(((Wolf) e).getVariant());
         } else {
             throw new IllegalArgumentException("Not a type of interest: " + ent.getType());
         }
@@ -147,6 +153,8 @@ public final class MobTypes {
             return e -> TropicalFishVariant.getVariant((TropicalFish) e);
         } else if (type == MobType.frog) {
             return e -> FrogVariant.getType(((Frog) e).getVariant());
+        } else if (type == MobType.wolf) {
+            return e -> WolfVariant.getVariant(((Wolf) e).getVariant());
         } else {
             throw new IllegalArgumentException("Not a type of interest: " + type);
         }
